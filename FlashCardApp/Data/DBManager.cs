@@ -56,7 +56,7 @@ public sealed class DBManager
                 command.CommandText = "IF OBJECT_ID(N'StudyArea', N'U') IS NULL " +
                                       "CREATE TABLE StudyArea (Id INT PRIMARY KEY IDENTITY(1,1), " +
                                       "StackId INT FOREIGN KEY REFERENCES Stack(Id), " +
-                                      "Date DATE, " +
+                                      "Date DATE DEFAULT GETDATE(), " +
                                       "Score INT)";
 
                 command.ExecuteNonQuery();
