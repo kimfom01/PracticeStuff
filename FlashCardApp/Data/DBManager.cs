@@ -18,7 +18,7 @@ public sealed class DBManager
 
                 command.CommandText = "IF OBJECT_ID(N'Stack', N'U') IS NULL " +
                                       "CREATE TABLE Stack (Id INT PRIMARY KEY IDENTITY(1,1), " +
-                                      "StackName NVARCHAR(50))";
+                                      "StackName NVARCHAR(50) UNIQUE)";
 
                 command.ExecuteNonQuery();
             }
