@@ -1,16 +1,17 @@
 using System.Configuration;
 using System.Data.SqlClient;
 using FlashCardApp.DTO;
+using FlashCardApp.Models;
 
 namespace FlashCardApp.Data;
 
-public sealed class DBManager
+public static class DbManager
 {
-    private static string connectionString = ConfigurationManager.AppSettings.Get("connectionString");
+    private static string _connectionString = ConfigurationManager.AppSettings.Get("connectionString")!;
 
     public static void CreateStackTable()
     {
-        using (var connection = new SqlConnection(connectionString))
+        using (var connection = new SqlConnection(_connectionString))
         {
             using (var command = connection.CreateCommand())
             {
@@ -27,7 +28,7 @@ public sealed class DBManager
 
     public static void CreateFlashCardTable()
     {
-        using (var connection = new SqlConnection(connectionString))
+        using (var connection = new SqlConnection(_connectionString))
         {
             using (var command = connection.CreateCommand())
             {
@@ -47,7 +48,7 @@ public sealed class DBManager
 
     public static void CreateStudyAreaTable()
     {
-        using (var connection = new SqlConnection(connectionString))
+        using (var connection = new SqlConnection(_connectionString))
         {
             using (var command = connection.CreateCommand())
             {
@@ -66,49 +67,49 @@ public sealed class DBManager
 
     
     // Stack Operations
-    public static void AddNewStack(string stackName)
+    public static void AddNewStack(Stack newStack)
     {
-        using (var connection = new SqlConnection(connectionString))
+        using (var connection = new SqlConnection(_connectionString))
         {
             using (var command = connection.CreateCommand())
             {
                 connection.Open();
 
                 command.CommandText = "INSERT INTO Stack (StackName) " +
-                                      $"VALUES ('{stackName}')";
+                                      $"VALUES ('{newStack.StackName}')";
 
                 command.ExecuteNonQuery();
             }
         }
     }
 
-    public static void UpdateStack(string oldStackName, string newStackName)
+    public static void UpdateStack(Stack oldStack, Stack newStack)
     {
-        using (var connection = new SqlConnection(connectionString))
+        using (var connection = new SqlConnection(_connectionString))
         {
             using (var command = connection.CreateCommand())
             {
                 connection.Open();
 
                 command.CommandText = "UPDATE Stack " +
-                                      $"SET StackName = '{newStackName}' " +
-                                      $"WHERE StackName = '{oldStackName}'";
+                                      $"SET StackName = '{newStack.StackName}' " +
+                                      $"WHERE StackName = '{oldStack.StackName}'";
 
                 command.ExecuteNonQuery();
             }
         }
     }
 
-    public static void DeleteStack(string stackName)
+    public static void DeleteStack(Stack stackToDelete)
     {
-        using (var connection = new SqlConnection(connectionString))
+        using (var connection = new SqlConnection(_connectionString))
         {
             using (var command = connection.CreateCommand())
             {
                 connection.Open();
 
                 command.CommandText = "DELETE FROM Stack " +
-                                      $"WHERE StackName = '{stackName}'";
+                                      $"WHERE StackName = '{stackToDelete.StackName}'";
 
                 command.ExecuteNonQuery();
             }
@@ -118,7 +119,7 @@ public sealed class DBManager
     public static List<StackDTO> GetStacks()
     {
         List<StackDTO> stackList = new List<StackDTO>();
-        using (var connection = new SqlConnection(connectionString))
+        using (var connection = new SqlConnection(_connectionString))
         {
             using (var command = connection.CreateCommand())
             {
