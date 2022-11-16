@@ -18,7 +18,7 @@ public static class DbManager
                 connection.Open();
 
                 command.CommandText = "IF OBJECT_ID(N'Stack', N'U') IS NULL " +
-                                      "CREATE TABLE Stack (Id INT PRIMARY KEY IDENTITY(1,1), " +
+                                      "CREATE TABLE Stack (Id INT PRIMARY KEY IDENTITY(1,1) ON DELETE CASCADE, " +
                                       "StackName NVARCHAR(50) UNIQUE)";
 
                 command.ExecuteNonQuery();
@@ -65,7 +65,7 @@ public static class DbManager
         }
     }
 
-    
+
     // Stack Operations
     public static void AddNewStack(Stack newStack)
     {
@@ -118,7 +118,7 @@ public static class DbManager
 
     public static List<StackDTO> GetStacks()
     {
-        List<StackDTO> stackList = new List<StackDTO>();
+        List<StackDTO> stackList = new ();
         using (var connection = new SqlConnection(_connectionString))
         {
             using (var command = connection.CreateCommand())
@@ -141,4 +141,161 @@ public static class DbManager
 
         return stackList;
     }
+
+    private static int GetStackId(Stack stack)
+    {
+        int id = -1;
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            using (var command = connection.CreateCommand())
+            {
+                connection.Open();
+
+                command.CommandText = "SELECT Id FROM Stack " +
+                                      $"WHERE StackName = {stack.StackName}";
+
+                var reader = command.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    id = reader.GetInt32(0);
+                }
+            }
+        }
+
+        return id;
+    }
+
+    // FlashCard Operations
+    public static void AddNewFlashCard(FlashCard flashCard, Stack stack)
+    {
+        var stackId = GetStackId(stack);
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            using (var command = connection.CreateCommand())
+            {
+                connection.Open();
+
+                command.CommandText = "INSERT INTO FlashCard (StackId, FlashCardName, FrontContent, BackContent) " +
+                                      $"VALUES ({stackId}, '{flashCard.FlashCardName}','{flashCard.FrontContent}','{flashCard.BackContent}') ";
+
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public static void UpdateFlashCard(FlashCard oldFlashCard, FlashCard newFlashCard)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            using (var command = connection.CreateCommand())
+            {
+                connection.Open();
+
+                command.CommandText = "UPDATE FlashCard " +
+                                      $"SET FlashCardName = '{newFlashCard.FlashCardName}', " +
+                                      $"FrontContent = '{newFlashCard.FrontContent}' " +
+                                      $"BackContent = '{newFlashCard.BackContent}' " +
+                                      $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}'";
+
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public static void UpdateFlashCardName(FlashCard oldFlashCard, FlashCard newFlashCard)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            using (var command = connection.CreateCommand())
+            {
+                connection.Open();
+
+                command.CommandText = "UPDATE FlashCard " +
+                                      $"SET FlashCardName = '{newFlashCard.FlashCardName}', " +
+                                      $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}'";
+
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public static void UpdateFlashCardFront(FlashCard oldFlashCard, FlashCard newFlashCard)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            using (var command = connection.CreateCommand())
+            {
+                connection.Open();
+
+                command.CommandText = "UPDATE FlashCard " +
+                                      $"SET FrontContent = '{newFlashCard.FrontContent}' " +
+                                      $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}'";
+
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public static void UpdateFlashCardBack(FlashCard oldFlashCard, FlashCard newFlashCard)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            using (var command = connection.CreateCommand())
+            {
+                connection.Open();
+
+                command.CommandText = "UPDATE FlashCard " +
+                                      $"SET BackContent = '{newFlashCard.BackContent}' " +
+                                      $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}'";
+
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public static void DeleteFlashCard(FlashCard flashCardToDelete)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            using (var command = connection.CreateCommand())
+            {
+                connection.Open();
+
+                command.CommandText = "DELETE FROM FlashCard " +
+                                      $"WHERE FlashCardName = '{flashCardToDelete.FlashCardName}'";
+
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public static List<FlashCardDTO> GetFlashCards()
+    {
+        List<FlashCardDTO> flashCardList = new ();
+
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            using (var command = connection.CreateCommand())
+            {
+                connection.Open();
+
+                command.CommandText = "SELECT * FROM FlashCard";
+                
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    flashCardList.Add(new FlashCardDTO
+                    {
+                        Name = reader.GetString(2), // The second ordinal is FlashCardName column
+                        FrontContent = reader.GetString(3), // The third ordinal is FrontContent column
+                        BackContent = reader.GetString(4) // The fourth ordinal is BackContent column
+                    });
+                }
+            }
+        }
+
+        return flashCardList;
+    } 
 }
