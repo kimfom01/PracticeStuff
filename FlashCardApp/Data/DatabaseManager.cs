@@ -5,11 +5,11 @@ using FlashCardApp.Models;
 
 namespace FlashCardApp.Data;
 
-public static class DbManager
+public class DatabaseManager
 {
-    private static string _connectionString = ConfigurationManager.AppSettings.Get("connectionString")!;
+    private string _connectionString = ConfigurationManager.AppSettings.Get("connectionString")!;
 
-    public static void CreateStackTable()
+    public void CreateStackTable()
     {
         using (var connection = new SqlConnection(_connectionString))
         {
@@ -26,7 +26,7 @@ public static class DbManager
         }
     }
 
-    public static void CreateFlashCardTable()
+    public void CreateFlashCardTable()
     {
         using (var connection = new SqlConnection(_connectionString))
         {
@@ -46,7 +46,7 @@ public static class DbManager
         }
     }
 
-    public static void CreateStudyAreaTable()
+    public void CreateStudyAreaTable()
     {
         using (var connection = new SqlConnection(_connectionString))
         {
@@ -67,7 +67,7 @@ public static class DbManager
 
 
     // Stack Operations
-    public static void AddNewStack(Stack newStack)
+    public void AddNewStack(Stack newStack)
     {
         using (var connection = new SqlConnection(_connectionString))
         {
@@ -83,7 +83,7 @@ public static class DbManager
         }
     }
 
-    public static void UpdateStack(Stack oldStack, Stack newStack)
+    public void UpdateStack(Stack oldStack, Stack newStack)
     {
         using (var connection = new SqlConnection(_connectionString))
         {
@@ -100,7 +100,7 @@ public static class DbManager
         }
     }
 
-    public static void DeleteStack(Stack stackToDelete)
+    public void DeleteStack(Stack stackToDelete)
     {
         using (var connection = new SqlConnection(_connectionString))
         {
@@ -116,9 +116,9 @@ public static class DbManager
         }
     }
 
-    public static List<StackDTO> GetStacks()
+    public List<StackDTO> GetStacks()
     {
-        List<StackDTO> stackList = new ();
+        List<StackDTO> stackList = new();
         using (var connection = new SqlConnection(_connectionString))
         {
             using (var command = connection.CreateCommand())
@@ -142,7 +142,7 @@ public static class DbManager
         return stackList;
     }
 
-    private static int GetStackId(Stack stack)
+    private int GetStackId(Stack stack)
     {
         int id = -1;
         using (var connection = new SqlConnection(_connectionString))
@@ -167,7 +167,7 @@ public static class DbManager
     }
 
     // FlashCard Operations
-    public static void AddNewFlashCard(FlashCard flashCard, Stack stack)
+    public void AddNewFlashCard(FlashCard flashCard, Stack stack)
     {
         var stackId = GetStackId(stack);
         using (var connection = new SqlConnection(_connectionString))
@@ -184,7 +184,7 @@ public static class DbManager
         }
     }
 
-    public static void UpdateFlashCard(FlashCard oldFlashCard, FlashCard newFlashCard)
+    public void UpdateFlashCard(FlashCard oldFlashCard, FlashCard newFlashCard)
     {
         using (var connection = new SqlConnection(_connectionString))
         {
@@ -203,7 +203,7 @@ public static class DbManager
         }
     }
 
-    public static void UpdateFlashCardName(FlashCard oldFlashCard, FlashCard newFlashCard)
+    public void UpdateFlashCardName(FlashCard oldFlashCard, FlashCard newFlashCard)
     {
         using (var connection = new SqlConnection(_connectionString))
         {
@@ -220,7 +220,7 @@ public static class DbManager
         }
     }
 
-    public static void UpdateFlashCardFront(FlashCard oldFlashCard, FlashCard newFlashCard)
+    public void UpdateFlashCardFront(FlashCard oldFlashCard, FlashCard newFlashCard)
     {
         using (var connection = new SqlConnection(_connectionString))
         {
@@ -237,7 +237,7 @@ public static class DbManager
         }
     }
 
-    public static void UpdateFlashCardBack(FlashCard oldFlashCard, FlashCard newFlashCard)
+    public void UpdateFlashCardBack(FlashCard oldFlashCard, FlashCard newFlashCard)
     {
         using (var connection = new SqlConnection(_connectionString))
         {
@@ -254,7 +254,7 @@ public static class DbManager
         }
     }
 
-    public static void DeleteFlashCard(FlashCard flashCardToDelete)
+    public void DeleteFlashCard(FlashCard flashCardToDelete)
     {
         using (var connection = new SqlConnection(_connectionString))
         {
@@ -270,9 +270,9 @@ public static class DbManager
         }
     }
 
-    public static List<FlashCardDTO> GetFlashCards()
+    public List<FlashCardDTO> GetFlashCards()
     {
-        List<FlashCardDTO> flashCardList = new ();
+        List<FlashCardDTO> flashCardList = new();
 
         using (var connection = new SqlConnection(_connectionString))
         {
@@ -281,7 +281,7 @@ public static class DbManager
                 connection.Open();
 
                 command.CommandText = "SELECT * FROM FlashCard";
-                
+
                 var reader = command.ExecuteReader();
 
                 while (reader.Read())
@@ -297,5 +297,5 @@ public static class DbManager
         }
 
         return flashCardList;
-    } 
+    }
 }
