@@ -14,7 +14,7 @@
 
 ## What I learnt
 - [x] Using SQL Server.
-- [x] Creating a linked tables with SQL.
+- [x] Creating linked tables with SQL.
 - [x] Using DTOs to use objects in different ways.
 
 ## Source
