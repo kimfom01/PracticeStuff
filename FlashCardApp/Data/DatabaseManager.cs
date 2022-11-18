@@ -198,7 +198,7 @@ public class DatabaseManager
 
                 command.CommandText = "UPDATE FlashCard " +
                                       $"SET FlashCardName = '{newFlashCard.FlashCardName}', " +
-                                      $"FrontContent = '{newFlashCard.FrontContent}' " +
+                                      $"FrontContent = '{newFlashCard.FrontContent}', " +
                                       $"BackContent = '{newFlashCard.BackContent}' " +
                                       $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}' " +
                                       $"AND StackId = {stackId}";
@@ -218,7 +218,7 @@ public class DatabaseManager
                 connection.Open();
 
                 command.CommandText = "UPDATE FlashCard " +
-                                      $"SET FlashCardName = '{newFlashCard.FlashCardName}', " +
+                                      $"SET FlashCardName = '{newFlashCard.FlashCardName}' " +
                                       $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}' " +
                                       $"AND StackId = {stackId}";
 
