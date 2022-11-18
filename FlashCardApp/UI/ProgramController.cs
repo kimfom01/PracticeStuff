@@ -280,6 +280,7 @@ public class ProgramController
 
     private static void EditFrontAndBack(Stack stack)
     {
+        ViewAllFlashCard();
         Console.Write("Enter name of flashcard to edit: ");
         var name = Input.GetChoice();
 
@@ -297,6 +298,7 @@ public class ProgramController
 
     private static void EditFront(Stack stack)
     {
+        ViewAllFlashCard();
         Console.Write("Enter name of flashcard to edit: ");
         var name = Input.GetChoice();
 
@@ -311,6 +313,7 @@ public class ProgramController
 
     private static void EditBack(Stack stack)
     {
+        ViewAllFlashCard();
         Console.Write("Enter name of flashcard to edit: ");
         var name = Input.GetChoice();
 
@@ -325,11 +328,17 @@ public class ProgramController
 
     private static void DeleteFlashCard(Stack stack)
     {
+        ViewAllFlashCard();
         Console.Write("Enter front content of flashcard to delete: ");
         var front = Input.GetInput();
 
         var flashCard = new FlashCard { FrontContent = front };
 
         DbManager.DeleteFlashCard(flashCard, stack);
+    }
+
+    private static void ViewAllFlashCard()
+    {
+        DisplayTable.ViewFlashCards();
     }
 }
