@@ -13,4 +13,12 @@ public class TableVisualizationEngine
         ConsoleTableBuilder.From(DbManager.GetStacks()).ExportAndWriteLine();
         Console.WriteLine();
     }
+
+    public void ViewFlashCards()
+    {
+        Console.Clear();
+        
+        ConsoleTableBuilder.From(DbManager.GetFlashAllCards()).ExportAndWriteLine();
+        Console.WriteLine();
+    }
 }
