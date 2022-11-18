@@ -65,10 +65,11 @@ public class ProgramController
         }
     }
 
+    // Stack Operations
     private static void GetStackToAdd()
     {
         Console.Clear();
-        
+
         Console.Write("Enter name to create: ");
         var stackName = Input.GetInput();
 
@@ -98,6 +99,7 @@ public class ProgramController
             DisplayUpdateStackMenu();
             choice = Input.GetChoice();
         }
+
         Console.Clear();
     }
 
@@ -122,11 +124,174 @@ public class ProgramController
             DisplayDeleteMenu();
             choice = Input.GetChoice();
         }
+
         Console.Clear();
     }
 
     private static void ViewAllStacks()
     {
         DisplayTable.ViewStacks();
+
+        FlashCardMenu();
+    }
+
+    // FlashCard Operations
+    private static void FlashCardMenu()
+    {
+        Console.WriteLine("FLASHCARD MENU");
+        Console.WriteLine("-------------------------------------");
+        Console.WriteLine("What would you like to do?");
+        Console.WriteLine("play to Start Learning");
+        Console.WriteLine("settings to Enter FlashCard Settings");
+        Console.WriteLine("back to Go Back");
+        Console.WriteLine("Type your choice and hit Enter");
+        Console.Write("Your choice? ");
+    }
+
+    private static void FlashCardOperations()
+    {
+        FlashCardMenu();
+        var choice = Input.GetChoice();
+
+        while (choice != "back")
+        {
+            switch (choice)
+            {
+                case "play":
+                    break;
+                case "settings":
+                    FlashCardSettings();
+                    break;
+                default:
+                    Console.Clear();
+                    Console.WriteLine("Wrong input!");
+                    break;
+            }
+
+            FlashCardMenu();
+            choice = Input.GetChoice();
+        }
+    }
+
+    private static void FlashCardSettingsMenu()
+    {
+        Console.WriteLine("add to Add a New FlashCard");
+        Console.WriteLine("edit to Edit a FlashCard");
+        Console.WriteLine("delete to Delete a FlashCard");
+        Console.WriteLine("back to Go Back");
+        Console.WriteLine("Type your choice and hit Enter");
+        Console.Write("Your choice? ");
+    }
+
+    private static void FlashCardSettings()
+    {
+        FlashCardSettingsMenu();
+        var choice = Input.GetChoice();
+
+        while (choice != "back")
+        {
+            switch (choice)
+            {
+                case "add":
+                    AddFlashCardToStack();
+                    break;
+                case "edit":
+                    EditFlashCard();
+                    break;
+                case "delete":
+                    break;
+                default:
+                    Console.Clear();
+                    Console.WriteLine("Wrong input!");
+                    break;
+            }
+
+            FlashCardSettingsMenu();
+            choice = Input.GetChoice();
+        }
+    }
+
+    private static void AddFlashCardToStack()
+    {
+        Console.Clear();
+
+        (FlashCard flashcard, Stack stack) = GetStackAndModel();
+        DbManager.AddNewFlashCard(flashcard, stack);
+    }
+
+    private static (FlashCard flashcard, Stack stack) GetStackAndModel()
+    {
+        DisplayTable.ViewStacks();
+        Console.Write("Select a stack to add to: ");
+        var choice = Input.GetChoice();
+
+        Console.Write("Enter front content of FlashCard");
+        var front = Input.GetInput();
+
+        Console.Write("Enter back content of FlashCard");
+        var back = Input.GetInput();
+
+        var stack = new Stack { StackName = choice };
+        var flashcard = new FlashCard { FrontContent = front, BackContent = back };
+
+        return (flashcard, stack);
+    }
+
+    private static void EditFlashCardMenu()
+    {
+        Console.WriteLine("all to Edit Front and Back");
+        Console.WriteLine("edit front to Edit Front");
+        Console.WriteLine("edit back to Edit Back");
+        Console.WriteLine("back to Go Back");
+        Console.WriteLine("Type your choice and hit Enter");
+        Console.Write("Your choice? ");
+    }
+
+    private static void EditFlashCard()
+    {
+        Console.Clear();
+        EditFlashCardMenu();
+        var choice = Input.GetChoice();
+
+        while (choice != "back")
+        {
+            switch (choice)
+            {
+                case "all":
+                    break;
+                case "edit front":
+                    break;
+                case "edit back":
+                    break;
+                default:
+                    Console.Clear();
+                    Console.WriteLine("Wrong input!");
+                    break;
+            }
+
+            EditFlashCardMenu();
+            choice = Input.GetChoice();
+        }
+    }
+
+    private static void EditFrontAndBack()
+    {
+        Console.Write("Select Stack");
+        var choice = Input.GetChoice();
+
+        Console.Write("Enter name of flashcard to edit");
+        var name = Input.GetChoice();
+
+        Console.Write("Enter new content for front: ");
+        var front = Input.GetInput();
+
+        Console.Write("Enter new content for back: ");
+        var back = Input.GetInput();
+
+        var oldFlashcard = new FlashCard { FlashCardName = name };
+        var newFlashCard = new FlashCard { FrontContent = front, BackContent = back };
+        var stack = new Stack { StackName = choice };
+
+        DbManager.UpdateFlashCard(oldFlashcard, newFlashCard, stack);
     }
 }
