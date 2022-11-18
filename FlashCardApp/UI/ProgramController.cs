@@ -199,6 +199,7 @@ public class ProgramController
                     EditFlashCard();
                     break;
                 case "delete":
+                    DeleteFlashCard();
                     break;
                 default:
                     Console.Clear();
@@ -258,10 +259,13 @@ public class ProgramController
             switch (choice)
             {
                 case "all":
+                    EditFrontAndBack();
                     break;
                 case "edit front":
+                    EditFront();
                     break;
                 case "edit back":
+                    EditBack();
                     break;
                 default:
                     Console.Clear();
@@ -293,5 +297,46 @@ public class ProgramController
         var stack = new Stack { StackName = choice };
 
         DbManager.UpdateFlashCard(oldFlashcard, newFlashCard, stack);
+    }
+
+    private static void EditFront()
+    {
+        Console.Write("Select Stack");
+        var choice = Input.GetChoice();
+
+        Console.Write("Enter name of flashcard to edit");
+        var name = Input.GetChoice();
+
+        Console.Write("Enter new content for front: ");
+        var front = Input.GetInput();
+
+        var oldFlashcard = new FlashCard { FlashCardName = name };
+        var newFlashCard = new FlashCard { FrontContent = front };
+        var stack = new Stack { StackName = choice };
+
+        DbManager.UpdateFlashCard(oldFlashcard, newFlashCard, stack);
+    }
+
+    private static void EditBack()
+    {
+        Console.Write("Select Stack");
+        var choice = Input.GetChoice();
+
+        Console.Write("Enter name of flashcard to edit");
+        var name = Input.GetChoice();
+
+        Console.Write("Enter new content for back: ");
+        var back = Input.GetInput();
+
+        var oldFlashcard = new FlashCard { FlashCardName = name };
+        var newFlashCard = new FlashCard { BackContent = back };
+        var stack = new Stack { StackName = choice };
+
+        DbManager.UpdateFlashCard(oldFlashcard, newFlashCard, stack);
+    }
+
+    private static void DeleteFlashCard()
+    {
+        throw new NotImplementedException();
     }
 }
