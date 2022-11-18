@@ -55,6 +55,7 @@ public class ProgramController
                     ViewAllStacks();
                     break;
                 default:
+                    Console.Clear();
                     Console.WriteLine("Wrong input!");
                     break;
             }
@@ -67,17 +68,16 @@ public class ProgramController
     private static void GetStackToAdd()
     {
         Console.Clear();
-
+        
+        Console.Write("Enter name to create: ");
         var stackName = Input.GetInput();
 
         DbManager.AddNewStack(new Stack { StackName = stackName });
-
-        DisplayMainMenu();
     }
 
     private static void DisplayUpdateStackMenu()
     {
-        Console.WriteLine("type the name of stack you want to rename");
+        Console.WriteLine("type the NAME OF STACK YOU WANT TO RENAME");
         Console.WriteLine("back to Go Back");
         Console.Write("Your choice? ");
     }
@@ -89,6 +89,7 @@ public class ProgramController
         var choice = Input.GetChoice();
         while (choice != "back")
         {
+            Console.Write("Enter new name");
             var newStack = Input.GetInput();
 
             DbManager.UpdateStack(new Stack { StackName = choice }, new Stack { StackName = newStack });
@@ -97,11 +98,12 @@ public class ProgramController
             DisplayUpdateStackMenu();
             choice = Input.GetChoice();
         }
+        Console.Clear();
     }
 
     private static void DisplayDeleteMenu()
     {
-        Console.WriteLine("type the name of stack you want to rename");
+        Console.WriteLine("type the name of stack you want to delete");
         Console.WriteLine("back to Go Back");
         Console.Write("Your choice? ");
     }
@@ -120,6 +122,7 @@ public class ProgramController
             DisplayDeleteMenu();
             choice = Input.GetChoice();
         }
+        Console.Clear();
     }
 
     private static void ViewAllStacks()
