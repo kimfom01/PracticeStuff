@@ -8,6 +8,7 @@ public class ProgramController
 {
     private static readonly DatabaseManager DbManager = new();
     private static readonly UserInput Input = new();
+    private static readonly TableVisualizationEngine DisplayTable = new();
 
     private static void DisplayMainMenu()
     {
@@ -48,8 +49,10 @@ public class ProgramController
                     UpdateStackName();
                     break;
                 case "delete":
+                    DeleteStack();
                     break;
                 case "view":
+                    ViewAllStacks();
                     break;
                 default:
                     Console.WriteLine("Wrong input!");
@@ -121,7 +124,6 @@ public class ProgramController
 
     private static void ViewAllStacks()
     {
-        Console.Clear();
-        throw new NotImplementedException();
+        DisplayTable.ViewStacks();
     }
 }
