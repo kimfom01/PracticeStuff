@@ -158,7 +158,10 @@ public class DatabaseManager
 
                 if (reader.HasRows)
                 {
-                    id = reader.GetInt32(0);
+                    while (reader.Read())
+                    {
+                        id = (int)reader["Id"];
+                    }
                 }
             }
         }
