@@ -23,14 +23,6 @@ public class ProgramController
         Console.Write("Your choice? ");
     }
 
-    private static void DisplayDeleteMenu()
-    {
-        Console.WriteLine("back to Go Back");
-        Console.WriteLine("delete to Delete Record");
-        Console.WriteLine("Type your choice and hit Enter");
-        Console.Write("Your choice? ");
-    }
-
     private static void CreateTables()
     {
         DbManager.CreateStackTable();
@@ -69,7 +61,7 @@ public class ProgramController
         }
     }
 
-    static void GetStackToAdd()
+    private static void GetStackToAdd()
     {
         Console.Clear();
 
@@ -80,14 +72,14 @@ public class ProgramController
         DisplayMainMenu();
     }
 
-    static void DisplayUpdateStackMenu()
+    private static void DisplayUpdateStackMenu()
     {
         Console.WriteLine("type the name of stack you want to rename");
         Console.WriteLine("back to Go Back");
         Console.Write("Your choice? ");
     }
 
-    static void UpdateStackName()
+    private static void UpdateStackName()
     {
         ViewAllStacks();
         DisplayUpdateStackMenu();
@@ -97,9 +89,32 @@ public class ProgramController
             var newStack = Input.GetInput();
 
             DbManager.UpdateStack(new Stack { StackName = choice }, new Stack { StackName = newStack });
-            
+
             ViewAllStacks();
             DisplayUpdateStackMenu();
+            choice = Input.GetChoice();
+        }
+    }
+
+    private static void DisplayDeleteMenu()
+    {
+        Console.WriteLine("type the name of stack you want to rename");
+        Console.WriteLine("back to Go Back");
+        Console.Write("Your choice? ");
+    }
+
+    private static void DeleteStack()
+    {
+        ViewAllStacks();
+        DisplayDeleteMenu();
+        var choice = Input.GetChoice();
+
+        while (choice != "back")
+        {
+            DbManager.DeleteStack(new Stack { StackName = choice });
+
+            ViewAllStacks();
+            DisplayDeleteMenu();
             choice = Input.GetChoice();
         }
     }
