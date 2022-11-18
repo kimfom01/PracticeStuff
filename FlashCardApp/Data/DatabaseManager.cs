@@ -272,7 +272,7 @@ public class DatabaseManager
                 connection.Open();
 
                 command.CommandText = "DELETE FROM FlashCard " +
-                                      $"WHERE FlashCardName = '{flashCardToDelete.FlashCardName}' " +
+                                      $"WHERE FrontContent = '{flashCardToDelete.FrontContent}' " +
                                       $"AND StackId = {stackId}";
 
                 command.ExecuteNonQuery();
