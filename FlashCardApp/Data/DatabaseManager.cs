@@ -152,7 +152,7 @@ public class DatabaseManager
                 connection.Open();
 
                 command.CommandText = "SELECT Id FROM Stack " +
-                                      $"WHERE StackName = {stack.StackName}";
+                                      $"WHERE StackName = '{stack.StackName}'";
 
                 var reader = command.ExecuteReader();
 
