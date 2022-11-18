@@ -132,8 +132,15 @@ public class ProgramController
     {
         DisplayTable.ViewStacks();
 
-        Console.Write("Select Stack to Perform Operations");
-        var choice = Input.GetChoice();
+        Console.WriteLine("Type Stack Name and hit Enter to Perform Operations on a Stack: ");
+        Console.WriteLine("back to Go Back");
+        var choice = Input.GetInput();
+        if (choice == "back")
+        {
+            Console.Clear();
+            return;
+        }
+
         FlashCardOperations(new Stack { StackName = choice });
     }
 
@@ -152,6 +159,7 @@ public class ProgramController
 
     private static void FlashCardOperations(Stack stack)
     {
+        Console.Clear();
         FlashCardMenu();
         var choice = Input.GetChoice();
 
@@ -187,6 +195,7 @@ public class ProgramController
 
     private static void FlashCardSettings(Stack stack)
     {
+        Console.Clear();
         FlashCardSettingsMenu();
         var choice = Input.GetChoice();
 
@@ -218,10 +227,10 @@ public class ProgramController
     {
         Console.Clear();
 
-        Console.Write("Enter front content of FlashCard");
+        Console.Write("Enter front content of FlashCard: ");
         var front = Input.GetInput();
 
-        Console.Write("Enter back content of FlashCard");
+        Console.Write("Enter back content of FlashCard: ");
         var back = Input.GetInput();
 
         var flashcard = new FlashCard { FrontContent = front, BackContent = back };
@@ -271,7 +280,7 @@ public class ProgramController
 
     private static void EditFrontAndBack(Stack stack)
     {
-        Console.Write("Enter name of flashcard to edit");
+        Console.Write("Enter name of flashcard to edit: ");
         var name = Input.GetChoice();
 
         Console.Write("Enter new content for front: ");
@@ -288,7 +297,7 @@ public class ProgramController
 
     private static void EditFront(Stack stack)
     {
-        Console.Write("Enter name of flashcard to edit");
+        Console.Write("Enter name of flashcard to edit: ");
         var name = Input.GetChoice();
 
         Console.Write("Enter new content for front: ");
@@ -302,7 +311,7 @@ public class ProgramController
 
     private static void EditBack(Stack stack)
     {
-        Console.Write("Enter name of flashcard to edit");
+        Console.Write("Enter name of flashcard to edit: ");
         var name = Input.GetChoice();
 
         Console.Write("Enter new content for back: ");
