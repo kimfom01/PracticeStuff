@@ -132,7 +132,9 @@ public class ProgramController
     {
         DisplayTable.ViewStacks();
 
-        FlashCardMenu();
+        Console.Write("Select Stack to Perform Operations");
+        var choice = Input.GetChoice();
+        FlashCardOperations(new Stack { StackName = choice });
     }
 
     // FlashCard Operations
@@ -148,7 +150,7 @@ public class ProgramController
         Console.Write("Your choice? ");
     }
 
-    private static void FlashCardOperations()
+    private static void FlashCardOperations(Stack stack)
     {
         FlashCardMenu();
         var choice = Input.GetChoice();
@@ -160,7 +162,7 @@ public class ProgramController
                 case "play":
                     break;
                 case "settings":
-                    FlashCardSettings();
+                    FlashCardSettings(stack);
                     break;
                 default:
                     Console.Clear();
@@ -183,7 +185,7 @@ public class ProgramController
         Console.Write("Your choice? ");
     }
 
-    private static void FlashCardSettings()
+    private static void FlashCardSettings(Stack stack)
     {
         FlashCardSettingsMenu();
         var choice = Input.GetChoice();
@@ -193,13 +195,13 @@ public class ProgramController
             switch (choice)
             {
                 case "add":
-                    AddFlashCardToStack();
+                    AddFlashCardToStack(stack);
                     break;
                 case "edit":
-                    EditFlashCard();
+                    EditFlashCard(stack);
                     break;
                 case "delete":
-                    DeleteFlashCard();
+                    DeleteFlashCard(stack);
                     break;
                 default:
                     Console.Clear();
@@ -212,30 +214,19 @@ public class ProgramController
         }
     }
 
-    private static void AddFlashCardToStack()
+    private static void AddFlashCardToStack(Stack stack)
     {
         Console.Clear();
-
-        (FlashCard flashcard, Stack stack) = GetStackAndModel();
-        DbManager.AddNewFlashCard(flashcard, stack);
-    }
-
-    private static (FlashCard flashcard, Stack stack) GetStackAndModel()
-    {
-        DisplayTable.ViewStacks();
-        Console.Write("Select a stack to add to: ");
-        var choice = Input.GetChoice();
 
         Console.Write("Enter front content of FlashCard");
         var front = Input.GetInput();
 
         Console.Write("Enter back content of FlashCard");
         var back = Input.GetInput();
-
-        var stack = new Stack { StackName = choice };
+        
         var flashcard = new FlashCard { FrontContent = front, BackContent = back };
-
-        return (flashcard, stack);
+        
+        DbManager.AddNewFlashCard(flashcard, stack);
     }
 
     private static void EditFlashCardMenu()
@@ -248,7 +239,7 @@ public class ProgramController
         Console.Write("Your choice? ");
     }
 
-    private static void EditFlashCard()
+    private static void EditFlashCard(Stack stack)
     {
         Console.Clear();
         EditFlashCardMenu();
@@ -259,13 +250,13 @@ public class ProgramController
             switch (choice)
             {
                 case "all":
-                    EditFrontAndBack();
+                    EditFrontAndBack(stack);
                     break;
                 case "edit front":
-                    EditFront();
+                    EditFront(stack);
                     break;
                 case "edit back":
-                    EditBack();
+                    EditBack(stack);
                     break;
                 default:
                     Console.Clear();
@@ -278,11 +269,8 @@ public class ProgramController
         }
     }
 
-    private static void EditFrontAndBack()
+    private static void EditFrontAndBack(Stack stack)
     {
-        Console.Write("Select Stack");
-        var choice = Input.GetChoice();
-
         Console.Write("Enter name of flashcard to edit");
         var name = Input.GetChoice();
 
@@ -294,16 +282,12 @@ public class ProgramController
 
         var oldFlashcard = new FlashCard { FlashCardName = name };
         var newFlashCard = new FlashCard { FrontContent = front, BackContent = back };
-        var stack = new Stack { StackName = choice };
 
         DbManager.UpdateFlashCard(oldFlashcard, newFlashCard, stack);
     }
 
-    private static void EditFront()
+    private static void EditFront(Stack stack)
     {
-        Console.Write("Select Stack");
-        var choice = Input.GetChoice();
-
         Console.Write("Enter name of flashcard to edit");
         var name = Input.GetChoice();
 
@@ -312,16 +296,12 @@ public class ProgramController
 
         var oldFlashcard = new FlashCard { FlashCardName = name };
         var newFlashCard = new FlashCard { FrontContent = front };
-        var stack = new Stack { StackName = choice };
 
         DbManager.UpdateFlashCard(oldFlashcard, newFlashCard, stack);
     }
 
-    private static void EditBack()
+    private static void EditBack(Stack stack)
     {
-        Console.Write("Select Stack");
-        var choice = Input.GetChoice();
-
         Console.Write("Enter name of flashcard to edit");
         var name = Input.GetChoice();
 
@@ -330,12 +310,11 @@ public class ProgramController
 
         var oldFlashcard = new FlashCard { FlashCardName = name };
         var newFlashCard = new FlashCard { BackContent = back };
-        var stack = new Stack { StackName = choice };
 
         DbManager.UpdateFlashCard(oldFlashcard, newFlashCard, stack);
     }
 
-    private static void DeleteFlashCard()
+    private static void DeleteFlashCard(Stack stack)
     {
         throw new NotImplementedException();
     }
