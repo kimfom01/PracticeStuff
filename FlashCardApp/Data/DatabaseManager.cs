@@ -18,7 +18,7 @@ public class DatabaseManager
                 connection.Open();
 
                 command.CommandText = "IF OBJECT_ID(N'Stack', N'U') IS NULL " +
-                                      "CREATE TABLE Stack (Id INT PRIMARY KEY IDENTITY(1,1) ON DELETE CASCADE, " +
+                                      "CREATE TABLE Stack (Id INT PRIMARY KEY IDENTITY(1,1), " +
                                       "StackName NVARCHAR(50) UNIQUE)";
 
                 command.ExecuteNonQuery();
@@ -36,7 +36,7 @@ public class DatabaseManager
 
                 command.CommandText = "IF OBJECT_ID(N'FlashCard', N'U') IS NULL " +
                                       "CREATE TABLE FlashCard (Id INT PRIMARY KEY IDENTITY(1,1), " +
-                                      "StackId INT FOREIGN KEY REFERENCES Stack(Id), " +
+                                      "StackId INT FOREIGN KEY REFERENCES Stack(Id) ON DELETE CASCADE, " +
                                       "FlashCardName NVARCHAR(50), " +
                                       "FrontContent NVARCHAR(500), " +
                                       "BackContent NVARCHAR(500))";
@@ -56,7 +56,7 @@ public class DatabaseManager
 
                 command.CommandText = "IF OBJECT_ID(N'StudyArea', N'U') IS NULL " +
                                       "CREATE TABLE StudyArea (Id INT PRIMARY KEY IDENTITY(1,1), " +
-                                      "StackId INT FOREIGN KEY REFERENCES Stack(Id), " +
+                                      "StackId INT FOREIGN KEY REFERENCES Stack(Id) ON DELETE CASCADE, " +
                                       "Date DATE DEFAULT GETDATE(), " +
                                       "Score INT)";
 
