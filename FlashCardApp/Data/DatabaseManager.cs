@@ -184,8 +184,9 @@ public class DatabaseManager
         }
     }
 
-    public void UpdateFlashCard(FlashCard oldFlashCard, FlashCard newFlashCard)
+    public void UpdateFlashCard(FlashCard oldFlashCard, FlashCard newFlashCard, Stack stack)
     {
+        var stackId = GetStackId(stack);
         using (var connection = new SqlConnection(_connectionString))
         {
             using (var command = connection.CreateCommand())
@@ -196,15 +197,17 @@ public class DatabaseManager
                                       $"SET FlashCardName = '{newFlashCard.FlashCardName}', " +
                                       $"FrontContent = '{newFlashCard.FrontContent}' " +
                                       $"BackContent = '{newFlashCard.BackContent}' " +
-                                      $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}'";
+                                      $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}' " +
+                                      $"AND StackId = {stackId}";
 
                 command.ExecuteNonQuery();
             }
         }
     }
 
-    public void UpdateFlashCardName(FlashCard oldFlashCard, FlashCard newFlashCard)
+    public void UpdateFlashCardName(FlashCard oldFlashCard, FlashCard newFlashCard, Stack stack)
     {
+        var stackId = GetStackId(stack);
         using (var connection = new SqlConnection(_connectionString))
         {
             using (var command = connection.CreateCommand())
@@ -213,15 +216,17 @@ public class DatabaseManager
 
                 command.CommandText = "UPDATE FlashCard " +
                                       $"SET FlashCardName = '{newFlashCard.FlashCardName}', " +
-                                      $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}'";
+                                      $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}' " +
+                                      $"AND StackId = {stackId}";
 
                 command.ExecuteNonQuery();
             }
         }
     }
 
-    public void UpdateFlashCardFront(FlashCard oldFlashCard, FlashCard newFlashCard)
+    public void UpdateFlashCardFront(FlashCard oldFlashCard, FlashCard newFlashCard, Stack stack)
     {
+        var stackId = GetStackId(stack);
         using (var connection = new SqlConnection(_connectionString))
         {
             using (var command = connection.CreateCommand())
@@ -230,15 +235,17 @@ public class DatabaseManager
 
                 command.CommandText = "UPDATE FlashCard " +
                                       $"SET FrontContent = '{newFlashCard.FrontContent}' " +
-                                      $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}'";
+                                      $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}' " +
+                                      $"AND StackId = {stackId}";
 
                 command.ExecuteNonQuery();
             }
         }
     }
 
-    public void UpdateFlashCardBack(FlashCard oldFlashCard, FlashCard newFlashCard)
+    public void UpdateFlashCardBack(FlashCard oldFlashCard, FlashCard newFlashCard, Stack stack)
     {
+        var stackId = GetStackId(stack);
         using (var connection = new SqlConnection(_connectionString))
         {
             using (var command = connection.CreateCommand())
@@ -247,15 +254,17 @@ public class DatabaseManager
 
                 command.CommandText = "UPDATE FlashCard " +
                                       $"SET BackContent = '{newFlashCard.BackContent}' " +
-                                      $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}'";
+                                      $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}' " +
+                                      $"AND StackId = {stackId}";
 
                 command.ExecuteNonQuery();
             }
         }
     }
 
-    public void DeleteFlashCard(FlashCard flashCardToDelete)
+    public void DeleteFlashCard(FlashCard flashCardToDelete, Stack stack)
     {
+        var stackId = GetStackId(stack);
         using (var connection = new SqlConnection(_connectionString))
         {
             using (var command = connection.CreateCommand())
@@ -263,14 +272,15 @@ public class DatabaseManager
                 connection.Open();
 
                 command.CommandText = "DELETE FROM FlashCard " +
-                                      $"WHERE FlashCardName = '{flashCardToDelete.FlashCardName}'";
+                                      $"WHERE FlashCardName = '{flashCardToDelete.FlashCardName}' " +
+                                      $"AND StackId = {stackId}";
 
                 command.ExecuteNonQuery();
             }
         }
     }
 
-    public List<FlashCardDTO> GetFlashCards()
+    public List<FlashCardDTO> GetFlashAllCards()
     {
         List<FlashCardDTO> flashCardList = new();
 
@@ -281,6 +291,37 @@ public class DatabaseManager
                 connection.Open();
 
                 command.CommandText = "SELECT * FROM FlashCard";
+
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    flashCardList.Add(new FlashCardDTO
+                    {
+                        Name = reader.GetString(2), // The second ordinal is FlashCardName column
+                        FrontContent = reader.GetString(3), // The third ordinal is FrontContent column
+                        BackContent = reader.GetString(4) // The fourth ordinal is BackContent column
+                    });
+                }
+            }
+        }
+
+        return flashCardList;
+    }
+    
+    public List<FlashCardDTO> GetFlashCardsOfStack(Stack stack)
+    {
+        var stackId = GetStackId(stack);
+        List<FlashCardDTO> flashCardList = new();
+
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            using (var command = connection.CreateCommand())
+            {
+                connection.Open();
+
+                command.CommandText = "SELECT * FROM FlashCard " +
+                                      $"WHERE StackId = {stackId}";
 
                 var reader = command.ExecuteReader();
 
