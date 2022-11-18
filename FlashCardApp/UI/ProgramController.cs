@@ -223,9 +223,9 @@ public class ProgramController
 
         Console.Write("Enter back content of FlashCard");
         var back = Input.GetInput();
-        
+
         var flashcard = new FlashCard { FrontContent = front, BackContent = back };
-        
+
         DbManager.AddNewFlashCard(flashcard, stack);
     }
 
@@ -316,6 +316,11 @@ public class ProgramController
 
     private static void DeleteFlashCard(Stack stack)
     {
-        throw new NotImplementedException();
+        Console.Write("Enter front content of flashcard to delete: ");
+        var front = Input.GetInput();
+
+        var flashCard = new FlashCard { FrontContent = front };
+
+        DbManager.DeleteFlashCard(flashCard, stack);
     }
 }
