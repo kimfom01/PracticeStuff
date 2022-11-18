@@ -53,6 +53,7 @@ public class ProgramController
                     GetStackToAdd();
                     break;
                 case "rename":
+                    UpdateStackName();
                     break;
                 case "delete":
                     break;
@@ -62,7 +63,7 @@ public class ProgramController
                     Console.WriteLine("Wrong input!");
                     break;
             }
-            
+
             DisplayMainMenu();
             choice = Input.GetChoice();
         }
@@ -71,11 +72,41 @@ public class ProgramController
     static void GetStackToAdd()
     {
         Console.Clear();
-        
+
         var stackName = Input.GetInput();
 
         DbManager.AddNewStack(new Stack { StackName = stackName });
 
         DisplayMainMenu();
+    }
+
+    static void DisplayUpdateStackMenu()
+    {
+        Console.WriteLine("type the name of stack you want to rename");
+        Console.WriteLine("back to Go Back");
+        Console.Write("Your choice? ");
+    }
+
+    static void UpdateStackName()
+    {
+        ViewAllStacks();
+        DisplayUpdateStackMenu();
+        var choice = Input.GetChoice();
+        while (choice != "back")
+        {
+            var newStack = Input.GetInput();
+
+            DbManager.UpdateStack(new Stack { StackName = choice }, new Stack { StackName = newStack });
+            
+            ViewAllStacks();
+            DisplayUpdateStackMenu();
+            choice = Input.GetChoice();
+        }
+    }
+
+    private static void ViewAllStacks()
+    {
+        Console.Clear();
+        throw new NotImplementedException();
     }
 }
