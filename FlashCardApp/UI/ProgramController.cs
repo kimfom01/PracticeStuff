@@ -236,6 +236,7 @@ public class ProgramController
         var flashcard = new FlashCard { FrontContent = front, BackContent = back };
 
         DbManager.AddNewFlashCard(flashcard, stack);
+        Console.Clear();
     }
 
     private static void EditFlashCardMenu()
@@ -276,6 +277,7 @@ public class ProgramController
             EditFlashCardMenu();
             choice = Input.GetChoice();
         }
+        Console.Clear();
     }
 
     private static void EditFrontAndBack(Stack stack)
@@ -308,7 +310,8 @@ public class ProgramController
         var oldFlashcard = new FlashCard { FlashCardName = name };
         var newFlashCard = new FlashCard { FrontContent = front };
 
-        DbManager.UpdateFlashCard(oldFlashcard, newFlashCard, stack);
+        DbManager.UpdateFlashCardFront(oldFlashcard, newFlashCard, stack);
+        Console.Clear();
     }
 
     private static void EditBack(Stack stack)
@@ -323,7 +326,8 @@ public class ProgramController
         var oldFlashcard = new FlashCard { FlashCardName = name };
         var newFlashCard = new FlashCard { BackContent = back };
 
-        DbManager.UpdateFlashCard(oldFlashcard, newFlashCard, stack);
+        DbManager.UpdateFlashCardBack(oldFlashcard, newFlashCard, stack);
+        Console.Clear();
     }
 
     private static void DeleteFlashCard(Stack stack)
@@ -335,6 +339,7 @@ public class ProgramController
         var flashCard = new FlashCard { FrontContent = front };
 
         DbManager.DeleteFlashCard(flashCard, stack);
+        Console.Clear();
     }
 
     private static void ViewAllFlashCard()
