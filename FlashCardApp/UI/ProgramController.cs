@@ -182,6 +182,7 @@ public class ProgramController
             FlashCardMenu();
             choice = Input.GetChoice();
         }
+        Console.Clear();
     }
 
     private static void FlashCardSettingsMenu()
@@ -222,6 +223,7 @@ public class ProgramController
             FlashCardSettingsMenu();
             choice = Input.GetChoice();
         }
+        Console.Clear();
     }
 
     private static void AddFlashCardToStack(Stack stack)
