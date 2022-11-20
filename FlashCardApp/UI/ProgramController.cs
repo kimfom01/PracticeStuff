@@ -20,7 +20,7 @@ public class ProgramController
         Console.WriteLine("delete to Delete a Stack");
         Console.WriteLine("view to View List of Stacks");
         Console.WriteLine("exit to End Program");
-        Console.WriteLine("Type your choice and hit Enter");
+        Console.WriteLine("\nType your choice and hit Enter");
         Console.Write("Your choice? ");
     }
 
@@ -79,9 +79,9 @@ public class ProgramController
 
     private static void DisplayUpdateStackMenu()
     {
-        Console.WriteLine("type the NAME OF STACK YOU WANT TO RENAME");
+        Console.WriteLine("type the name of stack you want to rename");
         Console.WriteLine("back to Go Back");
-        Console.Write("Your choice? ");
+        Console.Write("\nYour choice? ");
     }
 
     private static void UpdateStackName()
@@ -108,7 +108,7 @@ public class ProgramController
     {
         Console.WriteLine("type the name of stack you want to delete");
         Console.WriteLine("back to Go Back");
-        Console.Write("Your choice? ");
+        Console.Write("\nYour choice? ");
     }
 
     private static void DeleteStack()
@@ -151,10 +151,10 @@ public class ProgramController
         Console.WriteLine("FLASHCARD MENU");
         Console.WriteLine("-------------------------------------");
         Console.WriteLine("What would you like to do?");
-        Console.WriteLine("play to Start Learning"); // TODO: Move this play option to the begining of game and rename to "study"
+        Console.WriteLine("play to Start Learning"); // TODO: Move this play option to the beginning of game and rename to "study"
         Console.WriteLine("settings to Enter FlashCard Settings");
         Console.WriteLine("back to Go Back");
-        Console.WriteLine("Type your choice and hit Enter");
+        Console.WriteLine("\nType your choice and hit Enter");
         Console.Write("Your choice? ");
     }
 
@@ -191,7 +191,7 @@ public class ProgramController
         Console.WriteLine("edit to Edit a FlashCard");
         Console.WriteLine("delete to Delete a FlashCard");
         Console.WriteLine("back to Go Back");
-        Console.WriteLine("Type your choice and hit Enter");
+        Console.WriteLine("\nType your choice and hit Enter");
         Console.Write("Your choice? ");
     }
 
@@ -253,7 +253,7 @@ public class ProgramController
         Console.WriteLine("edit front to Edit Front");
         Console.WriteLine("edit back to Edit Back");
         Console.WriteLine("back to Go Back");
-        Console.WriteLine("Type your choice and hit Enter");
+        Console.WriteLine("\nType your choice and hit Enter");
         Console.Write("Your choice? ");
     }
 
