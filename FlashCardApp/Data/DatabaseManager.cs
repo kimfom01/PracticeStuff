@@ -178,7 +178,7 @@ public class DatabaseManager
             {
                 connection.Open();
 
-                command.CommandText = "INSERT INTO FlashCard (StackId, Name, BackContent) " +
+                command.CommandText = "INSERT INTO FlashCard (StackId, Name, Content) " +
                                       $"VALUES ({stackId}, '{flashCard.Name}','{flashCard.Content}') ";
 
                 command.ExecuteNonQuery();
@@ -281,8 +281,7 @@ public class DatabaseManager
                     flashCardList.Add(new FlashCardDTO
                     {
                         Name = reader.GetString(2), // The second ordinal is FlashCardName column
-                        FrontContent = reader.GetString(3), // The third ordinal is FrontContent column
-                        BackContent = reader.GetString(4) // The fourth ordinal is BackContent column
+                        Content = reader.GetString(3), // The third ordinal is FrontContent column
                     });
                 }
             }
@@ -311,9 +310,8 @@ public class DatabaseManager
                 {
                     flashCardList.Add(new FlashCardDTO
                     {
-                        Name = reader.GetString(2), // The second ordinal is FlashCardName column
-                        FrontContent = reader.GetString(3), // The third ordinal is FrontContent column
-                        BackContent = reader.GetString(4) // The fourth ordinal is BackContent column
+                        Name = reader.GetString(2), // The second ordinal is Name column
+                        Content = reader.GetString(3), // The third ordinal is Content column
                     });
                 }
             }
