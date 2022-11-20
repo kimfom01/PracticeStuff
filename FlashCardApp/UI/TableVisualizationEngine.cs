@@ -1,5 +1,6 @@
 using ConsoleTableExt;
 using FlashCardApp.Data;
+using FlashCardApp.Models;
 
 namespace FlashCardApp.UI;
 
@@ -14,11 +15,11 @@ public class TableVisualizationEngine
         Console.WriteLine();
     }
 
-    public void ViewFlashCards()
+    public void ViewFlashCards(Stack stack)
     {
         Console.Clear();
         
-        ConsoleTableBuilder.From(DbManager.GetFlashAllCards()).ExportAndWriteLine();
+        ConsoleTableBuilder.From(DbManager.GetFlashCardsOfStack(stack)).ExportAndWriteLine();
         Console.WriteLine();
     }
 }
