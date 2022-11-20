@@ -19,7 +19,7 @@ public class DatabaseManager
 
                 command.CommandText = "IF OBJECT_ID(N'Stack', N'U') IS NULL " +
                                       "CREATE TABLE Stack (Id INT PRIMARY KEY IDENTITY(1,1), " +
-                                      "StackName NVARCHAR(50) UNIQUE)";
+                                      "Name NVARCHAR(50) UNIQUE)";
 
                 command.ExecuteNonQuery();
             }
@@ -37,9 +37,8 @@ public class DatabaseManager
                 command.CommandText = "IF OBJECT_ID(N'FlashCard', N'U') IS NULL " +
                                       "CREATE TABLE FlashCard (Id INT PRIMARY KEY IDENTITY(1,1), " +
                                       "StackId INT FOREIGN KEY REFERENCES Stack(Id) ON DELETE CASCADE, " +
-                                      "FlashCardName NVARCHAR(50), " +
-                                      "FrontContent NVARCHAR(500), " +
-                                      "BackContent NVARCHAR(500))";
+                                      "Name NVARCHAR(50), " +
+                                      "Content NVARCHAR(500))";
 
                 command.ExecuteNonQuery();
             }
@@ -76,7 +75,7 @@ public class DatabaseManager
                 connection.Open();
 
                 command.CommandText = "INSERT INTO Stack (StackName) " +
-                                      $"VALUES ('{newStack.StackName}')";
+                                      $"VALUES ('{newStack.Name}')";
 
                 command.ExecuteNonQuery();
             }
@@ -92,8 +91,8 @@ public class DatabaseManager
                 connection.Open();
 
                 command.CommandText = "UPDATE Stack " +
-                                      $"SET StackName = '{newStack.StackName}' " +
-                                      $"WHERE StackName = '{oldStack.StackName}'";
+                                      $"SET StackName = '{newStack.Name}' " +
+                                      $"WHERE StackName = '{oldStack.Name}'";
 
                 command.ExecuteNonQuery();
             }
@@ -109,7 +108,7 @@ public class DatabaseManager
                 connection.Open();
 
                 command.CommandText = "DELETE FROM Stack " +
-                                      $"WHERE StackName = '{stackToDelete.StackName}'";
+                                      $"WHERE StackName = '{stackToDelete.Name}'";
 
                 command.ExecuteNonQuery();
             }
@@ -152,7 +151,7 @@ public class DatabaseManager
                 connection.Open();
 
                 command.CommandText = "SELECT Id FROM Stack " +
-                                      $"WHERE StackName = '{stack.StackName}'";
+                                      $"WHERE StackName = '{stack.Name}'";
 
                 var reader = command.ExecuteReader();
 
@@ -179,8 +178,8 @@ public class DatabaseManager
             {
                 connection.Open();
 
-                command.CommandText = "INSERT INTO FlashCard (StackId, FlashCardName, FrontContent, BackContent) " +
-                                      $"VALUES ({stackId}, '{flashCard.FlashCardName}','{flashCard.FrontContent}','{flashCard.BackContent}') ";
+                command.CommandText = "INSERT INTO FlashCard (StackId, Name, BackContent) " +
+                                      $"VALUES ({stackId}, '{flashCard.Name}','{flashCard.Content}') ";
 
                 command.ExecuteNonQuery();
             }
@@ -197,10 +196,9 @@ public class DatabaseManager
                 connection.Open();
 
                 command.CommandText = "UPDATE FlashCard " +
-                                      $"SET FlashCardName = '{newFlashCard.FlashCardName}', " +
-                                      $"FrontContent = '{newFlashCard.FrontContent}', " +
-                                      $"BackContent = '{newFlashCard.BackContent}' " +
-                                      $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}' " +
+                                      $"SET Name = '{newFlashCard.Name}', " +
+                                      $"Content = '{newFlashCard.Content}' " +
+                                      $"WHERE Name = '{oldFlashCard.Name}' " +
                                       $"AND StackId = {stackId}";
 
                 command.ExecuteNonQuery();
@@ -218,8 +216,8 @@ public class DatabaseManager
                 connection.Open();
 
                 command.CommandText = "UPDATE FlashCard " +
-                                      $"SET FlashCardName = '{newFlashCard.FlashCardName}' " +
-                                      $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}' " +
+                                      $"SET Name = '{newFlashCard.Name}' " +
+                                      $"WHERE Name = '{oldFlashCard.Name}' " +
                                       $"AND StackId = {stackId}";
 
                 command.ExecuteNonQuery();
@@ -227,7 +225,26 @@ public class DatabaseManager
         }
     }
 
-    public void UpdateFlashCardFront(FlashCard oldFlashCard, FlashCard newFlashCard, Stack stack)
+    // public void UpdateFlashCardFront(FlashCard oldFlashCard, FlashCard newFlashCard, Stack stack)
+    // {
+    //     var stackId = GetStackId(stack);
+    //     using (var connection = new SqlConnection(_connectionString))
+    //     {
+    //         using (var command = connection.CreateCommand())
+    //         {
+    //             connection.Open();
+    //
+    //             command.CommandText = "UPDATE FlashCard " +
+    //                                   $"SET FrontContent = '{newFlashCard.FrontContent}' " +
+    //                                   $"WHERE FlashCardName = '{oldFlashCard.Name}' " +
+    //                                   $"AND StackId = {stackId}";
+    //
+    //             command.ExecuteNonQuery();
+    //         }
+    //     }
+    // }
+
+    public void UpdateFlashCardContent(FlashCard oldFlashCard, FlashCard newFlashCard, Stack stack)
     {
         var stackId = GetStackId(stack);
         using (var connection = new SqlConnection(_connectionString))
@@ -237,27 +254,8 @@ public class DatabaseManager
                 connection.Open();
 
                 command.CommandText = "UPDATE FlashCard " +
-                                      $"SET FrontContent = '{newFlashCard.FrontContent}' " +
-                                      $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}' " +
-                                      $"AND StackId = {stackId}";
-
-                command.ExecuteNonQuery();
-            }
-        }
-    }
-
-    public void UpdateFlashCardBack(FlashCard oldFlashCard, FlashCard newFlashCard, Stack stack)
-    {
-        var stackId = GetStackId(stack);
-        using (var connection = new SqlConnection(_connectionString))
-        {
-            using (var command = connection.CreateCommand())
-            {
-                connection.Open();
-
-                command.CommandText = "UPDATE FlashCard " +
-                                      $"SET BackContent = '{newFlashCard.BackContent}' " +
-                                      $"WHERE FlashCardName = '{oldFlashCard.FlashCardName}' " +
+                                      $"SET Content = '{newFlashCard.Content}' " +
+                                      $"WHERE Name = '{oldFlashCard.Name}' " +
                                       $"AND StackId = {stackId}";
 
                 command.ExecuteNonQuery();
@@ -275,7 +273,7 @@ public class DatabaseManager
                 connection.Open();
 
                 command.CommandText = "DELETE FROM FlashCard " +
-                                      $"WHERE FrontContent = '{flashCardToDelete.FrontContent}' " +
+                                      $"WHERE Name = '{flashCardToDelete.Name}' " +
                                       $"AND StackId = {stackId}";
 
                 command.ExecuteNonQuery();
