@@ -9,6 +9,6 @@ public class UserInput
 
     public string GetInput()
     {
-        return Console.ReadLine();
+        return Console.ReadLine().Trim();
     }
 }
