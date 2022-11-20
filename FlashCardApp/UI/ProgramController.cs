@@ -74,6 +74,7 @@ public class ProgramController
         var stackName = Input.GetInput();
 
         DbManager.AddNewStack(new Stack { Name = stackName });
+        Console.Clear();
     }
 
     private static void DisplayUpdateStackMenu()
@@ -150,7 +151,7 @@ public class ProgramController
         Console.WriteLine("FLASHCARD MENU");
         Console.WriteLine("-------------------------------------");
         Console.WriteLine("What would you like to do?");
-        Console.WriteLine("play to Start Learning");
+        Console.WriteLine("play to Start Learning"); // TODO: Move this play option to the begining of game and rename to "study"
         Console.WriteLine("settings to Enter FlashCard Settings");
         Console.WriteLine("back to Go Back");
         Console.WriteLine("Type your choice and hit Enter");
@@ -227,9 +228,14 @@ public class ProgramController
     {
         Console.Clear();
 
-        Console.Write("Enter name of FlashCard: ");
+        Console.Write("Enter name of FlashCard to add or back to cancel: ");
         var name = Input.GetInput();
-
+        if (name.ToLower() == "back")
+        {
+            Console.Clear();
+            return;
+        }
+        
         Console.Write("Enter content of FlashCard: ");
         var content = Input.GetInput();
 
@@ -283,8 +289,13 @@ public class ProgramController
     private static void EditAll(Stack stack)
     {
         ViewAllFlashCard(stack);
-        Console.Write("Enter name of FlashCard to edit: ");
+        Console.Write("Enter name of FlashCard to edit or back to cancel: ");
         var name = Input.GetChoice();
+        if (name.ToLower() == "back")
+        {
+            Console.Clear();
+            return;
+        }
 
         Console.Write("Enter new name for FlashCard: ");
         var newName = Input.GetInput();
@@ -302,8 +313,13 @@ public class ProgramController
     private static void EditFlashCardName(Stack stack)
     {
         ViewAllFlashCard(stack);
-        Console.Write("Enter name of FlashCard to edit: ");
+        Console.Write("Enter name of FlashCard to edit or back to cancel: ");
         var name = Input.GetChoice();
+        if (name.ToLower() == "back")
+        {
+            Console.Clear();
+            return;
+        }
 
         Console.Write("Enter new name for FlashCard: ");
         var newName = Input.GetInput();
@@ -318,8 +334,13 @@ public class ProgramController
     private static void EditBack(Stack stack)
     {
         ViewAllFlashCard(stack);
-        Console.Write("Enter name of FlashCard to edit: ");
+        Console.Write("Enter name of FlashCard to edit or back to cancel: ");
         var name = Input.GetChoice();
+        if (name.ToLower() == "back")
+        {
+            Console.Clear();
+            return;
+        }
 
         Console.Write("Enter new content for FlashCard: ");
         var newContent = Input.GetInput();
@@ -334,8 +355,13 @@ public class ProgramController
     private static void DeleteFlashCard(Stack stack)
     {
         ViewAllFlashCard(stack);
-        Console.Write("Enter name of FlashCard to delete: ");
-        var name = Input.GetInput();
+        Console.Write("Enter name of FlashCard to edit or back to cancel: ");
+        var name = Input.GetChoice();
+        if (name.ToLower() == "back")
+        {
+            Console.Clear();
+            return;
+        }
 
         var flashCard = new FlashCard { Name = name };
 
