@@ -73,7 +73,7 @@ public class ProgramController
         Console.Write("Enter name to create: ");
         var stackName = Input.GetInput();
 
-        DbManager.AddNewStack(new Stack { StackName = stackName });
+        DbManager.AddNewStack(new Stack { Name = stackName });
     }
 
     private static void DisplayUpdateStackMenu()
@@ -93,7 +93,7 @@ public class ProgramController
             Console.Write("Enter new name");
             var newStack = Input.GetInput();
 
-            DbManager.UpdateStack(new Stack { StackName = choice }, new Stack { StackName = newStack });
+            DbManager.UpdateStack(new Stack { Name = choice }, new Stack { Name = newStack });
 
             ViewAllStacks();
             DisplayUpdateStackMenu();
@@ -118,7 +118,7 @@ public class ProgramController
 
         while (choice != "back")
         {
-            DbManager.DeleteStack(new Stack { StackName = choice });
+            DbManager.DeleteStack(new Stack { Name = choice });
 
             ViewAllStacks();
             DisplayDeleteMenu();
@@ -141,7 +141,7 @@ public class ProgramController
             return;
         }
 
-        FlashCardOperations(new Stack { StackName = choice });
+        FlashCardOperations(new Stack { Name = choice });
     }
 
     // FlashCard Operations
@@ -227,13 +227,13 @@ public class ProgramController
     {
         Console.Clear();
 
-        Console.Write("Enter front content of FlashCard: ");
-        var front = Input.GetInput();
+        Console.Write("Enter name of FlashCard: ");
+        var name = Input.GetInput();
 
-        Console.Write("Enter back content of FlashCard: ");
-        var back = Input.GetInput();
+        Console.Write("Enter content of FlashCard: ");
+        var content = Input.GetInput();
 
-        var flashcard = new FlashCard { FrontContent = front, BackContent = back };
+        var flashcard = new FlashCard { Name = name, Content = content };
 
         DbManager.AddNewFlashCard(flashcard, stack);
         Console.Clear();
@@ -260,10 +260,10 @@ public class ProgramController
             switch (choice)
             {
                 case "all":
-                    EditFrontAndBack(stack);
+                    EditAll(stack);
                     break;
                 case "edit front":
-                    EditFront(stack);
+                    EditFlashCardName(stack);
                     break;
                 case "edit back":
                     EditBack(stack);
@@ -280,70 +280,71 @@ public class ProgramController
         Console.Clear();
     }
 
-    private static void EditFrontAndBack(Stack stack)
+    private static void EditAll(Stack stack)
     {
-        ViewAllFlashCard();
-        Console.Write("Enter name of flashcard to edit: ");
+        ViewAllFlashCard(stack);
+        Console.Write("Enter name of FlashCard to edit: ");
         var name = Input.GetChoice();
 
-        Console.Write("Enter new content for front: ");
-        var front = Input.GetInput();
+        Console.Write("Enter new name for FlashCard: ");
+        var newName = Input.GetInput();
 
-        Console.Write("Enter new content for back: ");
-        var back = Input.GetInput();
+        Console.Write("Enter new content for FlashCard: ");
+        var newContent = Input.GetInput();
 
-        var oldFlashcard = new FlashCard { FlashCardName = name };
-        var newFlashCard = new FlashCard { FrontContent = front, BackContent = back };
+        var oldFlashcard = new FlashCard { Name = name };
+        var newFlashCard = new FlashCard { Name = newName, Content = newContent };
 
         DbManager.UpdateFlashCard(oldFlashcard, newFlashCard, stack);
+        Console.Clear();
     }
 
-    private static void EditFront(Stack stack)
+    private static void EditFlashCardName(Stack stack)
     {
-        ViewAllFlashCard();
-        Console.Write("Enter name of flashcard to edit: ");
+        ViewAllFlashCard(stack);
+        Console.Write("Enter name of FlashCard to edit: ");
         var name = Input.GetChoice();
 
-        Console.Write("Enter new content for front: ");
-        var front = Input.GetInput();
+        Console.Write("Enter new name for FlashCard: ");
+        var newName = Input.GetInput();
 
-        var oldFlashcard = new FlashCard { FlashCardName = name };
-        var newFlashCard = new FlashCard { FrontContent = front };
+        var oldFlashcard = new FlashCard { Name = name };
+        var newFlashCard = new FlashCard { Name = newName };
 
-        DbManager.UpdateFlashCardFront(oldFlashcard, newFlashCard, stack);
+        DbManager.UpdateFlashCardName(oldFlashcard, newFlashCard, stack);
         Console.Clear();
     }
 
     private static void EditBack(Stack stack)
     {
-        ViewAllFlashCard();
-        Console.Write("Enter name of flashcard to edit: ");
+        ViewAllFlashCard(stack);
+        Console.Write("Enter name of FlashCard to edit: ");
         var name = Input.GetChoice();
 
-        Console.Write("Enter new content for back: ");
-        var back = Input.GetInput();
+        Console.Write("Enter new content for FlashCard: ");
+        var newContent = Input.GetInput();
 
-        var oldFlashcard = new FlashCard { FlashCardName = name };
-        var newFlashCard = new FlashCard { BackContent = back };
+        var oldFlashcard = new FlashCard { Name = name };
+        var newFlashCard = new FlashCard { Content = newContent };
 
-        DbManager.UpdateFlashCardBack(oldFlashcard, newFlashCard, stack);
+        DbManager.UpdateFlashCardContent(oldFlashcard, newFlashCard, stack);
         Console.Clear();
     }
 
     private static void DeleteFlashCard(Stack stack)
     {
-        ViewAllFlashCard();
-        Console.Write("Enter front content of flashcard to delete: ");
-        var front = Input.GetInput();
+        ViewAllFlashCard(stack);
+        Console.Write("Enter name of FlashCard to delete: ");
+        var name = Input.GetInput();
 
-        var flashCard = new FlashCard { FrontContent = front };
+        var flashCard = new FlashCard { Name = name };
 
         DbManager.DeleteFlashCard(flashCard, stack);
         Console.Clear();
     }
 
-    private static void ViewAllFlashCard()
+    private static void ViewAllFlashCard(Stack stack)
     {
-        DisplayTable.ViewFlashCards();
+        DisplayTable.ViewFlashCards(stack);
     }
 }
