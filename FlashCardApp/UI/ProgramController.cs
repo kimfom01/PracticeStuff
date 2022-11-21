@@ -4,7 +4,7 @@ using FlashCardApp.Models;
 
 namespace FlashCardApp.UI;
 
-public class ProgramController
+public static class ProgramController
 {
     private static readonly DatabaseManager DbManager = new();
     private static readonly UserInput Input = new();
