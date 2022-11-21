@@ -89,7 +89,7 @@ public class ProgramController
                     DeleteStack();
                     break;
                 case "view":
-                    ViewAllStacks();
+                    ViewStackForFlashCardOperations();
                     break;
                 default:
                     Console.Clear();
@@ -123,7 +123,7 @@ public class ProgramController
 
     private static void UpdateStackName()
     {
-        ViewAllStacks();
+        ViewStackForFlashCardOperations();
         DisplayUpdateStackMenu();
         var choice = Input.GetChoice();
         while (choice != "back")
@@ -133,7 +133,7 @@ public class ProgramController
 
             DbManager.UpdateStack(new Stack { Name = choice }, new Stack { Name = newStack });
 
-            ViewAllStacks();
+            ViewStackForFlashCardOperations();
             DisplayUpdateStackMenu();
             choice = Input.GetChoice();
         }
@@ -150,7 +150,7 @@ public class ProgramController
 
     private static void DeleteStack()
     {
-        ViewAllStacks();
+        ViewStackForFlashCardOperations();
         DisplayDeleteMenu();
         var choice = Input.GetChoice();
 
@@ -158,7 +158,7 @@ public class ProgramController
         {
             DbManager.DeleteStack(new Stack { Name = choice });
 
-            ViewAllStacks();
+            ViewStackForFlashCardOperations();
             DisplayDeleteMenu();
             choice = Input.GetChoice();
         }
@@ -166,10 +166,15 @@ public class ProgramController
         Console.Clear();
     }
 
-    private static void ViewAllStacks()
+    private static void ViewStackForFlashCardOperations()
     {
         DisplayTable.ViewStacks();
 
+        SelectStackToOperateOn();
+    }
+
+    private static void SelectStackToOperateOn()
+    {
         Console.WriteLine("Type Stack Name and hit Enter to Perform Operations on a Stack: ");
         Console.WriteLine("back to Go Back");
         var choice = Input.GetInput();
@@ -178,7 +183,7 @@ public class ProgramController
             Console.Clear();
             return;
         }
-        
+
         FlashCardSettings(new Stack { Name = choice });
     }
 
