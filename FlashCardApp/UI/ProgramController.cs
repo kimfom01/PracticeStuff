@@ -10,15 +10,13 @@ public class ProgramController
     private static readonly UserInput Input = new();
     private static readonly TableVisualizationEngine DisplayTable = new();
 
-    private static void DisplayMainMenu()
+    private static void MainMenu()
     {
         Console.WriteLine("MAIN MENU");
         Console.WriteLine("-------------------------------------");
-        Console.WriteLine("What would you like to do?");
-        Console.WriteLine("create to Create a New Stack");
-        Console.WriteLine("rename to Rename a Stack");
-        Console.WriteLine("delete to Delete a Stack");
-        Console.WriteLine("view to View List of Stacks");
+        Console.WriteLine("What would you like to do?\n");
+        Console.WriteLine("study to go to Study Area");
+        Console.WriteLine("settings to go to Settings");
         Console.WriteLine("exit to End Program");
         Console.WriteLine("\nType your choice and hit Enter");
         Console.Write("Your choice? ");
@@ -35,10 +33,49 @@ public class ProgramController
     {
         CreateTables();
 
-        DisplayMainMenu();
+        MainMenu();
         var choice = Input.GetChoice();
 
         while (choice != "exit")
+        {
+            switch (choice)
+            {
+                case "study":
+                    break;
+                case "settings":
+                    Settings();
+                    break;
+                default:
+                    Console.Clear();
+                    Console.WriteLine("Wrong input!");
+                    break;
+            }
+            
+            MainMenu();
+            choice = Input.GetChoice();
+        }
+    }
+
+    private static void DisplaySettingsMenu()
+    {
+        Console.WriteLine("SETTINGS\n");
+        Console.WriteLine("create to Create a New Stack");
+        Console.WriteLine("rename to Rename a Stack");
+        Console.WriteLine("delete to Delete a Stack");
+        Console.WriteLine("view to View List of Stacks");
+        Console.WriteLine("back to Go Back");
+        Console.WriteLine("\nType your choice and hit Enter");
+        Console.Write("Your choice? ");
+    }
+
+    private static void Settings()
+    {
+        Console.Clear();
+
+        DisplaySettingsMenu();
+        var choice = Input.GetChoice();
+
+        while (choice != "back")
         {
             switch (choice)
             {
@@ -60,7 +97,7 @@ public class ProgramController
                     break;
             }
 
-            DisplayMainMenu();
+            DisplaySettingsMenu();
             choice = Input.GetChoice();
         }
     }
@@ -141,49 +178,11 @@ public class ProgramController
             Console.Clear();
             return;
         }
-
-        FlashCardOperations(new Stack { Name = choice });
+        
+        FlashCardSettings(new Stack { Name = choice });
     }
 
     // FlashCard Operations
-    private static void FlashCardMenu()
-    {
-        Console.WriteLine("FLASHCARD MENU");
-        Console.WriteLine("-------------------------------------");
-        Console.WriteLine("What would you like to do?");
-        Console.WriteLine("play to Start Learning"); // TODO: Move this play option to the beginning of game and rename to "study"
-        Console.WriteLine("settings to Enter FlashCard Settings");
-        Console.WriteLine("back to Go Back");
-        Console.WriteLine("\nType your choice and hit Enter");
-        Console.Write("Your choice? ");
-    }
-
-    private static void FlashCardOperations(Stack stack)
-    {
-        Console.Clear();
-        FlashCardMenu();
-        var choice = Input.GetChoice();
-
-        while (choice != "back")
-        {
-            switch (choice)
-            {
-                case "play":
-                    break;
-                case "settings":
-                    FlashCardSettings(stack);
-                    break;
-                default:
-                    Console.Clear();
-                    Console.WriteLine("Wrong input!");
-                    break;
-            }
-
-            FlashCardMenu();
-            choice = Input.GetChoice();
-        }
-        Console.Clear();
-    }
 
     private static void FlashCardSettingsMenu()
     {
@@ -223,6 +222,7 @@ public class ProgramController
             FlashCardSettingsMenu();
             choice = Input.GetChoice();
         }
+
         Console.Clear();
     }
 
@@ -237,7 +237,7 @@ public class ProgramController
             Console.Clear();
             return;
         }
-        
+
         Console.Write("Enter content of FlashCard: ");
         var content = Input.GetInput();
 
@@ -285,6 +285,7 @@ public class ProgramController
             EditFlashCardMenu();
             choice = Input.GetChoice();
         }
+
         Console.Clear();
     }
 
