@@ -41,6 +41,7 @@ public static class ProgramController
             switch (choice)
             {
                 case "study":
+                    StudyArea();
                     break;
                 case "settings":
                     Settings();
@@ -50,12 +51,90 @@ public static class ProgramController
                     Console.WriteLine("Wrong input!");
                     break;
             }
-            
+
             MainMenu();
             choice = Input.GetChoice();
         }
     }
 
+    // Study Area Operations
+    private static void StudyAreaMenu()
+    {
+        Console.WriteLine("STUDY AREA\n");
+        Console.WriteLine("new to Start a New Lesson");
+        Console.WriteLine("history to View History");
+        Console.WriteLine("back to Go Back");
+        Console.WriteLine("\nType your choice and hit Enter");
+        Console.Write("Your choice? ");
+    }
+
+    private static void StudyArea()
+    {
+        Console.Clear();
+
+        StudyAreaMenu();
+        var choice = Input.GetChoice();
+
+        while (choice != "back")
+        {
+            switch (choice)
+            {
+                case "new":
+                    StartLesson();
+                    break;
+                case "history":
+                    break;
+                default:
+                    Console.Clear();
+                    Console.WriteLine("Wrong input!");
+                    break;
+            }
+
+            StudyAreaMenu();
+            choice = Input.GetChoice();
+        }
+
+        Console.Clear();
+    }
+
+    private static void NewLessonMenu()
+    {
+        Console.WriteLine("Type a Stack Name to choose or back to Go Back");
+        Console.Write("Your choice? ");
+    }
+
+    private static void StartLesson()
+    {
+        NewLessonMenu();
+        var choice = Input.GetInput();
+        if (choice == "back")
+        {
+            return;
+        }
+
+        var flashCards = DbManager.GetFlashCardsOfStack(new Stack { Name = choice });
+
+        foreach (var card in flashCards)
+        {
+            Console.WriteLine(card.Name);
+            Console.Write("Your answer: ");
+            var answer = Input.GetInput();
+
+            if (answer.ToLower() != card.Content.ToLower())
+            {
+                Console.WriteLine("Incorrect!");
+                Console.WriteLine("Correct answer is " + card.Content);
+                continue;
+            }
+
+            Console.WriteLine("Correct");
+            // Increase the score
+        }
+        
+        // Display the total score
+    }
+
+    // Settings
     private static void DisplaySettingsMenu()
     {
         Console.WriteLine("SETTINGS\n");
