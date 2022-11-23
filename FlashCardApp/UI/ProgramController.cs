@@ -105,6 +105,10 @@ public static class ProgramController
 
     private static void StartLesson()
     {
+        Console.Clear();
+        
+        DisplayTable.ViewStacks();
+        
         NewLessonMenu();
         var choice = Input.GetInput();
         if (choice == "back")
@@ -116,6 +120,8 @@ public static class ProgramController
 
         foreach (var card in flashCards)
         {
+            Console.Clear();
+            
             Console.WriteLine(card.Name);
             Console.Write("Your answer: ");
             var answer = Input.GetInput();
@@ -124,14 +130,20 @@ public static class ProgramController
             {
                 Console.WriteLine("Incorrect!");
                 Console.WriteLine("Correct answer is " + card.Content);
+                Console.Write("Press any key to continue...");
+                Console.ReadLine();
                 continue;
             }
 
             Console.WriteLine("Correct");
+            Console.Write("Press any key to continue...");
+            Console.ReadLine();
             // Increase the score
         }
-        
+
         // Display the total score
+        
+        Console.Clear();
     }
 
     // Settings
