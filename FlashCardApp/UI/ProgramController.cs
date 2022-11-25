@@ -83,6 +83,7 @@ public static class ProgramController
                     StartLesson();
                     break;
                 case "history":
+                    ViewHistory();
                     break;
                 default:
                     Console.Clear();
@@ -95,6 +96,11 @@ public static class ProgramController
         }
 
         Console.Clear();
+    }
+
+    private static void ViewHistory()
+    {
+        DisplayTable.ViewHistory();
     }
 
     private static void NewLessonMenu()
