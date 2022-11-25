@@ -101,7 +101,7 @@ public static class ProgramController
     private static void ViewHistory()
     {
         DisplayTable.ViewHistory();
-        
+
         Console.WriteLine("Hit Enter to go back");
         Console.ReadLine();
         Console.Clear();
@@ -116,9 +116,9 @@ public static class ProgramController
     private static void StartLesson()
     {
         Console.Clear();
-        
+
         DisplayTable.ViewStacks();
-        
+
         ViewNewLessonMenu();
         var choice = Input.GetInput();
         if (choice == "back")
@@ -128,12 +128,12 @@ public static class ProgramController
 
         var stack = new Stack { Name = choice };
         var flashCards = DbManager.GetFlashCardsOfStack(stack);
-        
+
         var score = 0;
         foreach (var card in flashCards)
         {
             Console.Clear();
-            
+
             Console.WriteLine(card.Name);
             Console.Write("Your answer: ");
             var answer = Input.GetInput();
@@ -160,7 +160,7 @@ public static class ProgramController
 
         var studyArea = new StudyArea { Score = score };
         SaveScore(studyArea, stack);
-        
+
         Console.Clear();
     }
 
@@ -214,6 +214,7 @@ public static class ProgramController
             DisplaySettingsMenu();
             choice = Input.GetChoice();
         }
+
         Console.Clear();
     }
 
@@ -283,9 +284,11 @@ public static class ProgramController
 
     private static void ViewStackForFlashCardOperations()
     {
+        Console.Clear();
         DisplayTable.ViewStacks();
 
         SelectStackToOperateOn();
+        Console.Clear();
     }
 
     private static void SelectStackToOperateOn()
@@ -306,6 +309,7 @@ public static class ProgramController
 
     private static void ViewFlashCardSettingsMenu()
     {
+        Console.WriteLine("view to View FlashCards of the Stack");
         Console.WriteLine("add to Add a New FlashCard");
         Console.WriteLine("edit to Edit a FlashCard");
         Console.WriteLine("delete to Delete a FlashCard");
@@ -324,6 +328,9 @@ public static class ProgramController
         {
             switch (choice)
             {
+                case "view":
+                    ViewFlashCards(stack);
+                    break;
                 case "add":
                     AddFlashCardToStack(stack);
                     break;
@@ -346,6 +353,17 @@ public static class ProgramController
         Console.Clear();
     }
 
+    private static void ViewFlashCards(Stack stack)
+    {
+        Console.Clear();
+
+        ViewFlashCardOfStack(stack);
+
+        Console.WriteLine("Hit Enter to return to previous menu.");
+        Console.ReadLine();
+        Console.Clear();
+    }
+    
     private static void AddFlashCardToStack(Stack stack)
     {
         Console.Clear();
@@ -411,7 +429,7 @@ public static class ProgramController
 
     private static void EditAll(Stack stack)
     {
-        ViewAllFlashCard(stack);
+        ViewFlashCardOfStack(stack);
         Console.Write("Enter name of FlashCard to edit or back to cancel: ");
         var name = Input.GetChoice();
         if (name.ToLower() == "back")
@@ -435,7 +453,7 @@ public static class ProgramController
 
     private static void EditFlashCardName(Stack stack)
     {
-        ViewAllFlashCard(stack);
+        ViewFlashCardOfStack(stack);
         Console.Write("Enter name of FlashCard to edit or back to cancel: ");
         var name = Input.GetChoice();
         if (name.ToLower() == "back")
@@ -456,7 +474,7 @@ public static class ProgramController
 
     private static void EditBack(Stack stack)
     {
-        ViewAllFlashCard(stack);
+        ViewFlashCardOfStack(stack);
         Console.Write("Enter name of FlashCard to edit or back to cancel: ");
         var name = Input.GetChoice();
         if (name.ToLower() == "back")
@@ -477,7 +495,7 @@ public static class ProgramController
 
     private static void DeleteFlashCard(Stack stack)
     {
-        ViewAllFlashCard(stack);
+        ViewFlashCardOfStack(stack);
         Console.Write("Enter name of FlashCard to delete or back to cancel: ");
         var name = Input.GetChoice();
         if (name.ToLower() == "back")
@@ -492,7 +510,7 @@ public static class ProgramController
         Console.Clear();
     }
 
-    private static void ViewAllFlashCard(Stack stack)
+    private static void ViewFlashCardOfStack(Stack stack)
     {
         DisplayTable.ViewFlashCards(stack);
     }
