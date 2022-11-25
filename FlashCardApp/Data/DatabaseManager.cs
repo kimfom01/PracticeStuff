@@ -293,6 +293,7 @@ public class DatabaseManager
     public List<FlashCardDTO> GetFlashCardsOfStack(Stack stack)
     {
         var stackId = GetStackId(stack);
+        var id = 0;
         List<FlashCardDTO> flashCardList = new();
 
         using (var connection = new SqlConnection(_connectionString))
@@ -310,6 +311,7 @@ public class DatabaseManager
                 {
                     flashCardList.Add(new FlashCardDTO
                     {
+                        Id = ++id,
                         Name = reader.GetString(2), // The second ordinal is Name column
                         Content = reader.GetString(3), // The third ordinal is Content column
                     });
