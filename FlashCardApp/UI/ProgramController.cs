@@ -116,8 +116,10 @@ public static class ProgramController
             return;
         }
 
-        var flashCards = DbManager.GetFlashCardsOfStack(new Stack { Name = choice });
-        int score = 0;
+        var stack = new Stack { Name = choice };
+        var flashCards = DbManager.GetFlashCardsOfStack(stack);
+        
+        var score = 0;
         foreach (var card in flashCards)
         {
             Console.Clear();
@@ -141,9 +143,19 @@ public static class ProgramController
             score++;
         }
 
-        // Display the total score
+        Console.WriteLine($"Your final score is: {score}");
+        Console.WriteLine("Hit Enter to return to previous menu.");
+        Console.ReadLine();
+
+        var studyArea = new StudyArea { Score = score };
+        SaveScore(studyArea, stack);
         
         Console.Clear();
+    }
+
+    private static void SaveScore(StudyArea studyArea, Stack stack)
+    {
+        DbManager.SaveScore(studyArea, stack);
     }
 
     // Settings
