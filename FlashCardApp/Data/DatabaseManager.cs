@@ -319,4 +319,49 @@ public class DatabaseManager
 
         return flashCardList;
     }
+    
+    // StudyArea Operations
+    public void SaveScore(StudyArea studyArea, Stack stack)
+    {
+        var stackId = GetStackId(stack);
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            using (var command = connection.CreateCommand())
+            {
+                connection.Open();
+
+                command.CommandText = "INSERT INTO StudyArea(StackId, Score) " +
+                                      $"VALUES ({stackId}, {studyArea.Score})";
+
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public List<StudyAreaDTO> GetScoresHistory()
+    {
+        List<StudyAreaDTO> history = new();
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            using (var command = connection.CreateCommand())
+            {
+                connection.Open();
+
+                command.CommandText = "SELECT * FROM StudyArea";
+
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    history.Add(new StudyAreaDTO
+                    {
+                        Date = (DateTime)reader["Date"],
+                        Score = (int)reader["Score"]
+                    });
+                }
+            }
+        }
+
+        return history;
+    }
 }
