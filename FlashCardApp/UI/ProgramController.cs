@@ -117,7 +117,7 @@ public static class ProgramController
         }
 
         var flashCards = DbManager.GetFlashCardsOfStack(new Stack { Name = choice });
-
+        int score = 0;
         foreach (var card in flashCards)
         {
             Console.Clear();
@@ -138,7 +138,7 @@ public static class ProgramController
             Console.WriteLine("Correct");
             Console.Write("Press any key to continue...");
             Console.ReadLine();
-            // Increase the score
+            score++;
         }
 
         // Display the total score
