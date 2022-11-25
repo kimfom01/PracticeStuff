@@ -214,6 +214,7 @@ public static class ProgramController
             DisplaySettingsMenu();
             choice = Input.GetChoice();
         }
+        Console.Clear();
     }
 
     // Stack Operations
