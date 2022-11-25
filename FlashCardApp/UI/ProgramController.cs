@@ -10,7 +10,7 @@ public static class ProgramController
     private static readonly UserInput Input = new();
     private static readonly TableVisualizationEngine DisplayTable = new();
 
-    private static void MainMenu()
+    private static void ViewMainMenu()
     {
         Console.WriteLine("MAIN MENU");
         Console.WriteLine("-------------------------------------");
@@ -33,7 +33,7 @@ public static class ProgramController
     {
         CreateTables();
 
-        MainMenu();
+        ViewMainMenu();
         var choice = Input.GetChoice();
 
         while (choice != "exit")
@@ -41,10 +41,10 @@ public static class ProgramController
             switch (choice)
             {
                 case "study":
-                    StudyArea();
+                    ManageStudyArea();
                     break;
                 case "settings":
-                    Settings();
+                    ManageStacksSettings();
                     break;
                 default:
                     Console.Clear();
@@ -52,13 +52,13 @@ public static class ProgramController
                     break;
             }
 
-            MainMenu();
+            ViewMainMenu();
             choice = Input.GetChoice();
         }
     }
 
     // Study Area Operations
-    private static void StudyAreaMenu()
+    private static void ViewStudyAreaMenu()
     {
         Console.WriteLine("STUDY AREA\n");
         Console.WriteLine("new to Start a New Lesson");
@@ -68,11 +68,11 @@ public static class ProgramController
         Console.Write("Your choice? ");
     }
 
-    private static void StudyArea()
+    private static void ManageStudyArea()
     {
         Console.Clear();
 
-        StudyAreaMenu();
+        ViewStudyAreaMenu();
         var choice = Input.GetChoice();
 
         while (choice != "back")
@@ -91,7 +91,7 @@ public static class ProgramController
                     break;
             }
 
-            StudyAreaMenu();
+            ViewStudyAreaMenu();
             choice = Input.GetChoice();
         }
 
@@ -107,7 +107,7 @@ public static class ProgramController
         Console.Clear();
     }
 
-    private static void NewLessonMenu()
+    private static void ViewNewLessonMenu()
     {
         Console.WriteLine("Type a Stack Name to choose or back to Go Back");
         Console.Write("Your choice? ");
@@ -119,7 +119,7 @@ public static class ProgramController
         
         DisplayTable.ViewStacks();
         
-        NewLessonMenu();
+        ViewNewLessonMenu();
         var choice = Input.GetInput();
         if (choice == "back")
         {
@@ -182,7 +182,7 @@ public static class ProgramController
         Console.Write("Your choice? ");
     }
 
-    private static void Settings()
+    private static void ManageStacksSettings()
     {
         Console.Clear();
 
@@ -299,12 +299,12 @@ public static class ProgramController
             return;
         }
 
-        FlashCardSettings(new Stack { Name = choice });
+        ManageFlashCardSettings(new Stack { Name = choice });
     }
 
     // FlashCard Operations
 
-    private static void FlashCardSettingsMenu()
+    private static void ViewFlashCardSettingsMenu()
     {
         Console.WriteLine("add to Add a New FlashCard");
         Console.WriteLine("edit to Edit a FlashCard");
@@ -314,10 +314,10 @@ public static class ProgramController
         Console.Write("Your choice? ");
     }
 
-    private static void FlashCardSettings(Stack stack)
+    private static void ManageFlashCardSettings(Stack stack)
     {
         Console.Clear();
-        FlashCardSettingsMenu();
+        ViewFlashCardSettingsMenu();
         var choice = Input.GetChoice();
 
         while (choice != "back")
@@ -339,7 +339,7 @@ public static class ProgramController
                     break;
             }
 
-            FlashCardSettingsMenu();
+            ViewFlashCardSettingsMenu();
             choice = Input.GetChoice();
         }
 
@@ -367,7 +367,7 @@ public static class ProgramController
         Console.Clear();
     }
 
-    private static void EditFlashCardMenu()
+    private static void ViewEditFlashCardMenu()
     {
         Console.WriteLine("all to Edit Front and Back");
         Console.WriteLine("edit front to Edit Front");
@@ -380,7 +380,7 @@ public static class ProgramController
     private static void EditFlashCard(Stack stack)
     {
         Console.Clear();
-        EditFlashCardMenu();
+        ViewEditFlashCardMenu();
         var choice = Input.GetChoice();
 
         while (choice != "back")
@@ -402,7 +402,7 @@ public static class ProgramController
                     break;
             }
 
-            EditFlashCardMenu();
+            ViewEditFlashCardMenu();
             choice = Input.GetChoice();
         }
 
@@ -478,7 +478,7 @@ public static class ProgramController
     private static void DeleteFlashCard(Stack stack)
     {
         ViewAllFlashCard(stack);
-        Console.Write("Enter name of FlashCard to edit or back to cancel: ");
+        Console.Write("Enter name of FlashCard to delete or back to cancel: ");
         var name = Input.GetChoice();
         if (name.ToLower() == "back")
         {
