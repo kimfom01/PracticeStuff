@@ -101,6 +101,10 @@ public static class ProgramController
     private static void ViewHistory()
     {
         DisplayTable.ViewHistory();
+        
+        Console.WriteLine("Hit Enter to go back");
+        Console.ReadLine();
+        Console.Clear();
     }
 
     private static void NewLessonMenu()
@@ -149,6 +153,7 @@ public static class ProgramController
             score++;
         }
 
+        Console.Clear();
         Console.WriteLine($"Your final score is: {score}");
         Console.WriteLine("Hit Enter to return to previous menu.");
         Console.ReadLine();
