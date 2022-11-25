@@ -22,4 +22,12 @@ public class TableVisualizationEngine
         ConsoleTableBuilder.From(DbManager.GetFlashCardsOfStack(stack)).ExportAndWriteLine();
         Console.WriteLine();
     }
+
+    public void ViewHistory()
+    {
+        Console.Clear();
+        
+        ConsoleTableBuilder.From(DbManager.GetScoresHistory()).ExportAndWriteLine();
+        Console.WriteLine();
+    }
 }
