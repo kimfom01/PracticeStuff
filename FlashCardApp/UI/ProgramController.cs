@@ -123,6 +123,7 @@ public static class ProgramController
         var choice = Input.GetInput();
         if (choice == "back")
         {
+            Console.Clear();
             return;
         }
 
