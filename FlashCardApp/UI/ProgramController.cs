@@ -223,10 +223,15 @@ public static class ProgramController
     {
         Console.Clear();
 
-        Console.Write("Enter name to create: ");
-        var stackName = Input.GetInput();
+        Console.Write("Enter name to create or back to cancel: ");
+        var name = Input.GetInput();
+        if (name.ToLower() == "back")
+        {
+            Console.Clear();
+            return;
+        }
 
-        DbManager.AddNewStack(new Stack { Name = stackName });
+        DbManager.AddNewStack(new Stack { Name = name });
         Console.Clear();
     }
 
