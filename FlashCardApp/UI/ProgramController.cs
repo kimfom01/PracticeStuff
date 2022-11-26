@@ -304,14 +304,14 @@ public static class ProgramController
     {
         Console.WriteLine("Type Stack Name and hit Enter to Perform Operations on a Stack: ");
         Console.WriteLine("back to Go Back");
-        var choice = Input.GetInput();
-        if (choice == "back")
+        var name = Input.GetInput();
+        if (name == "back")
         {
             Console.Clear();
             return;
         }
 
-        ManageFlashCardSettings(new Stack { Name = choice });
+        ManageFlashCardSettings(new Stack { Name = name });
     }
 
     // FlashCard Operations
