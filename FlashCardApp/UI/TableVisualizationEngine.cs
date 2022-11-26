@@ -11,7 +11,11 @@ public class TableVisualizationEngine
     {
         Console.Clear();
         
-        ConsoleTableBuilder.From(DbManager.GetStacks()).ExportAndWriteLine();
+        ConsoleTableBuilder
+            .From(DbManager.GetStacks())
+            .WithColumn("Lessons")
+            .ExportAndWriteLine();
+        
         Console.WriteLine();
     }
 
@@ -19,7 +23,11 @@ public class TableVisualizationEngine
     {
         Console.Clear();
         
-        ConsoleTableBuilder.From(DbManager.GetFlashCardsOfStack(stack)).ExportAndWriteLine();
+        ConsoleTableBuilder
+            .From(DbManager.GetFlashCardsOfStack(stack))
+            .WithTitle(stack.Name)
+            .ExportAndWriteLine();
+        
         Console.WriteLine();
     }
 
