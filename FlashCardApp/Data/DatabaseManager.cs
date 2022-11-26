@@ -262,34 +262,6 @@ public class DatabaseManager
         }
     }
 
-    public List<FlashCardDTO> GetFlashAllCards()
-    {
-        List<FlashCardDTO> flashCardList = new();
-
-        using (var connection = new SqlConnection(_connectionString))
-        {
-            using (var command = connection.CreateCommand())
-            {
-                connection.Open();
-
-                command.CommandText = "SELECT * FROM FlashCard";
-
-                var reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    flashCardList.Add(new FlashCardDTO
-                    {
-                        Name = reader.GetString(2), // The second ordinal is FlashCardName column
-                        Content = reader.GetString(3), // The third ordinal is FrontContent column
-                    });
-                }
-            }
-        }
-
-        return flashCardList;
-    }
-    
     public List<FlashCardDTO> GetFlashCardsOfStack(Stack stack)
     {
         var stackId = GetStackId(stack);
