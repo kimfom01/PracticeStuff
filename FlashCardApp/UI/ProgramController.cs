@@ -271,7 +271,7 @@ public static class ProgramController
 
     private static void DeleteStack()
     {
-        ViewStackForFlashCardOperations();
+        DisplayTable.ViewStacks();
         DisplayDeleteMenu();
         var choice = Input.GetChoice();
 
@@ -279,7 +279,7 @@ public static class ProgramController
         {
             DbManager.DeleteStack(new Stack { Name = choice });
 
-            ViewStackForFlashCardOperations();
+            DisplayTable.ViewStacks();
             DisplayDeleteMenu();
             choice = Input.GetChoice();
         }
