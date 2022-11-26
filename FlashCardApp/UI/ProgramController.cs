@@ -1,4 +1,5 @@
 using FlashCardApp.Data;
+using FlashCardApp.DTO;
 using FlashCardApp.Input;
 using FlashCardApp.Models;
 
@@ -130,6 +131,21 @@ public static class ProgramController
         var stack = new Stack { Name = choice };
         var flashCards = DbManager.GetFlashCardsOfStack(stack);
 
+        var score = PlayLessonLoop(flashCards);
+
+        Console.Clear();
+        Console.WriteLine($"Your final score is: {score}");
+        Console.WriteLine("Hit Enter to return to previous menu.");
+        Console.ReadLine();
+
+        var studyArea = new StudyArea { Score = score };
+        SaveScore(studyArea, stack);
+
+        Console.Clear();
+    }
+
+    private static int PlayLessonLoop(List<FlashCardDTO> flashCards)
+    {
         var score = 0;
         foreach (var card in flashCards)
         {
@@ -154,15 +170,7 @@ public static class ProgramController
             score++;
         }
 
-        Console.Clear();
-        Console.WriteLine($"Your final score is: {score}");
-        Console.WriteLine("Hit Enter to return to previous menu.");
-        Console.ReadLine();
-
-        var studyArea = new StudyArea { Score = score };
-        SaveScore(studyArea, stack);
-
-        Console.Clear();
+        return score;
     }
 
     private static void SaveScore(StudyArea studyArea, Stack stack)
