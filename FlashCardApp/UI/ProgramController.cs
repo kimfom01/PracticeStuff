@@ -249,10 +249,14 @@ public static class ProgramController
         var choice = Input.GetChoice();
         while (choice != "back")
         {
-            Console.Write("Enter new name");
-            var newStack = Input.GetInput();
-
-            DbManager.UpdateStack(new Stack { Name = choice }, new Stack { Name = newStack });
+            Console.Write("Enter new name or back to cancel: ");
+            var newStackName = Input.GetInput();
+            if (newStackName.ToLower() == "back")
+            {
+                Console.Clear();
+                return;
+            }
+            DbManager.UpdateStack(new Stack { Name = choice }, new Stack { Name = newStackName });
 
             DisplayTable.ViewStacks();
             DisplayUpdateStackMenu();
