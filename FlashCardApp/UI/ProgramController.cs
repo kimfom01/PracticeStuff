@@ -244,7 +244,7 @@ public static class ProgramController
 
     private static void UpdateStackName()
     {
-        ViewStackForFlashCardOperations();
+        DisplayTable.ViewStacks();
         DisplayUpdateStackMenu();
         var choice = Input.GetChoice();
         while (choice != "back")
@@ -254,7 +254,7 @@ public static class ProgramController
 
             DbManager.UpdateStack(new Stack { Name = choice }, new Stack { Name = newStack });
 
-            ViewStackForFlashCardOperations();
+            DisplayTable.ViewStacks();
             DisplayUpdateStackMenu();
             choice = Input.GetChoice();
         }
