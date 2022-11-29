@@ -7,7 +7,7 @@ namespace FlashCardApp.UI;
 
 public static class ProgramController
 {
-    private static readonly DatabaseManager DbManager = new();
+    private static readonly IDatabaseManager DbManager = new SqlServerDatabaseManager();
     private static readonly UserInput Input = new();
     private static readonly TableVisualizationEngine DisplayTable = new();
 
