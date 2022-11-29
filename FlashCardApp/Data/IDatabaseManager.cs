@@ -1,4 +1,3 @@
-using System.Configuration;
 using FlashCardApp.DTO;
 using FlashCardApp.Models;
 
