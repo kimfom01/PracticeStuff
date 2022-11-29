@@ -6,7 +6,7 @@ namespace FlashCardApp.UI;
 
 public class TableVisualizationEngine
 {
-    private static readonly DatabaseManager DbManager = new();
+    private static readonly IDatabaseManager DbManager = new SqlServerDatabaseManager();
     public void ViewStacks()
     {
         Console.Clear();
