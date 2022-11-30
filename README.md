@@ -24,3 +24,4 @@ This project is part of [thecsharpacademy.com's](https://www.thecsharpacademy.co
 - [x] [Install SQL Server and create a database on Ubuntu](https://learn.microsoft.com/en-us/sql/linux/quickstart-install-connect-ubuntu?view=sql-server-ver16)
 - [x] [SQL Server 2019 connection strings](https://www.connectionstrings.com/sql-server-2019/)
 - [x] [https://www.brainscape.com/](https://www.brainscape.com/subjects)
+- [x] [Data Transfer Object Design Pattern in C#](https://www.codeproject.com/Articles/1050468/Data-Transfer-Object-Design-Pattern-in-Csharp)
