@@ -21,3 +21,6 @@
 This project is part of [thecsharpacademy.com's](https://www.thecsharpacademy.com/) .NET Full-Stack Developer Roadmap
 
 ## Resources
+- [x] [Install SQL Server and create a database on Ubuntu](https://learn.microsoft.com/en-us/sql/linux/quickstart-install-connect-ubuntu?view=sql-server-ver16)
+- [x] [SQL Server 2019 connection strings](https://www.connectionstrings.com/sql-server-2019/)
+- [x] [https://www.brainscape.com/](https://www.brainscape.com/subjects)
