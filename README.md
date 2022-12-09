@@ -1,5 +1,6 @@
 # FlashCardApp
 
+[![.NET](https://github.com/kimfom01/FlashCardApp/actions/workflows/dotnet.yml/badge.svg)](https://github.com/kimfom01/FlashCardApp/actions/workflows/dotnet.yml)
 
 ## Requirements  
 - [x] This is an application where the users will create Stacks of Flashcards.
