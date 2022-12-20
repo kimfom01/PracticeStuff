@@ -36,5 +36,5 @@ public interface IDatabaseManager
     // StudyArea Operations
     public void SaveScore(StudyArea studyArea, Stack stack);
 
-    public List<StudyAreaDTO> GetScoresHistory();
+    public List<StudyAreaDto> GetScoresHistory();
 }

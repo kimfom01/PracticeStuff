@@ -312,25 +312,29 @@ public class SqlServerDatabaseManager : IDatabaseManager
         }
     }
 
-    public List<StudyAreaDTO> GetScoresHistory()
+    public List<StudyAreaDto> GetScoresHistory()
     {
-        List<StudyAreaDTO> history = new();
+        List<StudyAreaDto> history = new();
         using (var connection = new SqlConnection(_connectionString))
         {
             using (var command = connection.CreateCommand())
             {
                 connection.Open();
 
-                command.CommandText = "SELECT * FROM StudyArea";
-
+                command.CommandText = "SELECT SA.Date, SA.Score, St.Name " +
+                                      "FROM StudyArea AS SA " +
+                                      "LEFT JOIN Stack AS St " +
+                                      "ON SA.StackId = St.Id";
+                
                 var reader = command.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    history.Add(new StudyAreaDTO
+                    history.Add(new StudyAreaDto
                     {
                         Date = (DateTime)reader["Date"],
-                        Score = (int)reader["Score"]
+                        Score = (int)reader["Score"],
+                        Stack = (string)reader["Name"]
                     });
                 }
             }
