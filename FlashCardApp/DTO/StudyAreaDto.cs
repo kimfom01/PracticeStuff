@@ -1,5 +1,3 @@
-using FlashCardApp.Models;
-
 namespace FlashCardApp.DTO;
 
 public class StudyAreaDto
