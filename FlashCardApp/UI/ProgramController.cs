@@ -5,13 +5,29 @@ using FlashCardApp.Models;
 
 namespace FlashCardApp.UI;
 
-public static class ProgramController
+public class ProgramController
 {
-    private static readonly IDatabaseManager DbManager = new SqlServerDatabaseManager();
-    private static readonly UserInput Input = new();
-    private static readonly TableVisualizationEngine DisplayTable = new();
+    private readonly IStackDataManager _stackDataManager;
+    private readonly IFlashCardDataManager _flashCardDataManager;
+    private readonly IStudyAreaDataManager _studyAreaDataManager;
+    private readonly UserInput _input;
+    private readonly TableVisualizationEngine _displayTable;
 
-    private static void ViewMainMenu()
+    public ProgramController(
+        IStackDataManager stackDataManager,
+        IFlashCardDataManager flashCardDataManager,
+        IStudyAreaDataManager studyAreaDataManager,
+        UserInput input,
+        TableVisualizationEngine displayTable)
+    {
+        _stackDataManager = stackDataManager;
+        _flashCardDataManager = flashCardDataManager;
+        _studyAreaDataManager = studyAreaDataManager;
+        _input = input;
+        _displayTable = displayTable;
+    }
+
+    private void ViewMainMenu()
     {
         Console.WriteLine("MAIN MENU");
         Console.WriteLine("-------------------------------------");
@@ -23,19 +39,19 @@ public static class ProgramController
         Console.Write("Your choice? ");
     }
 
-    private static void CreateTables()
+    private void CreateTables()
     {
-        DbManager.CreateStackTable();
-        DbManager.CreateFlashCardTable();
-        DbManager.CreateStudyAreaTable();
+        _stackDataManager.CreateStackTable();
+        _flashCardDataManager.CreateFlashCardTable();
+        _studyAreaDataManager.CreateStudyAreaTable();
     }
 
-    public static void StartProgram()
+    public void StartProgram()
     {
         CreateTables();
 
         ViewMainMenu();
-        var choice = Input.GetChoice();
+        var choice = _input.GetChoice();
 
         while (choice != "exit")
         {
@@ -54,7 +70,7 @@ public static class ProgramController
             }
 
             ViewMainMenu();
-            choice = Input.GetChoice();
+            choice = _input.GetChoice();
         }
     }
 
@@ -69,12 +85,12 @@ public static class ProgramController
         Console.Write("Your choice? ");
     }
 
-    private static void ManageStudyArea()
+    private void ManageStudyArea()
     {
         Console.Clear();
 
         ViewStudyAreaMenu();
-        var choice = Input.GetChoice();
+        var choice = _input.GetChoice();
 
         while (choice != "back")
         {
@@ -93,15 +109,15 @@ public static class ProgramController
             }
 
             ViewStudyAreaMenu();
-            choice = Input.GetChoice();
+            choice = _input.GetChoice();
         }
 
         Console.Clear();
     }
 
-    private static void ViewHistory()
+    private void ViewHistory()
     {
-        DisplayTable.ViewHistory();
+        _displayTable.ViewHistory();
 
         Console.WriteLine("Hit Enter to go back");
         Console.ReadLine();
@@ -114,14 +130,14 @@ public static class ProgramController
         Console.Write("Your choice? ");
     }
 
-    private static void StartLesson()
+    private void StartLesson()
     {
         Console.Clear();
 
-        DisplayTable.ViewStacks();
+        _displayTable.ViewStacks();
 
         ViewNewLessonMenu();
-        var choice = Input.GetInput();
+        var choice = _input.GetInput();
         if (choice == "back")
         {
             Console.Clear();
@@ -129,7 +145,7 @@ public static class ProgramController
         }
 
         var stack = new Stack { Name = choice };
-        var flashCards = DbManager.GetFlashCardsOfStack(stack);
+        var flashCards = _flashCardDataManager.GetFlashCardsOfStack(stack);
 
         var score = PlayLessonLoop(flashCards);
 
@@ -144,7 +160,7 @@ public static class ProgramController
         Console.Clear();
     }
 
-    private static int PlayLessonLoop(List<FlashCardDTO> flashCards)
+    private int PlayLessonLoop(List<FlashCardDTO> flashCards)
     {
         var score = 0;
         foreach (var card in flashCards)
@@ -153,7 +169,7 @@ public static class ProgramController
 
             Console.WriteLine(card.Name);
             Console.Write("Your answer: ");
-            var answer = Input.GetInput();
+            var answer = _input.GetInput();
 
             if (answer.ToLower() != card.Content.ToLower())
             {
@@ -173,13 +189,13 @@ public static class ProgramController
         return score;
     }
 
-    private static void SaveScore(StudyArea studyArea, Stack stack)
+    private void SaveScore(StudyArea studyArea, Stack stack)
     {
-        DbManager.SaveScore(studyArea, stack);
+        _studyAreaDataManager.SaveScore(studyArea, stack);
     }
 
     // Settings
-    private static void DisplaySettingsMenu()
+    private void DisplaySettingsMenu()
     {
         Console.WriteLine("SETTINGS\n");
         Console.WriteLine("create to Create a New Stack");
@@ -191,12 +207,12 @@ public static class ProgramController
         Console.Write("Your choice? ");
     }
 
-    private static void ManageStacksSettings()
+    private void ManageStacksSettings()
     {
         Console.Clear();
 
         DisplaySettingsMenu();
-        var choice = Input.GetChoice();
+        var choice = _input.GetChoice();
 
         while (choice != "back")
         {
@@ -221,26 +237,26 @@ public static class ProgramController
             }
 
             DisplaySettingsMenu();
-            choice = Input.GetChoice();
+            choice = _input.GetChoice();
         }
 
         Console.Clear();
     }
 
     // Stack Operations
-    private static void GetStackToAdd()
+    private void GetStackToAdd()
     {
         Console.Clear();
 
         Console.Write("Enter name to create or back to cancel: ");
-        var name = Input.GetInput();
+        var name = _input.GetInput();
         if (name.ToLower() == "back")
         {
             Console.Clear();
             return;
         }
 
-        DbManager.AddNewStack(new Stack { Name = name });
+        _stackDataManager.AddNewStack(new Stack { Name = name });
         Console.Clear();
     }
 
@@ -251,25 +267,25 @@ public static class ProgramController
         Console.Write("\nYour choice? ");
     }
 
-    private static void UpdateStackName()
+    private void UpdateStackName()
     {
-        DisplayTable.ViewStacks();
+        _displayTable.ViewStacks();
         DisplayUpdateStackMenu();
-        var choice = Input.GetChoice();
+        var choice = _input.GetChoice();
         while (choice != "back")
         {
             Console.Write("Enter new name or back to cancel: ");
-            var newStackName = Input.GetInput();
+            var newStackName = _input.GetInput();
             if (newStackName.ToLower() == "back")
             {
                 Console.Clear();
                 return;
             }
-            DbManager.UpdateStack(new Stack { Name = choice }, new Stack { Name = newStackName });
+            _stackDataManager.UpdateStack(new Stack { Name = choice }, new Stack { Name = newStackName });
 
-            DisplayTable.ViewStacks();
+            _displayTable.ViewStacks();
             DisplayUpdateStackMenu();
-            choice = Input.GetChoice();
+            choice = _input.GetChoice();
         }
 
         Console.Clear();
@@ -282,38 +298,38 @@ public static class ProgramController
         Console.Write("\nYour choice? ");
     }
 
-    private static void DeleteStack()
+    private void DeleteStack()
     {
-        DisplayTable.ViewStacks();
+        _displayTable.ViewStacks();
         DisplayDeleteMenu();
-        var choice = Input.GetChoice();
+        var choice = _input.GetChoice();
 
         while (choice != "back")
         {
-            DbManager.DeleteStack(new Stack { Name = choice });
+            _stackDataManager.DeleteStack(new Stack { Name = choice });
 
-            DisplayTable.ViewStacks();
+            _displayTable.ViewStacks();
             DisplayDeleteMenu();
-            choice = Input.GetChoice();
+            choice = _input.GetChoice();
         }
 
         Console.Clear();
     }
 
-    private static void ViewStackForFlashCardOperations()
+    private void ViewStackForFlashCardOperations()
     {
         Console.Clear();
-        DisplayTable.ViewStacks();
+        _displayTable.ViewStacks();
 
         SelectStackToOperateOn();
         Console.Clear();
     }
 
-    private static void SelectStackToOperateOn()
+    private void SelectStackToOperateOn()
     {
         Console.WriteLine("Type Stack Name and hit Enter to Perform Operations on a Stack: ");
         Console.WriteLine("back to Go Back");
-        var name = Input.GetInput();
+        var name = _input.GetInput();
         if (name == "back")
         {
             Console.Clear();
@@ -325,7 +341,7 @@ public static class ProgramController
 
     // FlashCard Operations
 
-    private static void ViewFlashCardSettingsMenu()
+    private void ViewFlashCardSettingsMenu()
     {
         Console.WriteLine("view to View FlashCards of the Stack");
         Console.WriteLine("add to Add a New FlashCard");
@@ -336,11 +352,11 @@ public static class ProgramController
         Console.Write("Your choice? ");
     }
 
-    private static void ManageFlashCardSettings(Stack stack)
+    private void ManageFlashCardSettings(Stack stack)
     {
         Console.Clear();
         ViewFlashCardSettingsMenu();
-        var choice = Input.GetChoice();
+        var choice = _input.GetChoice();
 
         while (choice != "back")
         {
@@ -365,13 +381,13 @@ public static class ProgramController
             }
 
             ViewFlashCardSettingsMenu();
-            choice = Input.GetChoice();
+            choice = _input.GetChoice();
         }
 
         Console.Clear();
     }
 
-    private static void ViewFlashCards(Stack stack)
+    private void ViewFlashCards(Stack stack)
     {
         Console.Clear();
 
@@ -381,13 +397,13 @@ public static class ProgramController
         Console.ReadLine();
         Console.Clear();
     }
-    
-    private static void AddFlashCardToStack(Stack stack)
+
+    private void AddFlashCardToStack(Stack stack)
     {
         Console.Clear();
 
         Console.Write("Enter name of FlashCard to add or back to cancel: ");
-        var name = Input.GetInput();
+        var name = _input.GetInput();
         if (name.ToLower() == "back")
         {
             Console.Clear();
@@ -395,15 +411,15 @@ public static class ProgramController
         }
 
         Console.Write("Enter content of FlashCard: ");
-        var content = Input.GetInput();
+        var content = _input.GetInput();
 
         var flashcard = new FlashCard { Name = name, Content = content };
 
-        DbManager.AddNewFlashCard(flashcard, stack);
+        _flashCardDataManager.AddNewFlashCard(flashcard, stack);
         Console.Clear();
     }
 
-    private static void ViewEditFlashCardMenu()
+    private void ViewEditFlashCardMenu()
     {
         Console.WriteLine("all to Edit Front and Back");
         Console.WriteLine("edit front to Edit Front");
@@ -413,11 +429,11 @@ public static class ProgramController
         Console.Write("Your choice? ");
     }
 
-    private static void EditFlashCard(Stack stack)
+    private void EditFlashCard(Stack stack)
     {
         Console.Clear();
         ViewEditFlashCardMenu();
-        var choice = Input.GetChoice();
+        var choice = _input.GetChoice();
 
         while (choice != "back")
         {
@@ -439,17 +455,17 @@ public static class ProgramController
             }
 
             ViewEditFlashCardMenu();
-            choice = Input.GetChoice();
+            choice = _input.GetChoice();
         }
 
         Console.Clear();
     }
 
-    private static void EditAll(Stack stack)
+    private void EditAll(Stack stack)
     {
         ViewFlashCardOfStack(stack);
         Console.Write("Enter name of FlashCard to edit or back to cancel: ");
-        var name = Input.GetChoice();
+        var name = _input.GetChoice();
         if (name.ToLower() == "back")
         {
             Console.Clear();
@@ -457,23 +473,23 @@ public static class ProgramController
         }
 
         Console.Write("Enter new name for FlashCard: ");
-        var newName = Input.GetInput();
+        var newName = _input.GetInput();
 
         Console.Write("Enter new content for FlashCard: ");
-        var newContent = Input.GetInput();
+        var newContent = _input.GetInput();
 
         var oldFlashcard = new FlashCard { Name = name };
         var newFlashCard = new FlashCard { Name = newName, Content = newContent };
 
-        DbManager.UpdateFlashCard(oldFlashcard, newFlashCard, stack);
+        _flashCardDataManager.UpdateFlashCard(oldFlashcard, newFlashCard, stack);
         Console.Clear();
     }
 
-    private static void EditFlashCardName(Stack stack)
+    private void EditFlashCardName(Stack stack)
     {
         ViewFlashCardOfStack(stack);
         Console.Write("Enter name of FlashCard to edit or back to cancel: ");
-        var name = Input.GetChoice();
+        var name = _input.GetChoice();
         if (name.ToLower() == "back")
         {
             Console.Clear();
@@ -481,20 +497,20 @@ public static class ProgramController
         }
 
         Console.Write("Enter new name for FlashCard: ");
-        var newName = Input.GetInput();
+        var newName = _input.GetInput();
 
         var oldFlashcard = new FlashCard { Name = name };
         var newFlashCard = new FlashCard { Name = newName };
 
-        DbManager.UpdateFlashCardName(oldFlashcard, newFlashCard, stack);
+        _flashCardDataManager.UpdateFlashCardName(oldFlashcard, newFlashCard, stack);
         Console.Clear();
     }
 
-    private static void EditBack(Stack stack)
+    private void EditBack(Stack stack)
     {
         ViewFlashCardOfStack(stack);
         Console.Write("Enter name of FlashCard to edit or back to cancel: ");
-        var name = Input.GetChoice();
+        var name = _input.GetChoice();
         if (name.ToLower() == "back")
         {
             Console.Clear();
@@ -502,20 +518,20 @@ public static class ProgramController
         }
 
         Console.Write("Enter new content for FlashCard: ");
-        var newContent = Input.GetInput();
+        var newContent = _input.GetInput();
 
         var oldFlashcard = new FlashCard { Name = name };
         var newFlashCard = new FlashCard { Content = newContent };
 
-        DbManager.UpdateFlashCardContent(oldFlashcard, newFlashCard, stack);
+        _flashCardDataManager.UpdateFlashCardContent(oldFlashcard, newFlashCard, stack);
         Console.Clear();
     }
 
-    private static void DeleteFlashCard(Stack stack)
+    private void DeleteFlashCard(Stack stack)
     {
         ViewFlashCardOfStack(stack);
         Console.Write("Enter name of FlashCard to delete or back to cancel: ");
-        var name = Input.GetChoice();
+        var name = _input.GetChoice();
         if (name.ToLower() == "back")
         {
             Console.Clear();
@@ -524,12 +540,12 @@ public static class ProgramController
 
         var flashCard = new FlashCard { Name = name };
 
-        DbManager.DeleteFlashCard(flashCard, stack);
+        _flashCardDataManager.DeleteFlashCard(flashCard, stack);
         Console.Clear();
     }
 
-    private static void ViewFlashCardOfStack(Stack stack)
+    private void ViewFlashCardOfStack(Stack stack)
     {
-        DisplayTable.ViewFlashCards(stack);
+        _displayTable.ViewFlashCards(stack);
     }
 }
