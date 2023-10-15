@@ -26,11 +26,13 @@ public class FlashCardDataManager : IFlashCardDataManager
 
         connection.Open();
 
-        command.CommandText = "IF OBJECT_ID(N'FlashCard', N'U') IS NULL " +
-                              "CREATE TABLE FlashCard (Id INT PRIMARY KEY IDENTITY(1,1), " +
-                              "StackId INT FOREIGN KEY REFERENCES Stack(Id) ON DELETE CASCADE, " +
-                              "Name NVARCHAR(50), " +
-                              "Content NVARCHAR(500))";
+        command.CommandText = """
+                                IF OBJECT_ID(N'FlashCard', N'U') IS NULL
+                                CREATE TABLE FlashCard (Id INT PRIMARY KEY IDENTITY(1,1),
+                                StackId INT FOREIGN KEY REFERENCES Stack(Id) ON DELETE CASCADE,
+                                Name NVARCHAR(50),
+                                Content NVARCHAR(500))
+                              """;
 
         command.ExecuteNonQuery();
     }
@@ -39,94 +41,102 @@ public class FlashCardDataManager : IFlashCardDataManager
     public void AddNewFlashCard(FlashCard flashCard, Stack stack)
     {
         var stackId = _stackDataManager.GetStackId(stack);
-        using (var connection = new SqlConnection(_configuration.ConnectionString))
-        {
-            using (var command = connection.CreateCommand())
-            {
-                connection.Open();
+        using var connection = new SqlConnection(_configuration.ConnectionString);
+        using var command = connection.CreateCommand();
+        connection.Open();
 
-                command.CommandText = "INSERT INTO FlashCard (StackId, Name, Content) " +
-                                      $"VALUES ({stackId}, '{flashCard.Name}','{flashCard.Content}') ";
+        command.CommandText = """
+                                INSERT INTO FlashCard (StackId, Name, Content)
+                                VALUES (@stackId, @flashCardName, @flashCardContent)
+                              """;
 
-                command.ExecuteNonQuery();
-            }
-        }
+        command.Parameters.Add(new SqlParameter("@stackId", stackId));
+        command.Parameters.Add(new SqlParameter("@flashCardName", flashCard.Name));
+        command.Parameters.Add(new SqlParameter("@flashCardContent", flashCard.Content));
+
+        command.ExecuteNonQuery();
     }
 
     public void UpdateFlashCard(FlashCard oldFlashCard, FlashCard newFlashCard, Stack stack)
     {
         var stackId = _stackDataManager.GetStackId(stack);
-        using (var connection = new SqlConnection(_configuration.ConnectionString))
-        {
-            using (var command = connection.CreateCommand())
-            {
-                connection.Open();
+        using var connection = new SqlConnection(_configuration.ConnectionString);
+        using var command = connection.CreateCommand();
+        connection.Open();
 
-                command.CommandText = "UPDATE FlashCard " +
-                                      $"SET Name = '{newFlashCard.Name}', " +
-                                      $"Content = '{newFlashCard.Content}' " +
-                                      $"WHERE Name = '{oldFlashCard.Name}' " +
-                                      $"AND StackId = {stackId}";
+        command.CommandText = """
+                                UPDATE FlashCard 
+                                SET Name = @newFlashCardName, Content = @newFlashCardContent
+                                WHERE Name = @oldFlashCardName AND StackId = @stackId
+                              """;
 
-                command.ExecuteNonQuery();
-            }
-        }
+        command.Parameters.Add(new SqlParameter("@newFlashCardName", newFlashCard.Name));
+        command.Parameters.Add(new SqlParameter("@newFlashCardContent", newFlashCard.Content));
+        command.Parameters.Add(new SqlParameter("@oldFlashCardName", oldFlashCard.Name));
+        command.Parameters.Add(new SqlParameter("@stackId", stackId));
+
+        command.ExecuteNonQuery();
     }
 
     public void UpdateFlashCardName(FlashCard oldFlashCard, FlashCard newFlashCard, Stack stack)
     {
         var stackId = _stackDataManager.GetStackId(stack);
-        using (var connection = new SqlConnection(_configuration.ConnectionString))
-        {
-            using (var command = connection.CreateCommand())
-            {
-                connection.Open();
+        using var connection = new SqlConnection(_configuration.ConnectionString);
+        using var command = connection.CreateCommand();
+        connection.Open();
 
-                command.CommandText = "UPDATE FlashCard " +
-                                      $"SET Name = '{newFlashCard.Name}' " +
-                                      $"WHERE Name = '{oldFlashCard.Name}' " +
-                                      $"AND StackId = {stackId}";
+        command.CommandText = """
+                                UPDATE FlashCard " +
+                                SET Name = @newFlashCardName
+                                WHERE Name = @oldFlashCardName
+                                AND StackId = @stackId
+                              """;
 
-                command.ExecuteNonQuery();
-            }
-        }
+        command.Parameters.Add(new SqlParameter("@newFlashCardName", newFlashCard.Name));
+        command.Parameters.Add(new SqlParameter("@oldFlashCardName", oldFlashCard.Name));
+        command.Parameters.Add(new SqlParameter("@stackId", stackId));
+
+        command.ExecuteNonQuery();
     }
 
     public void UpdateFlashCardContent(FlashCard oldFlashCard, FlashCard newFlashCard, Stack stack)
     {
         var stackId = _stackDataManager.GetStackId(stack);
-        using (var connection = new SqlConnection(_configuration.ConnectionString))
-        {
-            using (var command = connection.CreateCommand())
-            {
-                connection.Open();
+        using var connection = new SqlConnection(_configuration.ConnectionString);
+        using var command = connection.CreateCommand();
+        connection.Open();
 
-                command.CommandText = "UPDATE FlashCard " +
-                                      $"SET Content = '{newFlashCard.Content}' " +
-                                      $"WHERE Name = '{oldFlashCard.Name}' " +
-                                      $"AND StackId = {stackId}";
+        command.CommandText = """
+                                UPDATE FlashCard
+                                SET Content = @newFlashCardContent
+                                WHERE Name = @oldFlashCardName
+                                AND StackId = @stackId
+                              """;
 
-                command.ExecuteNonQuery();
-            }
-        }
+        command.Parameters.Add(new SqlParameter("@newFlashCardContent", newFlashCard.Content));
+        command.Parameters.Add(new SqlParameter("@oldFlashCardName", oldFlashCard.Name));
+        command.Parameters.Add(new SqlParameter("@stackId", stackId));
+
+        command.ExecuteNonQuery();
     }
 
     public void DeleteFlashCard(FlashCard flashCardToDelete, Stack stack)
     {
         var stackId = _stackDataManager.GetStackId(stack);
-        using (var connection = new SqlConnection(_configuration.ConnectionString))
-        {
-            using (var command = connection.CreateCommand())
-            {
-                connection.Open();
+        using var connection = new SqlConnection(_configuration.ConnectionString);
+        using var command = connection.CreateCommand();
+        connection.Open();
 
-                command.CommandText = "DELETE FROM FlashCard " +
-                                      $"WHERE Name = '{flashCardToDelete.Name}' " +
-                                      $"AND StackId = {stackId}";
+        command.CommandText = """
+                                DELETE FROM FlashCard
+                                WHERE Name = @flashCardToDeleteName
+                                AND StackId = @stackId
+                              """;
 
-                command.ExecuteNonQuery();
-            }
-        }
+        command.Parameters.Add(new SqlParameter("@flashCardToDeleteName", flashCardToDelete.Name));
+        command.Parameters.Add(new SqlParameter("@stackId", stackId));
+
+        command.ExecuteNonQuery();
     }
 
     public List<FlashCardDTO> GetFlashCardsOfStack(Stack stack)
@@ -137,24 +147,23 @@ public class FlashCardDataManager : IFlashCardDataManager
 
         using (var connection = new SqlConnection(_configuration.ConnectionString))
         {
-            using (var command = connection.CreateCommand())
+            using var command = connection.CreateCommand();
+            connection.Open();
+
+            command.CommandText = "SELECT * FROM FlashCard " +
+                                  $"WHERE StackId = {stackId}";
+            command.Parameters.Add(new SqlParameter("@stackId", stackId));
+
+            var reader = command.ExecuteReader();
+
+            while (reader.Read())
             {
-                connection.Open();
-
-                command.CommandText = "SELECT * FROM FlashCard " +
-                                      $"WHERE StackId = {stackId}";
-
-                var reader = command.ExecuteReader();
-
-                while (reader.Read())
+                flashCardList.Add(new FlashCardDTO
                 {
-                    flashCardList.Add(new FlashCardDTO
-                    {
-                        Id = ++id,
-                        Name = reader.GetString(2), // The second ordinal is Name column
-                        Content = reader.GetString(3), // The third ordinal is Content column
-                    });
-                }
+                    Id = ++id,
+                    Name = reader.GetString(2), // The second ordinal is Name column
+                    Content = reader.GetString(3), // The third ordinal is Content column
+                });
             }
         }
 
