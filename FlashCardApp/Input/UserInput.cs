@@ -4,11 +4,21 @@ public class UserInput
 {
     public string GetChoice()
     {
-        return Console.ReadLine().Trim().ToLower();
+        string? choice = Console.ReadLine();
+        while (string.IsNullOrWhiteSpace(choice))
+        {
+            choice = Console.ReadLine();
+        }
+        return choice.Trim().ToLower();
     }
 
     public string GetInput()
     {
-        return Console.ReadLine().Trim();
+        string? input = Console.ReadLine();
+        while (string.IsNullOrWhiteSpace(input))
+        {
+            input = Console.ReadLine();
+        }
+        return input.Trim().ToLower();
     }
 }
