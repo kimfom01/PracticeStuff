@@ -1,18 +1,24 @@
-﻿using System.Configuration;
+﻿using FlashCardApp.Config;
 using FlashCardApp.Data;
 using FlashCardApp.Data.Implementation;
 using FlashCardApp.Input;
+using FlashCardApp.Services;
+using FlashCardApp.Services.Implementation;
 using FlashCardApp.UI;
 
-var connectionString = ConfigurationManager.AppSettings.Get("connectionString")
-    ?? throw new NullReferenceException("connection string not provided");
 
-IStackDataManager stackDataManager = new StackDataManager(connectionString);
-IFlashCardDataManager flashCardDataManager = new FlashCardDataManager(connectionString, stackDataManager);
-IStudyAreaDataManager studyAreaDataManager = new StudyAreaDataManager(connectionString, stackDataManager);
+Configuration config = new();
+
+IStackDataManager stackDataManager = new StackDataManager(config);
+IFlashCardDataManager flashCardDataManager = new FlashCardDataManager(config, stackDataManager);
+IStudyAreaDataManager studyAreaDataManager = new StudyAreaDataManager(config, stackDataManager);
 UserInput input = new();
 TableVisualizationEngine tableVisualizationEngine = new(flashCardDataManager, stackDataManager, studyAreaDataManager);
 
-ProgramController programController = new(stackDataManager, flashCardDataManager, studyAreaDataManager, input, tableVisualizationEngine);
+IFlashCardService flashCardService = new FlashCardService(input, tableVisualizationEngine, flashCardDataManager);
+IStackService stackService = new StackService(input, stackDataManager, tableVisualizationEngine, flashCardService);
+IStudyAreaService studyAreaService = new StudyAreaService(input, tableVisualizationEngine, flashCardDataManager, studyAreaDataManager);
+
+ProgramController programController = new(input, flashCardService, studyAreaService, stackService);
 
 programController.StartProgram();

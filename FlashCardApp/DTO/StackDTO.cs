@@ -2,5 +2,5 @@ namespace FlashCardApp.DTO;
 
 public class StackDTO
 {
-    public string StackName { get; set; }
+    public string? StackName { get; set; }
 }

@@ -1,4 +1,5 @@
 using System.Data.SqlClient;
+using FlashCardApp.Config;
 using FlashCardApp.DTO;
 using FlashCardApp.Models;
 
@@ -6,18 +7,21 @@ namespace FlashCardApp.Data.Implementation;
 
 public class FlashCardDataManager : IFlashCardDataManager
 {
-    private readonly string _connectionString;
+    private readonly Configuration _configuration;
     private readonly IStackDataManager _stackDataManager;
 
-    public FlashCardDataManager(string connectionString, IStackDataManager stackDataManager)
+    public FlashCardDataManager(
+    Configuration configuration,
+    IStackDataManager stackDataManager
+    )
     {
-        _connectionString = connectionString;
         _stackDataManager = stackDataManager;
+        _configuration = configuration;
     }
 
     public void CreateFlashCardTable()
     {
-        using var connection = new SqlConnection(_connectionString);
+        using var connection = new SqlConnection(_configuration.ConnectionString);
         using var command = connection.CreateCommand();
 
         connection.Open();
@@ -35,7 +39,7 @@ public class FlashCardDataManager : IFlashCardDataManager
     public void AddNewFlashCard(FlashCard flashCard, Stack stack)
     {
         var stackId = _stackDataManager.GetStackId(stack);
-        using (var connection = new SqlConnection(_connectionString))
+        using (var connection = new SqlConnection(_configuration.ConnectionString))
         {
             using (var command = connection.CreateCommand())
             {
@@ -52,7 +56,7 @@ public class FlashCardDataManager : IFlashCardDataManager
     public void UpdateFlashCard(FlashCard oldFlashCard, FlashCard newFlashCard, Stack stack)
     {
         var stackId = _stackDataManager.GetStackId(stack);
-        using (var connection = new SqlConnection(_connectionString))
+        using (var connection = new SqlConnection(_configuration.ConnectionString))
         {
             using (var command = connection.CreateCommand())
             {
@@ -72,7 +76,7 @@ public class FlashCardDataManager : IFlashCardDataManager
     public void UpdateFlashCardName(FlashCard oldFlashCard, FlashCard newFlashCard, Stack stack)
     {
         var stackId = _stackDataManager.GetStackId(stack);
-        using (var connection = new SqlConnection(_connectionString))
+        using (var connection = new SqlConnection(_configuration.ConnectionString))
         {
             using (var command = connection.CreateCommand())
             {
@@ -91,7 +95,7 @@ public class FlashCardDataManager : IFlashCardDataManager
     public void UpdateFlashCardContent(FlashCard oldFlashCard, FlashCard newFlashCard, Stack stack)
     {
         var stackId = _stackDataManager.GetStackId(stack);
-        using (var connection = new SqlConnection(_connectionString))
+        using (var connection = new SqlConnection(_configuration.ConnectionString))
         {
             using (var command = connection.CreateCommand())
             {
@@ -110,7 +114,7 @@ public class FlashCardDataManager : IFlashCardDataManager
     public void DeleteFlashCard(FlashCard flashCardToDelete, Stack stack)
     {
         var stackId = _stackDataManager.GetStackId(stack);
-        using (var connection = new SqlConnection(_connectionString))
+        using (var connection = new SqlConnection(_configuration.ConnectionString))
         {
             using (var command = connection.CreateCommand())
             {
@@ -131,7 +135,7 @@ public class FlashCardDataManager : IFlashCardDataManager
         var id = 0;
         List<FlashCardDTO> flashCardList = new();
 
-        using (var connection = new SqlConnection(_connectionString))
+        using (var connection = new SqlConnection(_configuration.ConnectionString))
         {
             using (var command = connection.CreateCommand())
             {

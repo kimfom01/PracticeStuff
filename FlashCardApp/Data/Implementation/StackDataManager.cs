@@ -1,4 +1,5 @@
 using System.Data.SqlClient;
+using FlashCardApp.Config;
 using FlashCardApp.DTO;
 using FlashCardApp.Models;
 
@@ -6,16 +7,16 @@ namespace FlashCardApp.Data.Implementation;
 
 public class StackDataManager : IStackDataManager
 {
-    private readonly string _connectionString;
+    private readonly Configuration _configuration;
 
-    public StackDataManager(string connectionString)
+    public StackDataManager(Configuration configuration)
     {
-        _connectionString = connectionString;
+        _configuration = configuration;
     }
 
     public void CreateStackTable()
     {
-        using var connection = new SqlConnection(_connectionString);
+        using var connection = new SqlConnection(_configuration.ConnectionString);
         using var command = connection.CreateCommand();
 
         connection.Open();
@@ -29,7 +30,7 @@ public class StackDataManager : IStackDataManager
 
     public void AddNewStack(Stack newStack)
     {
-        using var connection = new SqlConnection(_connectionString);
+        using var connection = new SqlConnection(_configuration.ConnectionString);
         using var command = connection.CreateCommand();
 
         connection.Open();
@@ -46,7 +47,7 @@ public class StackDataManager : IStackDataManager
 
     public void UpdateStack(Stack oldStack, Stack newStack)
     {
-        using var connection = new SqlConnection(_connectionString);
+        using var connection = new SqlConnection(_configuration.ConnectionString);
         using var command = connection.CreateCommand();
 
         connection.Open();
@@ -65,7 +66,7 @@ public class StackDataManager : IStackDataManager
 
     public void DeleteStack(Stack stackToDelete)
     {
-        using var connection = new SqlConnection(_connectionString);
+        using var connection = new SqlConnection(_configuration.ConnectionString);
         using var command = connection.CreateCommand();
 
         connection.Open();
@@ -84,7 +85,7 @@ public class StackDataManager : IStackDataManager
     {
         List<StackDTO> stackList = new();
 
-        using var connection = new SqlConnection(_connectionString);
+        using var connection = new SqlConnection(_configuration.ConnectionString);
         using var command = connection.CreateCommand();
 
         connection.Open();
@@ -108,7 +109,7 @@ public class StackDataManager : IStackDataManager
     {
         int id = -1;
 
-        using var connection = new SqlConnection(_connectionString);
+        using var connection = new SqlConnection(_configuration.ConnectionString);
         using var command = connection.CreateCommand();
 
         connection.Open();
