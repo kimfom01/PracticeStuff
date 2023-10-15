@@ -1,6 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlashCardApp", "FlashCardApp\FlashCardApp.csproj", "{13A64592-DBDF-49F3-98C8-312CA73CCB65}"
+# 
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleUI", "ConsoleUI\ConsoleUI.csproj", "{13A64592-DBDF-49F3-98C8-312CA73CCB65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{7CBFA59A-0C5B-4558-930C-FE9830EFCC6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{D802F627-486F-4082-9F24-C14BCBC9A076}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +19,16 @@ Global
 		{13A64592-DBDF-49F3-98C8-312CA73CCB65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13A64592-DBDF-49F3-98C8-312CA73CCB65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13A64592-DBDF-49F3-98C8-312CA73CCB65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CBFA59A-0C5B-4558-930C-FE9830EFCC6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CBFA59A-0C5B-4558-930C-FE9830EFCC6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CBFA59A-0C5B-4558-930C-FE9830EFCC6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CBFA59A-0C5B-4558-930C-FE9830EFCC6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D802F627-486F-4082-9F24-C14BCBC9A076}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D802F627-486F-4082-9F24-C14BCBC9A076}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D802F627-486F-4082-9F24-C14BCBC9A076}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D802F627-486F-4082-9F24-C14BCBC9A076}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
