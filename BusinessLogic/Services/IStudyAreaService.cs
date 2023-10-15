@@ -1,7 +1,7 @@
-using FlashCardApp.DTO;
-using FlashCardApp.Models;
+using DataAccess.DTO;
+using DataAccess.Models;
 
-namespace FlashCardApp.Services;
+namespace BusinessLogic.Services;
 
 public interface IStudyAreaService
 {

@@ -1,4 +1,4 @@
-namespace FlashCardApp.Services;
+namespace BusinessLogic.Services;
 
 public interface IStackService
 {

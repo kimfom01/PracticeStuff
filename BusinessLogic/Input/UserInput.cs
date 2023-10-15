@@ -1,4 +1,4 @@
-namespace FlashCardApp.Input;
+namespace BusinessLogic.Input;
 
 public class UserInput
 {

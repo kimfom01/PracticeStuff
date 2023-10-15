@@ -1,9 +1,9 @@
-using FlashCardApp.Data;
-using FlashCardApp.Input;
-using FlashCardApp.Models;
-using FlashCardApp.UI;
+using BusinessLogic.Input;
+using BusinessLogic.UI;
+using DataAccess.Data;
+using DataAccess.Models;
 
-namespace FlashCardApp.Services.Implementation;
+namespace BusinessLogic.Services.Implementation;
 
 public class FlashCardService : IFlashCardService
 {

@@ -1,8 +1,9 @@
+using BusinessLogic.Services;
 using ConsoleTableExt;
-using FlashCardApp.Data;
-using FlashCardApp.Models;
+using DataAccess.Data;
+using DataAccess.Models;
 
-namespace FlashCardApp.UI;
+namespace BusinessLogic.UI;
 
 public class TableVisualizationEngine
 {

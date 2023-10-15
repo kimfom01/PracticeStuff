@@ -1,8 +1,7 @@
-using FlashCardApp.Data;
-using FlashCardApp.Input;
-using FlashCardApp.Services;
+using BusinessLogic.Input;
+using BusinessLogic.Services;
 
-namespace FlashCardApp.UI;
+namespace BusinessLogic.UI;
 
 public class ProgramController
 {

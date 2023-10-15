@@ -1,6 +1,6 @@
-using FlashCardApp.Models;
+using DataAccess.Models;
 
-namespace FlashCardApp.Services;
+namespace BusinessLogic.Services;
 
 public interface IFlashCardService
 {
