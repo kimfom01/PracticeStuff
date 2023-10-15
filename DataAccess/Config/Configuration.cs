@@ -1,6 +1,6 @@
 using System.Configuration;
 
-namespace FlashCardApp.Config;
+namespace DataAccess.Config;
 
 public class Configuration
 {

@@ -1,7 +1,7 @@
-using FlashCardApp.DTO;
-using FlashCardApp.Models;
+using DataAccess.DTO;
+using DataAccess.Models;
 
-namespace FlashCardApp.Data;
+namespace DataAccess.Data;
 
 public interface IStackDataManager
 {

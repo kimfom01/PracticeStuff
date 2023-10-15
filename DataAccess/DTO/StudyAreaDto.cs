@@ -1,4 +1,4 @@
-namespace FlashCardApp.DTO;
+namespace DataAccess.DTO;
 
 public class StudyAreaDto
 {

@@ -1,9 +1,8 @@
-namespace FlashCardApp.Models;
+namespace DataAccess.DTO;
 
-public class FlashCard
+public class FlashCardDTO
 {
     public int Id { get; set; }
-    public int StackId { get; set; }
     public string? Name { get; set; }
     public string? Content { get; set; }
 }

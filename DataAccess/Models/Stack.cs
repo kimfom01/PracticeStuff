@@ -1,4 +1,4 @@
-namespace FlashCardApp.Models;
+namespace DataAccess.Models;
 
 public class Stack
 {

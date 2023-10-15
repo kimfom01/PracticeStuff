@@ -1,9 +1,9 @@
 using System.Data.SqlClient;
-using FlashCardApp.Config;
-using FlashCardApp.DTO;
-using FlashCardApp.Models;
+using DataAccess.Config;
+using DataAccess.DTO;
+using DataAccess.Models;
 
-namespace FlashCardApp.Data.Implementation;
+namespace DataAccess.Data.Implementation;
 
 public class StackDataManager : IStackDataManager
 {

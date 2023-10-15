@@ -1,9 +1,9 @@
 using System.Data.SqlClient;
-using FlashCardApp.Config;
-using FlashCardApp.DTO;
-using FlashCardApp.Models;
+using DataAccess.Config;
+using DataAccess.DTO;
+using DataAccess.Models;
 
-namespace FlashCardApp.Data.Implementation;
+namespace DataAccess.Data.Implementation;
 
 public class FlashCardDataManager : IFlashCardDataManager
 {
@@ -86,7 +86,7 @@ public class FlashCardDataManager : IFlashCardDataManager
         connection.Open();
 
         command.CommandText = """
-                                UPDATE FlashCard " +
+                                UPDATE FlashCard
                                 SET Name = @newFlashCardName
                                 WHERE Name = @oldFlashCardName
                                 AND StackId = @stackId
@@ -150,8 +150,11 @@ public class FlashCardDataManager : IFlashCardDataManager
             using var command = connection.CreateCommand();
             connection.Open();
 
-            command.CommandText = "SELECT * FROM FlashCard " +
-                                  $"WHERE StackId = {stackId}";
+            command.CommandText = """
+                                    SELECT * FROM FlashCard 
+                                    WHERE StackId = @stackId
+                                  """;
+
             command.Parameters.Add(new SqlParameter("@stackId", stackId));
 
             var reader = command.ExecuteReader();
