@@ -1,6 +1,7 @@
 using BusinessLogic.Input;
-using BusinessLogic.UI;
+using BusinessLogic.TableVisualizer;
 using DataAccess.Data;
+using DataAccess.DTO;
 using DataAccess.Models;
 
 namespace BusinessLogic.Services.Implementation;
@@ -9,13 +10,13 @@ public class StackService : IStackService
 {
     private readonly UserInput _input;
     private readonly IStackDataManager _stackDataManager;
-    private readonly TableVisualizationEngine _displayTable;
+    private readonly VisualizationService<StackDTO> _displayTable;
     private readonly IFlashCardService _flashCardService;
 
     public StackService(
         UserInput input,
     IStackDataManager stackDataManager,
-    TableVisualizationEngine displayTable,
+    VisualizationService<StackDTO> displayTable,
     IFlashCardService flashCardService)
     {
         _input = input;
@@ -97,7 +98,8 @@ public class StackService : IStackService
 
     public void UpdateStackName()
     {
-        _displayTable.ViewStacks();
+        var stackList = _stackDataManager.GetStacks();
+        _displayTable.DisplayTable(stackList, columnName: "Lessons", "");
         DisplayUpdateStackMenu();
         var choice = _input.GetChoice();
         while (choice != "back")
@@ -111,7 +113,8 @@ public class StackService : IStackService
             }
             _stackDataManager.UpdateStack(new Stack { Name = choice }, new Stack { Name = newStackName });
 
-            _displayTable.ViewStacks();
+            stackList = _stackDataManager.GetStacks();
+            _displayTable.DisplayTable(stackList, columnName: "Lessons", "");
             DisplayUpdateStackMenu();
             choice = _input.GetChoice();
         }
@@ -128,7 +131,8 @@ public class StackService : IStackService
 
     public void DeleteStack()
     {
-        _displayTable.ViewStacks();
+        var stackList = _stackDataManager.GetStacks();
+        _displayTable.DisplayTable(stackList, columnName: "Lessons", "");
         DisplayDeleteMenu();
         var choice = _input.GetChoice();
 
@@ -136,7 +140,8 @@ public class StackService : IStackService
         {
             _stackDataManager.DeleteStack(new Stack { Name = choice });
 
-            _displayTable.ViewStacks();
+            stackList = _stackDataManager.GetStacks();
+            _displayTable.DisplayTable(stackList, columnName: "Lessons", "");
             DisplayDeleteMenu();
             choice = _input.GetChoice();
         }
@@ -147,7 +152,9 @@ public class StackService : IStackService
     public void ViewStackForFlashCardOperations()
     {
         Console.Clear();
-        _displayTable.ViewStacks();
+
+        var stackList = _stackDataManager.GetStacks();
+        _displayTable.DisplayTable(stackList, columnName: "Lessons", "");
 
         SelectStackToOperateOn();
         Console.Clear();
