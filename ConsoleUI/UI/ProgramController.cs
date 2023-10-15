@@ -1,7 +1,7 @@
 using BusinessLogic.Input;
 using BusinessLogic.Services;
 
-namespace BusinessLogic.UI;
+namespace ConsoleUI.UI;
 
 public class ProgramController
 {

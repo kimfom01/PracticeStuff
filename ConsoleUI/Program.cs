@@ -1,10 +1,12 @@
 ﻿using BusinessLogic.Input;
 using BusinessLogic.Services;
 using BusinessLogic.Services.Implementation;
-using BusinessLogic.UI;
+using BusinessLogic.TableVisualizer;
+using ConsoleUI.UI;
 using DataAccess.Config;
 using DataAccess.Data;
 using DataAccess.Data.Implementation;
+using DataAccess.DTO;
 
 
 Configuration config = new();
@@ -14,10 +16,12 @@ IFlashCardDataManager flashCardDataManager = new FlashCardDataManager(config, st
 IStudyAreaDataManager studyAreaDataManager = new StudyAreaDataManager(config, stackDataManager);
 UserInput input = new();
 
-TableVisualizationEngine tableVisualizationEngine = new(flashCardDataManager, stackDataManager, studyAreaDataManager);
-IFlashCardService flashCardService = new FlashCardService(input, tableVisualizationEngine, flashCardDataManager);
-IStackService stackService = new StackService(input, stackDataManager, tableVisualizationEngine, flashCardService);
-IStudyAreaService studyAreaService = new StudyAreaService(input, tableVisualizationEngine, flashCardDataManager, studyAreaDataManager);
+VisualizationService<FlashCardDTO> flashCardVisualizer = new();
+VisualizationService<StackDTO> stackVisualizer = new();
+VisualizationService<StudyAreaDto> studyAreaVisualizer = new();
+IFlashCardService flashCardService = new FlashCardService(input, flashCardVisualizer, flashCardDataManager);
+IStackService stackService = new StackService(input, stackDataManager, stackVisualizer, flashCardService);
+IStudyAreaService studyAreaService = new StudyAreaService(input, studyAreaVisualizer, flashCardDataManager, studyAreaDataManager, stackVisualizer, stackDataManager);
 
 ProgramController programController = new(input, flashCardService, studyAreaService, stackService);
 

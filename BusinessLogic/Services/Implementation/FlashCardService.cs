@@ -1,6 +1,7 @@
 using BusinessLogic.Input;
-using BusinessLogic.UI;
+using BusinessLogic.TableVisualizer;
 using DataAccess.Data;
+using DataAccess.DTO;
 using DataAccess.Models;
 
 namespace BusinessLogic.Services.Implementation;
@@ -9,11 +10,11 @@ public class FlashCardService : IFlashCardService
 {
     private readonly UserInput _input;
     private readonly IFlashCardDataManager _flashCardDataManager;
-    private readonly TableVisualizationEngine _displayTable;
+    private readonly VisualizationService<FlashCardDTO> _displayTable;
 
     public FlashCardService(
         UserInput input,
-    TableVisualizationEngine displayTable,
+    VisualizationService<FlashCardDTO> displayTable,
     IFlashCardDataManager flashCardDataManager)
     {
         _input = input;
@@ -226,7 +227,8 @@ public class FlashCardService : IFlashCardService
 
     public void ViewFlashCardOfStack(Stack stack)
     {
-        _displayTable.ViewFlashCards(stack);
+        var stackList = _flashCardDataManager.GetFlashCardsOfStack(stack);
+        _displayTable.DisplayTable(stackList, stack.Name);
     }
 
     public void CreateFlashCardTable()

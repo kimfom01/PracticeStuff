@@ -1,5 +1,5 @@
 using BusinessLogic.Input;
-using BusinessLogic.UI;
+using BusinessLogic.TableVisualizer;
 using DataAccess.Data;
 using DataAccess.DTO;
 using DataAccess.Models;
@@ -9,20 +9,26 @@ namespace BusinessLogic.Services.Implementation;
 public class StudyAreaService : IStudyAreaService
 {
     private readonly UserInput _input;
-    private readonly TableVisualizationEngine _displayTable;
+    private readonly VisualizationService<StudyAreaDto> _studyAreaDisplayEngine;
+    private readonly VisualizationService<StackDTO> _stackDisplayEngine;
     private readonly IFlashCardDataManager _flashCardDataManager;
     private readonly IStudyAreaDataManager _studyAreaDataManager;
+    private readonly IStackDataManager _stackDataManager;
 
     public StudyAreaService(
         UserInput input,
-        TableVisualizationEngine displayTable,
+        VisualizationService<StudyAreaDto> studyAreaDisplayEngine,
         IFlashCardDataManager flashCardDataManager,
-        IStudyAreaDataManager studyAreaDataManager)
+        IStudyAreaDataManager studyAreaDataManager,
+        VisualizationService<StackDTO> stackDisplayEngine,
+        IStackDataManager stackDataManager)
     {
         _input = input;
-        _displayTable = displayTable;
+        _studyAreaDisplayEngine = studyAreaDisplayEngine;
         _flashCardDataManager = flashCardDataManager;
         _studyAreaDataManager = studyAreaDataManager;
+        _stackDisplayEngine = stackDisplayEngine;
+        _stackDataManager = stackDataManager;
     }
 
     public void ViewStudyAreaMenu()
@@ -67,7 +73,8 @@ public class StudyAreaService : IStudyAreaService
 
     public void ViewHistory()
     {
-        _displayTable.ViewHistory();
+        var historyList = _studyAreaDataManager.GetScoresHistory();
+        _studyAreaDisplayEngine.DisplayTable(historyList, "History");
 
         Console.WriteLine("Hit Enter to go back");
         Console.ReadLine();
@@ -84,7 +91,8 @@ public class StudyAreaService : IStudyAreaService
     {
         Console.Clear();
 
-        _displayTable.ViewStacks();
+        var stackList = _stackDataManager.GetStacks();
+        _stackDisplayEngine.DisplayTable(stackList, "");
 
         ViewNewLessonMenu();
         var choice = _input.GetInput();
