@@ -1,8 +1,10 @@
+using BusinessLogic.Enums;
 using BusinessLogic.Input;
 using BusinessLogic.TableVisualizer;
 using DataAccess.Data;
 using DataAccess.DTO;
 using DataAccess.Models;
+using Spectre.Console;
 
 namespace BusinessLogic.Services.Implementation;
 
@@ -25,39 +27,41 @@ public class StackService : IStackService
         _flashCardService = flashCardService;
     }
 
-    public void DisplayStackSettingsMenu()
+    public StackSettingsOptions DisplayStackSettingsMenu()
     {
-        Console.WriteLine("SETTINGS\n");
-        Console.WriteLine("create to Create a New Stack");
-        Console.WriteLine("rename to Rename a Stack");
-        Console.WriteLine("delete to Delete a Stack");
-        Console.WriteLine("view to View List of Stacks");
-        Console.WriteLine("back to Go Back");
-        Console.WriteLine("\nType your choice and hit Enter");
-        Console.Write("Your choice? ");
+        var choice = AnsiConsole.Prompt(new SelectionPrompt<StackSettingsOptions>()
+            .Title("Select an option ([grey]Move up and down and hit enter to select[/])")
+            .AddChoices(
+                StackSettingsOptions.View,
+                StackSettingsOptions.Create,
+                StackSettingsOptions.Edit,
+                StackSettingsOptions.Delete,
+                StackSettingsOptions.Cancel));
+
+        return choice;
     }
 
     public void ManageStacksSettings()
     {
         Console.Clear();
 
-        DisplayStackSettingsMenu();
-        var choice = _input.GetChoice();
 
-        while (choice != "back")
+        var choice = DisplayStackSettingsMenu();
+
+        while (choice != StackSettingsOptions.Cancel)
         {
             switch (choice)
             {
-                case "create":
+                case StackSettingsOptions.Create:
                     GetStackToAdd();
                     break;
-                case "rename":
+                case StackSettingsOptions.Edit:
                     UpdateStackName();
                     break;
-                case "delete":
+                case StackSettingsOptions.Delete:
                     DeleteStack();
                     break;
-                case "view":
+                case StackSettingsOptions.View:
                     ViewStackForFlashCardOperations();
                     break;
                 default:
@@ -66,8 +70,7 @@ public class StackService : IStackService
                     break;
             }
 
-            DisplayStackSettingsMenu();
-            choice = _input.GetChoice();
+            choice = DisplayStackSettingsMenu();
         }
 
         Console.Clear();

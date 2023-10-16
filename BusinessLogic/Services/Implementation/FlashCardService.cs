@@ -1,8 +1,10 @@
+using BusinessLogic.Enums;
 using BusinessLogic.Input;
 using BusinessLogic.TableVisualizer;
 using DataAccess.Data;
 using DataAccess.DTO;
 using DataAccess.Models;
+using Spectre.Console;
 
 namespace BusinessLogic.Services.Implementation;
 
@@ -22,37 +24,39 @@ public class FlashCardService : IFlashCardService
         _flashCardDataManager = flashCardDataManager;
     }
 
-    public void ViewFlashCardSettingsMenu()
+    public FlashCardSettingsOptions GetFlashCardSettingsChoice()
     {
-        Console.WriteLine("view to View FlashCards of the Stack");
-        Console.WriteLine("add to Add a New FlashCard");
-        Console.WriteLine("edit to Edit a FlashCard");
-        Console.WriteLine("delete to Delete a FlashCard");
-        Console.WriteLine("back to Go Back");
-        Console.WriteLine("\nType your choice and hit Enter");
-        Console.Write("Your choice? ");
+        var choice = AnsiConsole.Prompt(new SelectionPrompt<FlashCardSettingsOptions>()
+            .Title("Select an option ([grey]Move up and down and hit enter to select[/])")
+            .AddChoices(
+                FlashCardSettingsOptions.View,
+                FlashCardSettingsOptions.Add,
+                FlashCardSettingsOptions.Edit,
+                FlashCardSettingsOptions.Delete,
+                FlashCardSettingsOptions.Cancel));
+
+        return choice;
     }
 
     public void ManageFlashCardSettings(Stack stack)
     {
         Console.Clear();
-        ViewFlashCardSettingsMenu();
-        var choice = _input.GetChoice();
+        var choice = GetFlashCardSettingsChoice();
 
-        while (choice != "back")
+        while (choice != FlashCardSettingsOptions.Cancel)
         {
             switch (choice)
             {
-                case "view":
+                case FlashCardSettingsOptions.View:
                     ViewFlashCards(stack);
                     break;
-                case "add":
+                case FlashCardSettingsOptions.Add:
                     AddFlashCardToStack(stack);
                     break;
-                case "edit":
+                case FlashCardSettingsOptions.Edit:
                     EditFlashCard(stack);
                     break;
-                case "delete":
+                case FlashCardSettingsOptions.Delete:
                     DeleteFlashCard(stack);
                     break;
                 default:
@@ -61,8 +65,7 @@ public class FlashCardService : IFlashCardService
                     break;
             }
 
-            ViewFlashCardSettingsMenu();
-            choice = _input.GetChoice();
+            choice = GetFlashCardSettingsChoice();
         }
 
         Console.Clear();
@@ -100,33 +103,36 @@ public class FlashCardService : IFlashCardService
         Console.Clear();
     }
 
-    public void ViewEditFlashCardMenu()
+    public EditFlashCardOptions GetEditFlashCardChoice()
     {
-        Console.WriteLine("all to Edit Front and Back");
-        Console.WriteLine("edit front to Edit Front");
-        Console.WriteLine("edit back to Edit Back");
-        Console.WriteLine("back to Go Back");
-        Console.WriteLine("\nType your choice and hit Enter");
-        Console.Write("Your choice? ");
+        var choice = AnsiConsole.Prompt(new SelectionPrompt<EditFlashCardOptions>()
+            .Title("Select an option ([grey]Move up and down and hit enter to select[/])")
+            .AddChoices(
+                EditFlashCardOptions.All,
+                EditFlashCardOptions.Front,
+                EditFlashCardOptions.Back,
+                EditFlashCardOptions.Cancel));
+
+        return choice;
     }
 
     public void EditFlashCard(Stack stack)
     {
         Console.Clear();
-        ViewEditFlashCardMenu();
-        var choice = _input.GetChoice();
 
-        while (choice != "back")
+        var choice = GetEditFlashCardChoice();
+
+        while (choice != EditFlashCardOptions.Cancel)
         {
             switch (choice)
             {
-                case "all":
+                case EditFlashCardOptions.All:
                     EditAll(stack);
                     break;
-                case "edit front":
+                case EditFlashCardOptions.Front:
                     EditFlashCardName(stack);
                     break;
-                case "edit back":
+                case EditFlashCardOptions.Back:
                     EditBack(stack);
                     break;
                 default:
@@ -135,8 +141,7 @@ public class FlashCardService : IFlashCardService
                     break;
             }
 
-            ViewEditFlashCardMenu();
-            choice = _input.GetChoice();
+            choice = GetEditFlashCardChoice();
         }
 
         Console.Clear();

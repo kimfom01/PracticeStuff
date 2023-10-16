@@ -1,14 +1,15 @@
+using BusinessLogic.Enums;
 using DataAccess.Models;
 
 namespace BusinessLogic.Services;
 
 public interface IFlashCardService
 {
-    void ViewFlashCardSettingsMenu();
+    FlashCardSettingsOptions GetFlashCardSettingsChoice();
     void ManageFlashCardSettings(Stack stack);
     void ViewFlashCards(Stack stack);
     void AddFlashCardToStack(Stack stack);
-    void ViewEditFlashCardMenu();
+    EditFlashCardOptions GetEditFlashCardChoice();
     void EditFlashCard(Stack stack);
     void EditAll(Stack stack);
     void EditFlashCardName(Stack stack);

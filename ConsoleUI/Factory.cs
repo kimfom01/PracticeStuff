@@ -78,7 +78,6 @@ public static class Factory
     public static ProgramController CreateProgramController()
     {
         return new ProgramController(
-            CreateUserInput(),
             CreateFlashCardService(),
             CreateStudyAreaService(),
             CreateStackService());

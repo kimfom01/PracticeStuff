@@ -1,3 +1,4 @@
+using BusinessLogic.Enums;
 using DataAccess.DTO;
 using DataAccess.Models;
 
@@ -5,7 +6,7 @@ namespace BusinessLogic.Services;
 
 public interface IStudyAreaService
 {
-    void ViewStudyAreaMenu();
+    StudyAreaOptions GetStudyAreaChoice();
     void ManageStudyArea();
     void ViewHistory();
     void ViewNewLessonMenu();

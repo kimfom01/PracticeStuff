@@ -1,8 +1,10 @@
+using BusinessLogic.Enums;
+
 namespace BusinessLogic.Services;
 
 public interface IStackService
 {
-    void DisplayStackSettingsMenu();
+    StackSettingsOptions DisplayStackSettingsMenu();
     void ManageStacksSettings();
     void GetStackToAdd();
     void DisplayUpdateStackMenu();

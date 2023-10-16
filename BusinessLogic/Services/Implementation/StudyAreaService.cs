@@ -1,8 +1,10 @@
+using BusinessLogic.Enums;
 using BusinessLogic.Input;
 using BusinessLogic.TableVisualizer;
 using DataAccess.Data;
 using DataAccess.DTO;
 using DataAccess.Models;
+using Spectre.Console;
 
 namespace BusinessLogic.Services.Implementation;
 
@@ -31,31 +33,32 @@ public class StudyAreaService : IStudyAreaService
         _stackDataManager = stackDataManager;
     }
 
-    public void ViewStudyAreaMenu()
+    public StudyAreaOptions GetStudyAreaChoice()
     {
-        Console.WriteLine("STUDY AREA\n");
-        Console.WriteLine("new to Start a New Lesson");
-        Console.WriteLine("history to View History");
-        Console.WriteLine("back to Go Back");
-        Console.WriteLine("\nType your choice and hit Enter");
-        Console.Write("Your choice? ");
+        var choice = AnsiConsole.Prompt(new SelectionPrompt<StudyAreaOptions>()
+            .Title("Select an option ([grey]Move up and down and hit enter to select[/])")
+            .AddChoices(
+                StudyAreaOptions.New,
+                StudyAreaOptions.History,
+                StudyAreaOptions.Cancel));
+
+        return choice;
     }
 
     public void ManageStudyArea()
     {
         Console.Clear();
 
-        ViewStudyAreaMenu();
-        var choice = _input.GetChoice();
+        var choice = GetStudyAreaChoice();
 
-        while (choice != "back")
+        while (choice != StudyAreaOptions.Cancel)
         {
             switch (choice)
             {
-                case "new":
+                case StudyAreaOptions.New:
                     StartLesson();
                     break;
-                case "history":
+                case StudyAreaOptions.History:
                     ViewHistory();
                     break;
                 default:
@@ -64,8 +67,7 @@ public class StudyAreaService : IStudyAreaService
                     break;
             }
 
-            ViewStudyAreaMenu();
-            choice = _input.GetChoice();
+            choice = GetStudyAreaChoice();
         }
 
         Console.Clear();
@@ -92,7 +94,7 @@ public class StudyAreaService : IStudyAreaService
         Console.Clear();
 
         var stackList = _stackDataManager.GetStacks();
-        _stackDisplayEngine.DisplayTable(stackList, "");
+        _stackDisplayEngine.DisplayTable(stackList, "", "Lessons");
 
         ViewNewLessonMenu();
         var choice = _input.GetInput();

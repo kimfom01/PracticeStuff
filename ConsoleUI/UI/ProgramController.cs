@@ -1,5 +1,6 @@
-using BusinessLogic.Input;
+using BusinessLogic.Enums;
 using BusinessLogic.Services;
+using Spectre.Console;
 
 namespace ConsoleUI.UI;
 
@@ -8,30 +9,27 @@ public class ProgramController
     private readonly IStackService _stackService;
     private readonly IFlashCardService _flashCardService;
     private readonly IStudyAreaService _studyAreaService;
-    private readonly UserInput _input;
 
     public ProgramController(
-        UserInput input,
         IFlashCardService flashCardService,
         IStudyAreaService studyAreaService,
         IStackService stackService)
     {
-        _input = input;
         _flashCardService = flashCardService;
         _studyAreaService = studyAreaService;
         _stackService = stackService;
     }
 
-    private void ViewMainMenu()
+    private MainMenuOptions ViewMainMenu()
     {
-        Console.WriteLine("MAIN MENU");
-        Console.WriteLine("-------------------------------------");
-        Console.WriteLine("What would you like to do?\n");
-        Console.WriteLine("study to go to Study Area");
-        Console.WriteLine("settings to go to Settings");
-        Console.WriteLine("exit to End Program");
-        Console.WriteLine("\nType your choice and hit Enter");
-        Console.Write("Your choice? ");
+        var choice = AnsiConsole.Prompt(new SelectionPrompt<MainMenuOptions>()
+            .Title("Select an option ([grey]Move up and down and hit enter to select[/])")
+            .AddChoices(
+                MainMenuOptions.Study,
+                MainMenuOptions.Settings,
+                MainMenuOptions.Exit));
+
+        return choice;
     }
 
     private void CreateTables()
@@ -45,17 +43,16 @@ public class ProgramController
     {
         CreateTables();
 
-        ViewMainMenu();
-        var choice = _input.GetChoice();
+        var choice = ViewMainMenu();
 
-        while (choice != "exit")
+        while (choice != MainMenuOptions.Exit)
         {
             switch (choice)
             {
-                case "study":
+                case MainMenuOptions.Study:
                     _studyAreaService.ManageStudyArea();
                     break;
-                case "settings":
+                case MainMenuOptions.Settings:
                     _stackService.ManageStacksSettings();
                     break;
                 default:
@@ -64,8 +61,7 @@ public class ProgramController
                     break;
             }
 
-            ViewMainMenu();
-            choice = _input.GetChoice();
+            choice = ViewMainMenu();
         }
     }
 }
