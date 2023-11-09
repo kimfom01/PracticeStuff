@@ -1,4 +1,4 @@
-# FlashCardApp
+# Practice Stuff
 
 [![Build and Validation Tests](https://github.com/kimfom01/FlashCardApp/actions/workflows/dotnet.yml/badge.svg)](https://github.com/kimfom01/FlashCardApp/actions/workflows/dotnet.yml)
 
