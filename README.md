@@ -1,6 +1,6 @@
-# FlashCardApp
+# Practice Stuff
 
-[![Build and Validation Tests](https://github.com/kimfom01/FlashCardApp/actions/workflows/dotnet.yml/badge.svg)](https://github.com/kimfom01/FlashCardApp/actions/workflows/dotnet.yml)
+[![Build and Validation Tests](https://github.com/kimfom01/PracticeStuff/actions/workflows/dotnet.yml/badge.svg)](https://github.com/kimfom01/PracticeStuff/actions/workflows/dotnet.yml)
 
 ## Requirements  
 
