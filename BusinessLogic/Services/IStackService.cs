@@ -1,17 +1,12 @@
-using BusinessLogic.Enums;
+using DataAccess.Models;
 
 namespace BusinessLogic.Services;
 
 public interface IStackService
 {
-    StackSettingsOptions DisplayStackSettingsMenu();
-    Task ManageStacksSettings();
-    Task GetStackToAdd();
-    void DisplayUpdateStackMenu();
-    Task UpdateStackName();
-    void DisplayDeleteMenu();
-    Task DeleteStack();
-    Task ViewStackForFlashCardOperations();
-    void SelectStackToOperateOn();
-    Task CreateStackTable();
+    Task<Stack?> AddStack(Stack stack);
+    Task<int> UpdateStack(Stack stack);
+    Task<int> DeleteStack(int id);
+    Task<IEnumerable<Stack>> GetStacks();
+    Task<Stack?> GetStack(int id);
 }
