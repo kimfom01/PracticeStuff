@@ -32,16 +32,16 @@ public class ProgramController
         return choice;
     }
 
-    private void CreateTables()
+    private async Task CreateTables()
     {
-        _stackService.CreateStackTable();
-        _flashCardService.CreateFlashCardTable();
-        _studyAreaService.CreateStudyAreaTable();
+        await _stackService.CreateStackTable();
+        await _flashCardService.CreateFlashCardTable();
+        await _studyAreaService.CreateStudyAreaTable();
     }
 
-    public void StartProgram()
+    public async Task StartProgram()
     {
-        CreateTables();
+        await CreateTables();
 
         var choice = ViewMainMenu();
 
@@ -50,10 +50,10 @@ public class ProgramController
             switch (choice)
             {
                 case MainMenuOptions.Study:
-                    _studyAreaService.ManageStudyArea();
+                    await _studyAreaService.ManageStudyArea();
                     break;
                 case MainMenuOptions.Settings:
-                    _stackService.ManageStacksSettings();
+                    await _stackService.ManageStacksSettings();
                     break;
                 default:
                     Console.Clear();

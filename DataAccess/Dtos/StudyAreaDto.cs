@@ -1,4 +1,4 @@
-namespace DataAccess.DTO;
+namespace DataAccess.Dtos;
 
 public class StudyAreaDto
 {

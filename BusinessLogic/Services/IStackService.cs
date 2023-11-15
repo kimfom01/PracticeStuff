@@ -5,13 +5,13 @@ namespace BusinessLogic.Services;
 public interface IStackService
 {
     StackSettingsOptions DisplayStackSettingsMenu();
-    void ManageStacksSettings();
-    void GetStackToAdd();
+    Task ManageStacksSettings();
+    Task GetStackToAdd();
     void DisplayUpdateStackMenu();
-    void UpdateStackName();
+    Task UpdateStackName();
     void DisplayDeleteMenu();
-    void DeleteStack();
-    void ViewStackForFlashCardOperations();
+    Task DeleteStack();
+    Task ViewStackForFlashCardOperations();
     void SelectStackToOperateOn();
-    void CreateStackTable();
+    Task CreateStackTable();
 }

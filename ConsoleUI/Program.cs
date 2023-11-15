@@ -2,4 +2,4 @@
 
 var programController = Factory.CreateProgramController();
 
-programController.StartProgram();
+await programController.StartProgram();

@@ -1,6 +1,6 @@
-namespace DataAccess.DTO;
+namespace DataAccess.Dtos;
 
-public class FlashCardDTO
+public class FlashCardDto
 {
     public int Id { get; set; }
     public string? Name { get; set; }

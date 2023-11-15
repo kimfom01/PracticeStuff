@@ -1,9 +1,9 @@
 using BusinessLogic.Enums;
 using BusinessLogic.Input;
 using BusinessLogic.TableVisualizer;
-using DataAccess.Data;
-using DataAccess.DTO;
+using DataAccess.Dtos;
 using DataAccess.Models;
+using DataAccess.Repositories;
 using Spectre.Console;
 
 namespace BusinessLogic.Services.Implementation;
@@ -11,17 +11,17 @@ namespace BusinessLogic.Services.Implementation;
 public class FlashCardService : IFlashCardService
 {
     private readonly UserInput _input;
-    private readonly IFlashCardDataManager _flashCardDataManager;
-    private readonly VisualizationService<FlashCardDTO> _displayTable;
+    private readonly IFlashCardRepository _flashCardRepository;
+    private readonly VisualizationService<FlashCardDto> _displayTable;
 
     public FlashCardService(
         UserInput input,
-    VisualizationService<FlashCardDTO> displayTable,
-    IFlashCardDataManager flashCardDataManager)
+        VisualizationService<FlashCardDto> displayTable,
+        IFlashCardRepository flashCardRepository)
     {
         _input = input;
         _displayTable = displayTable;
-        _flashCardDataManager = flashCardDataManager;
+        _flashCardRepository = flashCardRepository;
     }
 
     public FlashCardSettingsOptions GetFlashCardSettingsChoice()
@@ -38,7 +38,7 @@ public class FlashCardService : IFlashCardService
         return choice;
     }
 
-    public void ManageFlashCardSettings(Stack stack)
+    public async Task ManageFlashCardSettings(Stack stack)
     {
         Console.Clear();
         var choice = GetFlashCardSettingsChoice();
@@ -48,16 +48,16 @@ public class FlashCardService : IFlashCardService
             switch (choice)
             {
                 case FlashCardSettingsOptions.View:
-                    ViewFlashCards(stack);
+                    await ViewFlashCards(stack);
                     break;
                 case FlashCardSettingsOptions.Add:
-                    AddFlashCardToStack(stack);
+                    await AddFlashCardToStack(stack);
                     break;
                 case FlashCardSettingsOptions.Edit:
-                    EditFlashCard(stack);
+                    await EditFlashCard(stack);
                     break;
                 case FlashCardSettingsOptions.Delete:
-                    DeleteFlashCard(stack);
+                    await DeleteFlashCard(stack);
                     break;
                 default:
                     Console.Clear();
@@ -71,18 +71,18 @@ public class FlashCardService : IFlashCardService
         Console.Clear();
     }
 
-    public void ViewFlashCards(Stack stack)
+    public async Task ViewFlashCards(Stack stack)
     {
         Console.Clear();
 
-        ViewFlashCardOfStack(stack);
+        await ViewFlashCardOfStack(stack);
 
         Console.WriteLine("Hit Enter to return to previous menu.");
         Console.ReadLine();
         Console.Clear();
     }
 
-    public void AddFlashCardToStack(Stack stack)
+    public async Task AddFlashCardToStack(Stack stack)
     {
         Console.Clear();
 
@@ -99,7 +99,7 @@ public class FlashCardService : IFlashCardService
 
         var flashcard = new FlashCard { Name = name, Content = content };
 
-        _flashCardDataManager.AddNewFlashCard(flashcard, stack);
+        await _flashCardRepository.AddNewFlashCard(flashcard, stack);
         Console.Clear();
     }
 
@@ -116,7 +116,7 @@ public class FlashCardService : IFlashCardService
         return choice;
     }
 
-    public void EditFlashCard(Stack stack)
+    public async Task EditFlashCard(Stack stack)
     {
         Console.Clear();
 
@@ -127,13 +127,13 @@ public class FlashCardService : IFlashCardService
             switch (choice)
             {
                 case EditFlashCardOptions.All:
-                    EditAll(stack);
+                    await EditAll(stack);
                     break;
                 case EditFlashCardOptions.Front:
-                    EditFlashCardName(stack);
+                    await EditFlashCardName(stack);
                     break;
                 case EditFlashCardOptions.Back:
-                    EditBack(stack);
+                    await EditBack(stack);
                     break;
                 default:
                     Console.Clear();
@@ -147,9 +147,9 @@ public class FlashCardService : IFlashCardService
         Console.Clear();
     }
 
-    public void EditAll(Stack stack)
+    public async Task EditAll(Stack stack)
     {
-        ViewFlashCardOfStack(stack);
+        await ViewFlashCardOfStack(stack);
         Console.Write("Enter name of FlashCard to edit or back to cancel: ");
         var name = _input.GetChoice();
         if (name.ToLower() == "back")
@@ -167,13 +167,13 @@ public class FlashCardService : IFlashCardService
         var oldFlashcard = new FlashCard { Name = name };
         var newFlashCard = new FlashCard { Name = newName, Content = newContent };
 
-        _flashCardDataManager.UpdateFlashCard(oldFlashcard, newFlashCard, stack);
+        await _flashCardRepository.UpdateFlashCard(oldFlashcard, newFlashCard, stack);
         Console.Clear();
     }
 
-    public void EditFlashCardName(Stack stack)
+    public async Task EditFlashCardName(Stack stack)
     {
-        ViewFlashCardOfStack(stack);
+        await ViewFlashCardOfStack(stack);
         Console.Write("Enter name of FlashCard to edit or back to cancel: ");
         var name = _input.GetChoice();
         if (name.ToLower() == "back")
@@ -188,13 +188,13 @@ public class FlashCardService : IFlashCardService
         var oldFlashcard = new FlashCard { Name = name };
         var newFlashCard = new FlashCard { Name = newName };
 
-        _flashCardDataManager.UpdateFlashCardName(oldFlashcard, newFlashCard, stack);
+        await _flashCardRepository.UpdateFlashCardName(oldFlashcard, newFlashCard, stack);
         Console.Clear();
     }
 
-    public void EditBack(Stack stack)
+    public async Task EditBack(Stack stack)
     {
-        ViewFlashCardOfStack(stack);
+        await ViewFlashCardOfStack(stack);
         Console.Write("Enter name of FlashCard to edit or back to cancel: ");
         var name = _input.GetChoice();
         if (name.ToLower() == "back")
@@ -209,13 +209,13 @@ public class FlashCardService : IFlashCardService
         var oldFlashcard = new FlashCard { Name = name };
         var newFlashCard = new FlashCard { Content = newContent };
 
-        _flashCardDataManager.UpdateFlashCardContent(oldFlashcard, newFlashCard, stack);
+        await _flashCardRepository.UpdateFlashCardContent(oldFlashcard, newFlashCard, stack);
         Console.Clear();
     }
 
-    public void DeleteFlashCard(Stack stack)
+    public async Task DeleteFlashCard(Stack stack)
     {
-        ViewFlashCardOfStack(stack);
+        await ViewFlashCardOfStack(stack);
         Console.Write("Enter name of FlashCard to delete or back to cancel: ");
         var name = _input.GetChoice();
         if (name.ToLower() == "back")
@@ -226,18 +226,18 @@ public class FlashCardService : IFlashCardService
 
         var flashCard = new FlashCard { Name = name };
 
-        _flashCardDataManager.DeleteFlashCard(flashCard, stack);
+        await _flashCardRepository.DeleteFlashCard(flashCard, stack);
         Console.Clear();
     }
 
-    public void ViewFlashCardOfStack(Stack stack)
+    public async Task ViewFlashCardOfStack(Stack stack)
     {
-        var stackList = _flashCardDataManager.GetFlashCardsOfStack(stack);
-        _displayTable.DisplayTable(stackList, stack.Name);
+        var stackList = await _flashCardRepository.GetFlashCardsOfStack(stack);
+        _displayTable.DisplayTable(stackList.ToList(), stack.Name);
     }
 
-    public void CreateFlashCardTable()
+    public async Task CreateFlashCardTable()
     {
-        _flashCardDataManager.CreateFlashCardTable();
+        await _flashCardRepository.CreateFlashCardTable();
     }
 }

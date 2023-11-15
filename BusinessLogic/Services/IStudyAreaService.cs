@@ -1,5 +1,5 @@
 using BusinessLogic.Enums;
-using DataAccess.DTO;
+using DataAccess.Dtos;
 using DataAccess.Models;
 
 namespace BusinessLogic.Services;
@@ -7,11 +7,11 @@ namespace BusinessLogic.Services;
 public interface IStudyAreaService
 {
     StudyAreaOptions GetStudyAreaChoice();
-    void ManageStudyArea();
-    void ViewHistory();
+    Task ManageStudyArea();
+    Task ViewHistory();
     void ViewNewLessonMenu();
-    void StartLesson();
-    int PlayLessonLoop(List<FlashCardDTO> flashCards);
-    void SaveScore(StudyArea studyArea, Stack stack);
-    void CreateStudyAreaTable();
+    Task StartLesson();
+    int PlayLessonLoop(IEnumerable<FlashCardDto> flashCards);
+    Task SaveScore(StudyArea studyArea, Stack stack);
+    Task CreateStudyAreaTable();
 }
