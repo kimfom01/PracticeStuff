@@ -6,15 +6,15 @@ namespace BusinessLogic.Services;
 public interface IFlashCardService
 {
     FlashCardSettingsOptions GetFlashCardSettingsChoice();
-    void ManageFlashCardSettings(Stack stack);
-    void ViewFlashCards(Stack stack);
-    void AddFlashCardToStack(Stack stack);
+    Task ManageFlashCardSettings(Stack stack);
+    Task ViewFlashCards(Stack stack);
+    Task AddFlashCardToStack(Stack stack);
     EditFlashCardOptions GetEditFlashCardChoice();
-    void EditFlashCard(Stack stack);
-    void EditAll(Stack stack);
-    void EditFlashCardName(Stack stack);
-    void EditBack(Stack stack);
-    void DeleteFlashCard(Stack stack);
-    void ViewFlashCardOfStack(Stack stack);
-    void CreateFlashCardTable();
+    Task EditFlashCard(Stack stack);
+    Task EditAll(Stack stack);
+    Task EditFlashCardName(Stack stack);
+    Task EditBack(Stack stack);
+    Task DeleteFlashCard(Stack stack);
+    Task ViewFlashCardOfStack(Stack stack);
+    Task CreateFlashCardTable();
 }

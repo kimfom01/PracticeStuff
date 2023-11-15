@@ -1,9 +1,9 @@
 using BusinessLogic.Enums;
 using BusinessLogic.Input;
 using BusinessLogic.TableVisualizer;
-using DataAccess.Data;
-using DataAccess.DTO;
+using DataAccess.Dtos;
 using DataAccess.Models;
+using DataAccess.Repositories;
 using Spectre.Console;
 
 namespace BusinessLogic.Services.Implementation;
@@ -12,25 +12,25 @@ public class StudyAreaService : IStudyAreaService
 {
     private readonly UserInput _input;
     private readonly VisualizationService<StudyAreaDto> _studyAreaDisplayEngine;
-    private readonly VisualizationService<StackDTO> _stackDisplayEngine;
-    private readonly IFlashCardDataManager _flashCardDataManager;
-    private readonly IStudyAreaDataManager _studyAreaDataManager;
-    private readonly IStackDataManager _stackDataManager;
+    private readonly VisualizationService<StackDto> _stackDisplayEngine;
+    private readonly IFlashCardRepository _flashCardRepository;
+    private readonly IStudyAreaRepository _studyAreaRepository;
+    private readonly IStackRepository _stackRepository;
 
     public StudyAreaService(
         UserInput input,
         VisualizationService<StudyAreaDto> studyAreaDisplayEngine,
-        IFlashCardDataManager flashCardDataManager,
-        IStudyAreaDataManager studyAreaDataManager,
-        VisualizationService<StackDTO> stackDisplayEngine,
-        IStackDataManager stackDataManager)
+        IFlashCardRepository flashCardRepository,
+        IStudyAreaRepository studyAreaRepository,
+        VisualizationService<StackDto> stackDisplayEngine,
+        IStackRepository stackRepository)
     {
         _input = input;
         _studyAreaDisplayEngine = studyAreaDisplayEngine;
-        _flashCardDataManager = flashCardDataManager;
-        _studyAreaDataManager = studyAreaDataManager;
+        _flashCardRepository = flashCardRepository;
+        _studyAreaRepository = studyAreaRepository;
         _stackDisplayEngine = stackDisplayEngine;
-        _stackDataManager = stackDataManager;
+        _stackRepository = stackRepository;
     }
 
     public StudyAreaOptions GetStudyAreaChoice()
@@ -45,7 +45,7 @@ public class StudyAreaService : IStudyAreaService
         return choice;
     }
 
-    public void ManageStudyArea()
+    public async Task ManageStudyArea()
     {
         Console.Clear();
 
@@ -56,10 +56,10 @@ public class StudyAreaService : IStudyAreaService
             switch (choice)
             {
                 case StudyAreaOptions.New:
-                    StartLesson();
+                    await StartLesson();
                     break;
                 case StudyAreaOptions.History:
-                    ViewHistory();
+                    await ViewHistory();
                     break;
                 default:
                     Console.Clear();
@@ -73,10 +73,10 @@ public class StudyAreaService : IStudyAreaService
         Console.Clear();
     }
 
-    public void ViewHistory()
+    public async Task ViewHistory()
     {
-        var historyList = _studyAreaDataManager.GetScoresHistory();
-        _studyAreaDisplayEngine.DisplayTable(historyList, "History");
+        var historyList = await _studyAreaRepository.GetScoresHistory();
+        _studyAreaDisplayEngine.DisplayTable(historyList.ToList(), "History");
 
         Console.WriteLine("Hit Enter to go back");
         Console.ReadLine();
@@ -89,12 +89,12 @@ public class StudyAreaService : IStudyAreaService
         Console.Write("Your choice? ");
     }
 
-    public void StartLesson()
+    public async Task StartLesson()
     {
         Console.Clear();
 
-        var stackList = _stackDataManager.GetStacks();
-        _stackDisplayEngine.DisplayTable(stackList, "", "Lessons");
+        var stackList = await _stackRepository.GetStacks();
+        _stackDisplayEngine.DisplayTable(stackList.ToList(), "", "Lessons");
 
         ViewNewLessonMenu();
         var choice = _input.GetInput();
@@ -106,7 +106,7 @@ public class StudyAreaService : IStudyAreaService
         }
 
         var stack = new Stack { Name = choice };
-        var flashCards = _flashCardDataManager.GetFlashCardsOfStack(stack);
+        var flashCards = await _flashCardRepository.GetFlashCardsOfStack(stack);
 
         var score = PlayLessonLoop(flashCards);
 
@@ -116,12 +116,12 @@ public class StudyAreaService : IStudyAreaService
         Console.ReadLine();
 
         var studyArea = new StudyArea { Score = score };
-        SaveScore(studyArea, stack);
+        await SaveScore(studyArea, stack);
 
         Console.Clear();
     }
 
-    public int PlayLessonLoop(List<FlashCardDTO> flashCards)
+    public int PlayLessonLoop(IEnumerable<FlashCardDto> flashCards)
     {
         var score = 0;
         foreach (var card in flashCards)
@@ -132,10 +132,10 @@ public class StudyAreaService : IStudyAreaService
             Console.Write("Your answer: ");
             var answer = _input.GetInput();
 
-            if (answer.ToLower() != card?.Content?.ToLower())
+            if (answer.ToLower() != card.Content?.ToLower())
             {
                 Console.WriteLine("Incorrect!");
-                Console.WriteLine("Correct answer is " + card?.Content);
+                Console.WriteLine("Correct answer is " + card.Content);
                 Console.Write("Press any key to continue...");
                 Console.ReadLine();
                 continue;
@@ -150,13 +150,13 @@ public class StudyAreaService : IStudyAreaService
         return score;
     }
 
-    public void SaveScore(StudyArea studyArea, Stack stack)
+    public async Task SaveScore(StudyArea studyArea, Stack stack)
     {
-        _studyAreaDataManager.SaveScore(studyArea, stack);
+        await _studyAreaRepository.SaveScore(studyArea, stack);
     }
 
-    public void CreateStudyAreaTable()
+    public async Task CreateStudyAreaTable()
     {
-        _studyAreaDataManager.CreateStudyAreaTable();
+        await _studyAreaRepository.CreateStudyAreaTable();
     }
 }

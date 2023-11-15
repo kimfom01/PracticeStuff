@@ -1,9 +1,9 @@
 using BusinessLogic.Enums;
 using BusinessLogic.Input;
 using BusinessLogic.TableVisualizer;
-using DataAccess.Data;
-using DataAccess.DTO;
+using DataAccess.Dtos;
 using DataAccess.Models;
+using DataAccess.Repositories;
 using Spectre.Console;
 
 namespace BusinessLogic.Services.Implementation;
@@ -11,18 +11,18 @@ namespace BusinessLogic.Services.Implementation;
 public class StackService : IStackService
 {
     private readonly UserInput _input;
-    private readonly IStackDataManager _stackDataManager;
-    private readonly VisualizationService<StackDTO> _displayTable;
+    private readonly IStackRepository _stackRepository;
+    private readonly VisualizationService<StackDto> _displayTable;
     private readonly IFlashCardService _flashCardService;
 
     public StackService(
         UserInput input,
-    IStackDataManager stackDataManager,
-    VisualizationService<StackDTO> displayTable,
+    IStackRepository stackRepository,
+    VisualizationService<StackDto> displayTable,
     IFlashCardService flashCardService)
     {
         _input = input;
-        _stackDataManager = stackDataManager;
+        _stackRepository = stackRepository;
         _displayTable = displayTable;
         _flashCardService = flashCardService;
     }
@@ -41,11 +41,10 @@ public class StackService : IStackService
         return choice;
     }
 
-    public void ManageStacksSettings()
+    public async Task ManageStacksSettings()
     {
         Console.Clear();
-
-
+        
         var choice = DisplayStackSettingsMenu();
 
         while (choice != StackSettingsOptions.Cancel)
@@ -53,16 +52,16 @@ public class StackService : IStackService
             switch (choice)
             {
                 case StackSettingsOptions.Create:
-                    GetStackToAdd();
+                    await GetStackToAdd();
                     break;
                 case StackSettingsOptions.Edit:
-                    UpdateStackName();
+                    await UpdateStackName();
                     break;
                 case StackSettingsOptions.Delete:
-                    DeleteStack();
+                    await DeleteStack();
                     break;
                 case StackSettingsOptions.View:
-                    ViewStackForFlashCardOperations();
+                    await ViewStackForFlashCardOperations();
                     break;
                 default:
                     Console.Clear();
@@ -76,7 +75,7 @@ public class StackService : IStackService
         Console.Clear();
     }
 
-    public void GetStackToAdd()
+    public async Task GetStackToAdd()
     {
         Console.Clear();
 
@@ -88,7 +87,7 @@ public class StackService : IStackService
             return;
         }
 
-        _stackDataManager.AddNewStack(new Stack { Name = name });
+        await _stackRepository.AddNewStack(new Stack { Name = name });
         Console.Clear();
     }
 
@@ -99,10 +98,10 @@ public class StackService : IStackService
         Console.Write("\nYour choice? ");
     }
 
-    public void UpdateStackName()
+    public async Task UpdateStackName()
     {
-        var stackList = _stackDataManager.GetStacks();
-        _displayTable.DisplayTable(stackList, columnName: "Lessons", "");
+        var stackList = await _stackRepository.GetStacks();
+        _displayTable.DisplayTable(stackList.ToList(), columnName: "Lessons", "");
         DisplayUpdateStackMenu();
         var choice = _input.GetChoice();
         while (choice != "back")
@@ -114,10 +113,10 @@ public class StackService : IStackService
                 Console.Clear();
                 return;
             }
-            _stackDataManager.UpdateStack(new Stack { Name = choice }, new Stack { Name = newStackName });
+            await _stackRepository.UpdateStack(new Stack { Name = choice }, new Stack { Name = newStackName });
 
-            stackList = _stackDataManager.GetStacks();
-            _displayTable.DisplayTable(stackList, columnName: "Lessons", "");
+            stackList = await _stackRepository.GetStacks();
+            _displayTable.DisplayTable(stackList.ToList(), columnName: "Lessons", "");
             DisplayUpdateStackMenu();
             choice = _input.GetChoice();
         }
@@ -132,19 +131,19 @@ public class StackService : IStackService
         Console.Write("\nYour choice? ");
     }
 
-    public void DeleteStack()
+    public async Task DeleteStack()
     {
-        var stackList = _stackDataManager.GetStacks();
-        _displayTable.DisplayTable(stackList, columnName: "Lessons", "");
+        var stackList = await _stackRepository.GetStacks();
+        _displayTable.DisplayTable(stackList.ToList(), columnName: "Lessons", "");
         DisplayDeleteMenu();
         var choice = _input.GetChoice();
 
         while (choice != "back")
         {
-            _stackDataManager.DeleteStack(new Stack { Name = choice });
+            await _stackRepository.DeleteStack(new Stack { Name = choice });
 
-            stackList = _stackDataManager.GetStacks();
-            _displayTable.DisplayTable(stackList, columnName: "Lessons", "");
+            stackList =await  _stackRepository.GetStacks();
+            _displayTable.DisplayTable(stackList.ToList(), columnName: "Lessons", "");
             DisplayDeleteMenu();
             choice = _input.GetChoice();
         }
@@ -152,12 +151,12 @@ public class StackService : IStackService
         Console.Clear();
     }
 
-    public void ViewStackForFlashCardOperations()
+    public async Task ViewStackForFlashCardOperations()
     {
         Console.Clear();
 
-        var stackList = _stackDataManager.GetStacks();
-        _displayTable.DisplayTable(stackList, columnName: "Lessons", "");
+        var stackList =await _stackRepository.GetStacks();
+        _displayTable.DisplayTable(stackList.ToList(), columnName: "Lessons", "");
 
         SelectStackToOperateOn();
         Console.Clear();
@@ -177,8 +176,8 @@ public class StackService : IStackService
         _flashCardService.ManageFlashCardSettings(new Stack { Name = name });
     }
 
-    public void CreateStackTable()
+    public async Task CreateStackTable()
     {
-        _stackDataManager.CreateStackTable();
+        await _stackRepository.CreateStackTable();
     }
 }
