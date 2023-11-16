@@ -22,6 +22,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<Context>();
 await context.Database.EnsureDeletedAsync();
