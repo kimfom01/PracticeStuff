@@ -1,17 +1,12 @@
-using BusinessLogic.Enums;
-using DataAccess.Dtos;
 using DataAccess.Models;
 
 namespace BusinessLogic.Services;
 
 public interface IStudyAreaService
 {
-    StudyAreaOptions GetStudyAreaChoice();
-    Task ManageStudyArea();
-    Task ViewHistory();
-    void ViewNewLessonMenu();
-    Task StartLesson();
-    int PlayLessonLoop(IEnumerable<FlashCardDto> flashCards);
-    Task SaveScore(StudyArea studyArea, Stack stack);
-    Task CreateStudyAreaTable();
+    Task<StudyArea?>  AddStudyArea(StudyArea studyArea);
+    Task<int> UpdateStudyArea(StudyArea studyArea);
+    Task<int> DeleteStudyArea(int id);
+    Task<IEnumerable<StudyArea>> GetStudyAreas();
+    Task<StudyArea?> GetStudyArea(int id);
 }
