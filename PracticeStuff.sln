@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{F803835A-E2A6-4F26-94E6-C9617ECBCE8F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{18E0BD9B-AD3D-4785-B976-501F97E0F989}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{7D2CEA39-87C6-43F1-85D3-0A8EF75968C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +34,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F803835A-E2A6-4F26-94E6-C9617ECBCE8F} = {18E0BD9B-AD3D-4785-B976-501F97E0F989}
+		{7CBFA59A-0C5B-4558-930C-FE9830EFCC6F} = {18E0BD9B-AD3D-4785-B976-501F97E0F989}
+		{D802F627-486F-4082-9F24-C14BCBC9A076} = {18E0BD9B-AD3D-4785-B976-501F97E0F989}
 	EndGlobalSection
 EndGlobal
