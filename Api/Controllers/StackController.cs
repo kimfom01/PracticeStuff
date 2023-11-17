@@ -1,5 +1,5 @@
 using BusinessLogic.Services;
-using DataAccess.Models;
+using DataAccess.Dtos.Stack;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -48,7 +48,7 @@ public class StackController : ControllerBase
     [HttpPost]
     [ProducesResponseType(201)]
     [ProducesResponseType(400)]
-    public async Task<IActionResult> PostStack(Stack stack)
+    public async Task<IActionResult> PostStack(CreateStackDto stack)
     {
         var added = await _stackService.AddStack(stack);
         
@@ -63,7 +63,7 @@ public class StackController : ControllerBase
     [HttpPut]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
-    public async Task<IActionResult> UpdateStack(Stack stack)
+    public async Task<IActionResult> UpdateStack(UpdateStackDto stack)
     {
         try
         {

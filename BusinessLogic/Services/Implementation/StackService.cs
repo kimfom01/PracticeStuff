@@ -1,3 +1,5 @@
+using AutoMapper;
+using DataAccess.Dtos.Stack;
 using DataAccess.Models;
 using DataAccess.Repositories;
 
@@ -6,22 +8,28 @@ namespace BusinessLogic.Services.Implementation;
 public class StackService : IStackService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public StackService(IUnitOfWork unitOfWork)
+    public StackService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
-    public async Task<Stack?> AddStack(Stack stack)
+    public async Task<CreateStackDto?> AddStack(CreateStackDto createStackDto)
     {
+        var stack = _mapper.Map<Stack>(createStackDto);
+        
         var added = await _unitOfWork.Stacks.AddItem(stack);
         await _unitOfWork.SaveChanges();
 
-        return added;
+        return _mapper.Map<CreateStackDto>(added);
     }
 
-    public async Task<int> UpdateStack(Stack stack)
+    public async Task<int> UpdateStack(UpdateStackDto updateStackDto)
     {
+        var stack = _mapper.Map<Stack>(updateStackDto);
+        
         await _unitOfWork.Stacks.UpdateItem(stack);
         var changes = await _unitOfWork.SaveChanges();
 
@@ -46,13 +54,17 @@ public class StackService : IStackService
         return changes;
     }
 
-    public async Task<IEnumerable<Stack>> GetStacks()
+    public async Task<IEnumerable<GetStackListDto>> GetStacks()
     {
-        return await _unitOfWork.Stacks.GetItems();
+        var stacks = await _unitOfWork.Stacks.GetItems();
+        
+        return _mapper.Map<IEnumerable<GetStackListDto>>(stacks);
     }
 
-    public async Task<Stack?> GetStack(int id)
+    public async Task<GetStackDetailDto?> GetStack(int id)
     {
-        return await _unitOfWork.Stacks.GetItem(id);
+        var stack = await _unitOfWork.Stacks.GetItem(id);
+        
+        return _mapper.Map<GetStackDetailDto>(stack);
     }
 }

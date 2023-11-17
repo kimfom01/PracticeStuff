@@ -75,71 +75,71 @@ public class Context : DbContext
                 new FlashCard
                 {
                     Id = 1,
-                    Name = "Calculus Basics",
-                    Content = "Introduction to calculus concepts",
+                    Front = "Calculus Basics",
+                    Back = "Introduction to calculus concepts",
                     StackId = 1
                 },
                 new FlashCard
                 {
                     Id = 2,
-                    Name = "Newton's Laws",
-                    Content = "Principles of motion and force",
+                    Front = "Newton's Laws",
+                    Back = "Principles of motion and force",
                     StackId = 2
                 },
                 new FlashCard
                 {
                     Id = 3,
-                    Name = "Organic Chemistry",
-                    Content = "Fundamentals of organic compounds",
+                    Front = "Organic Chemistry",
+                    Back = "Fundamentals of organic compounds",
                     StackId = 3
                 },
                 new FlashCard
                 {
                     Id = 4,
-                    Name = "World War II",
-                    Content = "Key events of WWII",
+                    Front = "World War II",
+                    Back = "Key events of WWII",
                     StackId = 4
                 },
                 new FlashCard
                 {
                     Id = 5,
-                    Name = "Continents and Oceans",
-                    Content = "Geographic features of Earth",
+                    Front = "Continents and Oceans",
+                    Back = "Geographic features of Earth",
                     StackId = 5
                 },
                 new FlashCard
                 {
                     Id = 6,
-                    Name = "Human Anatomy",
-                    Content = "Structure of the human body",
+                    Front = "Human Anatomy",
+                    Back = "Structure of the human body",
                     StackId = 6
                 },
                 new FlashCard
                 {
                     Id = 7,
-                    Name = "Shakespeare's Plays",
-                    Content = "Overview of Shakespearean drama",
+                    Front = "Shakespeare's Plays",
+                    Back = "Overview of Shakespearean drama",
                     StackId = 7
                 },
                 new FlashCard
                 {
                     Id = 8,
-                    Name = "Programming Basics",
-                    Content = "Introduction to programming languages",
+                    Front = "Programming Basics",
+                    Back = "Introduction to programming languages",
                     StackId = 8
                 },
                 new FlashCard
                 {
                     Id = 9,
-                    Name = "Art Movements",
-                    Content = "History of different art styles",
+                    Front = "Art Movements",
+                    Back = "History of different art styles",
                     StackId = 9
                 },
                 new FlashCard
                 {
                     Id = 10,
-                    Name = "Music Composition",
-                    Content = "Basics of composing music",
+                    Front = "Music Composition",
+                    Back = "Basics of composing music",
                     StackId = 10
                 }
             );

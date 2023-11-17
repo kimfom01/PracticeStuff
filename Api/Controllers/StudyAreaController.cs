@@ -1,5 +1,5 @@
 using BusinessLogic.Services;
-using DataAccess.Models;
+using DataAccess.Dtos.StudyArea;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -48,7 +48,7 @@ public class StudyAreaController : ControllerBase
     [HttpPost]
     [ProducesResponseType(201)]
     [ProducesResponseType(400)]
-    public async Task<IActionResult> PostStudyArea(StudyArea studyArea)
+    public async Task<IActionResult> PostStudyArea(CreateStudyAreaDto studyArea)
     {
         var added = await _studyAreaService.AddStudyArea(studyArea);
 
@@ -63,7 +63,7 @@ public class StudyAreaController : ControllerBase
     [HttpPut]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
-    public async Task<IActionResult> UpdateStudyArea(StudyArea studyArea)
+    public async Task<IActionResult> UpdateStudyArea(UpdateStudyAreaDto studyArea)
     {
         try
         {

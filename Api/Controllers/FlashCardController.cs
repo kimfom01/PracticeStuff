@@ -1,5 +1,5 @@
 using BusinessLogic.Services;
-using DataAccess.Models;
+using DataAccess.Dtos.FlashCard;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -29,6 +29,21 @@ public class FlashCardController : ControllerBase
 
         return Ok(flashCards);
     }
+    
+    [HttpGet("q")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetFlashCards(int stackId)
+    {
+        var flashCards = await _flashCardService.GetFlashCards(stackId);
+
+        if (!flashCards.Any())
+        {
+            return NotFound();
+        }
+
+        return Ok(flashCards);
+    }
 
     [HttpGet("{id:int}")]
     [ProducesResponseType(200)]
@@ -48,9 +63,9 @@ public class FlashCardController : ControllerBase
     [HttpPost]
     [ProducesResponseType(201)]
     [ProducesResponseType(400)]
-    public async Task<IActionResult> PostFlashCard(FlashCard flashCard)
+    public async Task<IActionResult> PostFlashCard(CreateFlashCardDto createFlashCardDto)
     {
-        var added = await _flashCardService.AddFlashCard(flashCard);
+        var added = await _flashCardService.AddFlashCard(createFlashCardDto);
 
         if (added is null)
         {
@@ -63,11 +78,11 @@ public class FlashCardController : ControllerBase
     [HttpPut]
     [ProducesResponseType(204)]
     [ProducesResponseType(400)]
-    public async Task<IActionResult> UpdateFlashCard(FlashCard flashCard)
+    public async Task<IActionResult> UpdateFlashCard(UpdateFlashCardDto updateFlashCardDto)
     {
         try
         {
-            await _flashCardService.UpdateFlashCard(flashCard);
+            await _flashCardService.UpdateFlashCard(updateFlashCardDto);
         }
         catch (Exception ex)
         {
