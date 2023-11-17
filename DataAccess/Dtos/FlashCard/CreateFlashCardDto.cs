@@ -1,8 +1,8 @@
 namespace DataAccess.Dtos.FlashCard;
 
-public class CreateFlashCardDto
+public class CreateFlashCardDto : BaseDto
 {
-    public string? Front { get; set; }
-    public string? Back { get; set; }
+    public required string Front { get; set; }
+    public required string Back { get; set; }
     public int StackId { get; set; }
 }
