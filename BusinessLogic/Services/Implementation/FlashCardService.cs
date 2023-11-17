@@ -16,14 +16,14 @@ public class FlashCardService : IFlashCardService
         _mapper = mapper;
     }
 
-    public async Task<FlashCard?> AddFlashCard(CreateFlashCardDto createFlashCardDto)
+    public async Task<CreateFlashCardDto?> AddFlashCard(CreateFlashCardDto createFlashCardDto)
     {
         var flashCard = _mapper.Map<FlashCard>(createFlashCardDto);
         
         var added = await _unitOfWork.FlashCards.AddItem(flashCard);
         await _unitOfWork.SaveChanges();
 
-        return added;
+        return _mapper.Map<CreateFlashCardDto>(added);
     }
 
     public async Task<int> UpdateFlashCard(UpdateFlashCardDto updateFlashCardDto)
@@ -70,17 +70,24 @@ public class FlashCardService : IFlashCardService
         return changes;
     }
 
-    public async Task<IEnumerable<GetFlashCardDto>> GetFlashCards()
+    public async Task<IEnumerable<GetFlashCardListDto>> GetFlashCards()
     {
         var flashCards = await _unitOfWork.FlashCards.GetItems();
 
-        return _mapper.Map<IEnumerable<GetFlashCardDto>>(flashCards);
+        return _mapper.Map<IEnumerable<GetFlashCardListDto>>(flashCards);
     }
 
-    public async Task<GetFlashCardDto?> GetFlashCard(int id)
+    public async Task<IEnumerable<GetFlashCardListDto>> GetFlashCards(int stackId)
+    {
+        var flashCards = await _unitOfWork.FlashCards.GetItems(fl => fl.StackId == stackId);
+
+        return _mapper.Map<IEnumerable<GetFlashCardListDto>>(flashCards);
+    }
+
+    public async Task<GetFlashCardDetailDto?> GetFlashCard(int id)
     {
         var flashCard = await _unitOfWork.FlashCards.GetItem(id);
 
-        return _mapper.Map<GetFlashCardDto>(flashCard);
+        return _mapper.Map<GetFlashCardDetailDto>(flashCard);
     }
 }

@@ -29,6 +29,21 @@ public class FlashCardController : ControllerBase
 
         return Ok(flashCards);
     }
+    
+    [HttpGet("q")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetFlashCards(int stackId)
+    {
+        var flashCards = await _flashCardService.GetFlashCards(stackId);
+
+        if (!flashCards.Any())
+        {
+            return NotFound();
+        }
+
+        return Ok(flashCards);
+    }
 
     [HttpGet("{id:int}")]
     [ProducesResponseType(200)]
