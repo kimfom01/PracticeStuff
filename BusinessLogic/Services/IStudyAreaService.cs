@@ -1,12 +1,12 @@
-using DataAccess.Models;
+using DataAccess.Dtos.StudyArea;
 
 namespace BusinessLogic.Services;
 
 public interface IStudyAreaService
 {
-    Task<StudyArea?>  AddStudyArea(StudyArea studyArea);
-    Task<int> UpdateStudyArea(StudyArea studyArea);
+    Task<CreateStudyAreaDto?> AddStudyArea(CreateStudyAreaDto createStudyAreaDto);
+    Task<int> UpdateStudyArea(UpdateStudyAreaDto updateStudyAreaDto);
     Task<int> DeleteStudyArea(int id);
-    Task<IEnumerable<StudyArea>> GetStudyAreas();
-    Task<StudyArea?> GetStudyArea(int id);
+    Task<IEnumerable<GetStudyAreaListDto>> GetStudyAreas();
+    Task<GetStudyAreaDetailDto?> GetStudyArea(int id);
 }

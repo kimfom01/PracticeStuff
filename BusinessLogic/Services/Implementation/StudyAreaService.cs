@@ -1,3 +1,5 @@
+using AutoMapper;
+using DataAccess.Dtos.StudyArea;
 using DataAccess.Models;
 using DataAccess.Repositories;
 
@@ -6,22 +8,28 @@ namespace BusinessLogic.Services.Implementation;
 public class StudyAreaService : IStudyAreaService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public StudyAreaService(IUnitOfWork unitOfWork)
+    public StudyAreaService(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
-    public async Task<StudyArea?> AddStudyArea(StudyArea studyArea)
+    public async Task<CreateStudyAreaDto?> AddStudyArea(CreateStudyAreaDto createStudyAreaDto)
     {
+        var studyArea = _mapper.Map<StudyArea>(createStudyAreaDto);
+        
         var added = await _unitOfWork.StudyAreas.AddItem(studyArea);
         await _unitOfWork.SaveChanges();
 
-        return added;
+        return _mapper.Map<CreateStudyAreaDto>(added);
     }
 
-    public async Task<int> UpdateStudyArea(StudyArea studyArea)
+    public async Task<int> UpdateStudyArea(UpdateStudyAreaDto updateStudyAreaDto)
     {
+        var studyArea = _mapper.Map<StudyArea>(updateStudyAreaDto);
+        
         await _unitOfWork.StudyAreas.UpdateItem(studyArea);
         var changes = await _unitOfWork.SaveChanges();
 
@@ -46,13 +54,17 @@ public class StudyAreaService : IStudyAreaService
         return changes;
     }
 
-    public async Task<IEnumerable<StudyArea>> GetStudyAreas()
+    public async Task<IEnumerable<GetStudyAreaListDto>> GetStudyAreas()
     {
-        return await _unitOfWork.StudyAreas.GetItems();
+        var studyAreas = await _unitOfWork.StudyAreas.GetItems();
+        
+        return _mapper.Map<IEnumerable<GetStudyAreaListDto>>(studyAreas);
     }
 
-    public async Task<StudyArea?> GetStudyArea(int id)
+    public async Task<GetStudyAreaDetailDto?> GetStudyArea(int id)
     {
-        return await _unitOfWork.StudyAreas.GetItem(id);
+        var studyArea = await _unitOfWork.StudyAreas.GetItem(id);
+
+        return _mapper.Map<GetStudyAreaDetailDto>(studyArea);
     }
 }
