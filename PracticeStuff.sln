@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 #
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{7CBFA59A-0C5B-4558-930C-FE9830EFCC6F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticeStuff.Application", "PracticeStuff.Application\PracticeStuff.Application.csproj", "{7CBFA59A-0C5B-4558-930C-FE9830EFCC6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{D802F627-486F-4082-9F24-C14BCBC9A076}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticeStuff.Persistence", "PracticeStuff.Persistence\PracticeStuff.Persistence.csproj", "{D802F627-486F-4082-9F24-C14BCBC9A076}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{F803835A-E2A6-4F26-94E6-C9617ECBCE8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticeStuff.Api", "PracticeStuff.Api\PracticeStuff.Api.csproj", "{F803835A-E2A6-4F26-94E6-C9617ECBCE8F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{18E0BD9B-AD3D-4785-B976-501F97E0F989}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{7D2CEA39-87C6-43F1-85D3-0A8EF75968C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticeStuff.Core", "PracticeStuff.Core\PracticeStuff.Core.csproj", "{EF2ABFC5-CFA4-4A4F-99A2-CA3C31354300}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{F803835A-E2A6-4F26-94E6-C9617ECBCE8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F803835A-E2A6-4F26-94E6-C9617ECBCE8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F803835A-E2A6-4F26-94E6-C9617ECBCE8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF2ABFC5-CFA4-4A4F-99A2-CA3C31354300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF2ABFC5-CFA4-4A4F-99A2-CA3C31354300}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF2ABFC5-CFA4-4A4F-99A2-CA3C31354300}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF2ABFC5-CFA4-4A4F-99A2-CA3C31354300}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,5 +45,6 @@ Global
 		{F803835A-E2A6-4F26-94E6-C9617ECBCE8F} = {18E0BD9B-AD3D-4785-B976-501F97E0F989}
 		{7CBFA59A-0C5B-4558-930C-FE9830EFCC6F} = {18E0BD9B-AD3D-4785-B976-501F97E0F989}
 		{D802F627-486F-4082-9F24-C14BCBC9A076} = {18E0BD9B-AD3D-4785-B976-501F97E0F989}
+		{EF2ABFC5-CFA4-4A4F-99A2-CA3C31354300} = {18E0BD9B-AD3D-4785-B976-501F97E0F989}
 	EndGlobalSection
 EndGlobal
