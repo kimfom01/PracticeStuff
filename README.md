@@ -1,4 +1,6 @@
 # Practice Stuff
+![practice-stuff](https://github.com/kimfom01/PracticeStuff/assets/57032138/293b6eb1-5014-4d15-8921-44ce01a411cf)
+
 
 [![Build and Validation Tests](https://github.com/kimfom01/PracticeStuff/actions/workflows/dotnet.yml/badge.svg)](https://github.com/kimfom01/PracticeStuff/actions/workflows/dotnet.yml)
 
